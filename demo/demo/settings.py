@@ -133,3 +133,5 @@ LOGOUT_REDIRECT_URL = '/'
 SURVEY_EMAIL_FROM = ''
 SURVEY_ANONYMOUS_VIEW_LIST = True
 
+WELCOME_SURVEY_TITLE = 'Welcome to the Mind survey app'
+WELCOME_SURVEY_TAGLINE = 'Surveys for Mind Jersey'

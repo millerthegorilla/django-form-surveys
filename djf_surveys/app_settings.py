@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.utils.translation import gettext as _
 
 # replace master template
 SURVEY_MASTER_TEMPLATE = settings.SURVEY_MASTER_TEMPLATE \
@@ -82,3 +83,13 @@ SURVEY_TINYMCE_DEFAULT_CONFIG = settings.TINYMCE_DEFAULT_CONFIG \
     "a11ycheck ltr rtl | showcomments addcomment code",
     "custom_undo_redo_levels": 10,
 }
+
+if hasattr(settings, 'SURVEY_WELCOME_MESSAGE_TITLE'):
+    SURVEY_WELCOME_MESSAGE_TITLE = settings.SURVEY_WELCOME_MESSAGE_TITLE
+else:
+    SURVEY_WELCOME_MESSAGE_TITLE = _("Welcome to the Django Form Survey")
+
+if hasattr(settings, 'SURVEY_WELCOME_MESSAGE_TAGLINE'):
+    SURVEY_WELCOME_MESSAGE_TAGLINE = settings.SURVEY_WELCOME_MESSAGE_TAGLINE
+else:
+    SURVEY_WELCOME_MESSAGE_TAGLINE = _("Making forms easier")

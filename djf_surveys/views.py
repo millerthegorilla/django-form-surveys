@@ -42,6 +42,8 @@ class SurveyListView(ContextTitleMixin, UserPassesTestMixin, ListView):
         context = super().get_context_data(**kwargs)
         page_range = context['page_obj'].paginator.get_elided_page_range(number=page_number)
         context['page_range'] = page_range
+        context['welcome_message_title'] = app_settings.SURVEY_WELCOME_MESSAGE_TITLE
+        context['welcome_message_tagline'] = app_settings.SURVEY_WELCOME_MESSAGE_TAGLINE
         return context
 
 

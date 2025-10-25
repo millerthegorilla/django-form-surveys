@@ -5,6 +5,9 @@ __pycache__/
 # C extensions
 *.so
 
+# demo
+demo/djf_surveys
+
 # Distribution / packaging
 build/
 develop-eggs/
