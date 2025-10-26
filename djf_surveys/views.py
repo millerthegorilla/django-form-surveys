@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
 
-from djf_surveys.models import Survey, UserAnswer, Question, TYPE_FIELD
+from djf_surveys.models import Survey, SurveySelection, UserAnswer, Question, TYPE_FIELD
 from djf_surveys.forms import CreateSurveyForm, EditSurveyForm
 from djf_surveys.mixin import ContextTitleMixin
 from djf_surveys import app_settings
@@ -251,3 +251,13 @@ class SuccessPageSurveyView(ContextTitleMixin, DetailView):
         if survey.cycle_survey == True:
             context["link_back_on_success_page"] = reverse_lazy("djf_surveys:create", kwargs={'slug': survey.slug})
         return context
+    
+
+class SurveySelectionDetailView(ContextTitleMixin, DetailView):
+    model = SurveySelection
+    template_name = 'djf_surveys/survey_selection.html'
+    title_page = _("Survey Selection")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context  

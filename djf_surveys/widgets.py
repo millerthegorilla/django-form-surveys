@@ -1,4 +1,5 @@
 from django import forms
+from djf_surveys.models import Survey
 
 
 class CheckboxSelectMultipleSurvey(forms.CheckboxSelectMultiple):
@@ -22,6 +23,7 @@ class RatingSurvey(forms.HiddenInput):
         context['widget']['num_ratings'] = self.num_ratings
         return context
 
+
 class InlineChoiceField(forms.HiddenInput):
     template_name = 'djf_surveys/widgets/inline_choices.html'
     extra = 3
@@ -29,10 +31,23 @@ class InlineChoiceField(forms.HiddenInput):
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
         if context['widget']['value']:
-            context['widget']['choice_value'] = [x.strip() for x in context['widget']['value'].split(',')] 
+            context['widget']['choice_value'] = [x.strip() for x in context['widget']['value'].split(',')]
         else:
             context['widget']['choice_value'] = []
 
         choices_count = len(context['widget']['choice_value'])
         context['widget']['extra'] = range(1 + choices_count, self.extra + 1 + choices_count)
+        return context
+
+
+class InlineChoiceSelectField(forms.HiddenInput):
+    template_name = 'djf_surveys/widgets/inline_choices_select.html'
+    extra = 0
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        if context['widget']['value']:
+            context['widget']['surveys'] = Survey.objects.all()
+        else:
+            context['widget']['surveys'] = []
         return context

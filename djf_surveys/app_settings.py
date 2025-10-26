@@ -84,6 +84,7 @@ SURVEY_TINYMCE_DEFAULT_CONFIG = settings.TINYMCE_DEFAULT_CONFIG \
     "custom_undo_redo_levels": 10,
 }
 
+# welcome message title and tagline
 if hasattr(settings, 'SURVEY_WELCOME_MESSAGE_TITLE'):
     SURVEY_WELCOME_MESSAGE_TITLE = settings.SURVEY_WELCOME_MESSAGE_TITLE
 else:

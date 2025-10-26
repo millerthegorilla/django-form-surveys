@@ -6,10 +6,13 @@ from django.contrib.auth import get_user_model
 from django.utils.text import slugify
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+from django.shortcuts import reverse
+from django.db.models.functions import Length
 
 from djf_surveys import app_settings
 from djf_surveys.utils import create_star
 
+models.CharField.register_lookup(Length)
 
 TYPE_FIELD = namedtuple(
     'TYPE_FIELD', 'text number radio select multi_select text_area url email date rating'
@@ -76,6 +79,9 @@ class Survey(BaseModel):
         if not self.slug:
             self.slug = generate_unique_slug(Survey, self.name, self.id)
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse ('djf_surveys:create', kwargs={'slug': self.slug})
 
 
 class Question(BaseModel):
@@ -197,3 +203,27 @@ class TermsValidators(BaseModel):
 
     def __str__(self):
         return f"{self.question}"
+
+
+class SurveySelection(models.Model):
+    survey = models.ManyToManyField(Survey, verbose_name=_("survey"), related_name="survey_selections")
+    name = models.CharField(_("name"), max_length=200, null=False, blank=False)
+    slug = models.SlugField(_("slug"), max_length=225, default='', unique=True)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(check=models.Q(name__length__gt=0), name="non_empty_name_survey_selection")
+        ]
+        verbose_name = _("survey selection")
+        verbose_name_plural = _("survey selections")
+
+    def __str__(self):
+        return f"{self.name}"
+    
+    def get_absolute_url(self):
+        return reverse ('djf_surveys:survey_selection' , kwargs={'slug': self.slug} )
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = generate_unique_slug(SurveySelection, self.name, self.id)
+        super().save(*args, **kwargs)

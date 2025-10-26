@@ -9,19 +9,19 @@ from django.views.generic.edit import FormMixin
 from django.utils.decorators import method_decorator
 from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import reverse, reverse_lazy
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import View
 from django.http import JsonResponse, HttpResponse
 from django.contrib import messages
 from django.conf import settings as conf
 
 from djf_surveys.app_settings import SURVEYS_ADMIN_BASE_PATH
-from djf_surveys.models import Survey, Question, UserAnswer
+from djf_surveys.models import Survey, Question, UserAnswer, SurveySelection
 from djf_surveys.mixin import ContextTitleMixin
 from djf_surveys.views import SurveyListView
 from djf_surveys.forms import BaseSurveyForm
 from djf_surveys.summary import SummaryResponse
-from djf_surveys.admins.v2.forms import SurveyForm
+from djf_surveys.admins.v2.forms import SurveyForm, QuestionURLForm
 
 
 @method_decorator(staff_member_required, name='dispatch')
@@ -215,3 +215,35 @@ class SummaryResponseSurveyView(ContextTitleMixin, DetailView):
         summary = SummaryResponse(survey=self.get_object())
         context['summary'] = summary
         return context
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class SurveySelectView(ContextTitleMixin, View):
+    template_name = 'djf_surveys/form.html'
+    title_page = _("Select Survey")
+    form_class = QuestionURLForm
+    model = SurveySelection
+
+    def get(self, request, *args, **kwargs):
+        form = self.get_form()
+        return render(request, self.template_name, {'form': form})
+
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.form_class
+        initial_data = {}
+        for survey in Survey.objects.all():
+            initial_data["survey_slug"] = survey.slug
+            initial_data["survey_name"] = survey.name
+        return form_class(initial=initial_data)
+    
+    def post(self, request, *args, **kwargs):
+        breakpoint()
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            survey_selection = form.save()
+            messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
+                page_action_name=capfirst(self.title_page.lower())))
+            return redirect(survey_selection.get_absolute_url())
+        else:
+            return render(request, self.template_name, {'form': form})

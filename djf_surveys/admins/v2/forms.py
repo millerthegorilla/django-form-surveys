@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from djf_surveys.models import Question, Survey
-from djf_surveys.widgets import InlineChoiceField
+from djf_surveys.models import Question, Survey, SurveySelection
+from djf_surveys.widgets import InlineChoiceField, InlineChoiceSelectField
 from tinymce.widgets import TinyMCE
 from djf_surveys.app_settings import SURVEY_TINYMCE_DEFAULT_CONFIG
 from djf_surveys.app_settings import field_validators
@@ -113,6 +113,13 @@ class QuestionTextAreaForm(forms.ModelForm):
 
 class SurveyForm(forms.ModelForm):
     
+    survey_selections = forms.ModelMultipleChoiceField(
+        label=_("Survey Selection to Return to..."),
+        queryset=SurveySelection.objects.all(),
+        required=False,
+        help_text=_("Select Survey Selections associated with this survey"),
+    )
+
     class Meta:
         model = Survey
         fields = [
@@ -140,3 +147,25 @@ class SurveyForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['notification_to'].widget = InlineChoiceField()
         self.fields['slug'].required = False
+
+
+class QuestionURLForm(forms.ModelForm):
+    name = forms.CharField(
+        label=_("Name"), max_length=200,
+        help_text=_("Name for this survey selection")
+    )
+    surveys=forms.CharField(
+        label=_("Allowed Surveys"), help_text=_("Click Button Add Data"),
+        widget=InlineChoiceSelectField()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        survey_choices = ""
+        for survey in Survey.objects.all():
+            survey_choices = survey_choices + f"{survey.get_absolute_url()},{survey.name}:"
+        self.fields['surveys'].initial = survey_choices
+
+    class Meta:
+        model = SurveySelection
+        fields = ['name', 'surveys']
