@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("djf_surveys", "0024_alter_surveyselection_survey"),
+        ("djf_surveys", "0023_remove_survey_return_to_page_and_more"),
     ]
 
     operations = [

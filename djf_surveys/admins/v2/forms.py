@@ -113,11 +113,12 @@ class QuestionTextAreaForm(forms.ModelForm):
 
 class SurveyForm(forms.ModelForm):
     
-    survey_selections = forms.ModelMultipleChoiceField(
+    survey_selections = forms.ModelChoiceField(
         label=_("Survey Selection to Return to..."),
+        empty_label=_("No Survey Selection"),
         queryset=SurveySelection.objects.all(),
         required=False,
-        help_text=_("Select Survey Selections associated with this survey"),
+        help_text=_("Select Survey Selection associated with this survey"),
     )
 
     class Meta:
@@ -125,7 +126,7 @@ class SurveyForm(forms.ModelForm):
         fields = [
             'name', 'slug', 'description', 'editable', 'deletable',
             'duplicate_entry', 'cycle_survey', 'private_response', 'can_anonymous_user',
-            'notification_to', 'success_page_content'
+            'notification_to', 'success_page_content', 'survey_selections'
         ]
         widgets = {
             'description': TinyMCE(mce_attrs=SURVEY_TINYMCE_DEFAULT_CONFIG),
@@ -154,9 +155,13 @@ class QuestionURLForm(forms.ModelForm):
         label=_("Name"), max_length=200,
         help_text=_("Name for this survey selection")
     )
-    surveys=forms.CharField(
+    surveys=forms.ChoiceField(
         label=_("Allowed Surveys"), help_text=_("Click Button Add Data"),
         widget=InlineChoiceSelectField()
+    )
+    description = forms.CharField(
+        label=_("Description"), widget=forms.Textarea,
+        help_text=_("Description for this survey selection")
     )
 
     def __init__(self, *args, **kwargs):
@@ -168,4 +173,11 @@ class QuestionURLForm(forms.ModelForm):
 
     class Meta:
         model = SurveySelection
-        fields = ['name', 'surveys']
+        fields = ['name', 'description', 'surveys']
+
+    def clean_surveys(self):
+        breakpoint()
+        surveys = list(self.cleaned_data['surveys'].split(","))
+        if not surveys:
+            raise forms.ValidationError(_("At least one survey must be selected."))
+        return surveys

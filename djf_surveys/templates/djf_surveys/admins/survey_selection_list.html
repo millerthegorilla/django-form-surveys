@@ -1,4 +1,5 @@
 {% extends get_master_template %}
+{% load i18n %}
 {% load static %}
 
 {% block extra_css %}
@@ -10,18 +11,31 @@
     <div class="container px-5 py-5">
         {% include 'djf_surveys/components/section_welcome.html' %}
 
+        <section>
+            <div class="py-6 justify-start items-center flex">
+                <h2 class="max-w-xl text-2xl font-bold sm:text-3xl">
+                    {% trans "Create a survey selection list" %}
+                </h2>
+                <div class="ms-10">
+                    <a href="{% url 'djf_surveys:admin_create_survey_selection' %}" class="inline-block px-5 py-3 mt-4 font-medium text-white bg-blue-500 rounded-lg sm:m-0">
+                        {% include "djf_surveys/buttons/add_button.html" %}
+                    </a>
+                </div>
+            </div>
+        </section>
+
         {% include 'djf_surveys/components/search_form.html' %}
         {% if object_list %}
-            <div class="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
-                {% for survey in page_obj %}
-                    {% include 'djf_surveys/components/card_list_survey.html' %}
+            <div class="grid xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
+                {% for survey_selection in page_obj %}
+                    {% include 'djf_surveys/components/card_list_survey_selection_list.html' %}
                 {% endfor %}
             </div>
             <div class="py-10">
                 {% include 'djf_surveys/components/pagination.html' %}
             </div>
         {% else %}
-            {% include 'djf_surveys/components/empty_state.html' with type="survey" %}
+            {% include 'djf_surveys/components/empty_state.html' with type="Survey Selections" %}
         {% endif %}
     </div>
 

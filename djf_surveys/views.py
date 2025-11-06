@@ -17,9 +17,7 @@ from djf_surveys import app_settings
 from djf_surveys.utils import NewPaginator
 
 
-class SurveyListView(ContextTitleMixin, UserPassesTestMixin, ListView):
-    model = Survey
-    title_page = 'Survey List'
+class SurveyList(ContextTitleMixin, UserPassesTestMixin, ListView):
     paginate_by = app_settings.SURVEY_PAGINATION_NUMBER['survey_list']
     paginator_class = NewPaginator
 
@@ -45,6 +43,18 @@ class SurveyListView(ContextTitleMixin, UserPassesTestMixin, ListView):
         context['welcome_message_title'] = app_settings.SURVEY_WELCOME_MESSAGE_TITLE
         context['welcome_message_tagline'] = app_settings.SURVEY_WELCOME_MESSAGE_TAGLINE
         return context
+
+
+
+class SurveySelectionListView(SurveyList):
+    model = SurveySelection
+    title_page = 'Survey Selection List'
+    template_name = 'djf_surveys/survey_selection_list.html'
+
+
+class SurveyListView(SurveyList):
+    model = Survey
+    title_page = 'Survey List'
 
 
 class SurveyFormView(FormMixin, DetailView):

@@ -67,7 +67,13 @@ class Survey(BaseModel):
     notification_to = models.TextField(_("Notification To"), blank=True, null=True,
                                        help_text=_("Enter your email to be notified when the form is submitted"))
     success_page_content = HTMLField(_("Success Page Content"), blank=True, null=True)
-
+    survey_selections = models.ForeignKey('SurveySelection',
+                                          verbose_name=_("survey selection"),
+                                          related_name="surveys",
+                                          on_delete=models.DO_NOTHING,
+                                          blank=True,
+                                          null=True,)
+    
     class Meta:
         verbose_name = _("survey")
         verbose_name_plural = _("surveys")
@@ -206,8 +212,8 @@ class TermsValidators(BaseModel):
 
 
 class SurveySelection(models.Model):
-    survey = models.ManyToManyField(Survey, verbose_name=_("survey"), related_name="survey_selections")
     name = models.CharField(_("name"), max_length=200, null=False, blank=False)
+    description = models.TextField(_("description"), blank=False, null=False)
     slug = models.SlugField(_("slug"), max_length=225, default='', unique=True)
 
     class Meta:

@@ -18,7 +18,7 @@ from django.conf import settings as conf
 from djf_surveys.app_settings import SURVEYS_ADMIN_BASE_PATH
 from djf_surveys.models import Survey, Question, UserAnswer, SurveySelection
 from djf_surveys.mixin import ContextTitleMixin
-from djf_surveys.views import SurveyListView
+from djf_surveys.views import SurveyListView, SurveySelectionListView
 from djf_surveys.forms import BaseSurveyForm
 from djf_surveys.summary import SummaryResponse
 from djf_surveys.admins.v2.forms import SurveyForm, QuestionURLForm
@@ -49,11 +49,37 @@ class AdminEditSurveyView(ContextTitleMixin, UpdateView):
         messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
                         page_action_name=capfirst(self.title_page.lower())))
         return reverse("djf_surveys:admin_forms_survey", args=[survey.slug])
+    
+    def get_form(self):
+        form = super().get_form(self.form_class)
+        form.initial['survey_selections'] = form.instance.survey_selections.first()
+        return form
+    
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        self.object = None
+        form.errors.pop('slug', None)
+        if form.is_valid():
+            obj = form.save()
+            if 'survey_selections' in request.POST:
+                selection = request.POST.getlist('survey_selections')
+                breakpoint()
+                sselection = SurveySelection.objects.get(id__in=selection)
+                obj.survey_selections.add(sselection)
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+        
 
 
 @method_decorator(staff_member_required, name='dispatch')
 class AdminSurveyListView(SurveyListView):
     template_name = 'djf_surveys/admins/survey_list.html'
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class AdminSurveySelectionListView(SurveySelectionListView):
+    template_name = 'djf_surveys/admins/survey_selection_list.html'
 
 
 @method_decorator(staff_member_required, name='dispatch')
@@ -82,7 +108,7 @@ class AdminDeleteSurveyView(DetailView):
         survey = self.get_object()
         survey.delete()
         messages.success(request, gettext("Survey %ss succesfully deleted.") % survey.name)
-        return redirect("djf_surveys:admin_survey")
+        return redirect("djf_surveys:admin_survey_list")
 
 
 @method_decorator(staff_member_required, name='dispatch')
@@ -218,7 +244,7 @@ class SummaryResponseSurveyView(ContextTitleMixin, DetailView):
 
 
 @method_decorator(staff_member_required, name='dispatch')
-class SurveySelectView(ContextTitleMixin, View):
+class AdminCreateSurveySelectionView(ContextTitleMixin, View):
     template_name = 'djf_surveys/form.html'
     title_page = _("Select Survey")
     form_class = QuestionURLForm
@@ -238,10 +264,15 @@ class SurveySelectView(ContextTitleMixin, View):
         return form_class(initial=initial_data)
     
     def post(self, request, *args, **kwargs):
+        pobject = request.POST.copy()
+        form = self.form_class(pobject)
+        form.errors.pop('surveys', None)
         breakpoint()
-        form = self.form_class(request.POST)
         if form.is_valid():
             survey_selection = form.save()
+            for survey in Survey.objects.filter(pk__in=list(request.POST['surveys'].split(','))):
+                survey_selection.surveys.add(survey)
+            survey_selection.save()
             messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
                 page_action_name=capfirst(self.title_page.lower())))
             return redirect(survey_selection.get_absolute_url())

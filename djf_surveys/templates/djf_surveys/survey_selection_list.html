@@ -12,16 +12,16 @@
 
         {% include 'djf_surveys/components/search_form.html' %}
         {% if object_list %}
-            <div class="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
-                {% for survey in page_obj %}
-                    {% include 'djf_surveys/components/card_list_survey.html' %}
+            <div class="grid xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
+                {% for survey_selection in page_obj %}
+                    {% include 'djf_surveys/components/card_list_survey_selection_list.html' %}
                 {% endfor %}
             </div>
             <div class="py-10">
                 {% include 'djf_surveys/components/pagination.html' %}
             </div>
         {% else %}
-            {% include 'djf_surveys/components/empty_state.html' with type="survey" %}
+            {% include 'djf_surveys/components/empty_state.html' with type="Survey Selections" %}
         {% endif %}
     </div>
 
