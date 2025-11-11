@@ -87,7 +87,8 @@ class Survey(BaseModel):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse ('djf_surveys:create', kwargs={'slug': self.slug})
+        selection = self.survey_selections.slug if self.survey_selections else "main"
+        return reverse ('djf_surveys:create', kwargs={'slug': self.slug, 'selection_slug': selection})
 
 
 class Question(BaseModel):
@@ -215,7 +216,9 @@ class SurveySelection(models.Model):
     name = models.CharField(_("name"), max_length=200, null=False, blank=False)
     description = models.TextField(_("description"), blank=False, null=False)
     slug = models.SlugField(_("slug"), max_length=225, default='', unique=True)
-
+    can_anonymous_user = models.BooleanField(_("anonymous submission"), default=False,
+                                             help_text=_("If True, user without authentatication can view."))
+    
     class Meta:
         constraints = [
             models.CheckConstraint(check=models.Q(name__length__gt=0), name="non_empty_name_survey_selection")

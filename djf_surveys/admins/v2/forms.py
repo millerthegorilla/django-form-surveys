@@ -173,7 +173,7 @@ class SurveySelectionListForm(forms.ModelForm):
 
     class Meta:
         model = SurveySelection
-        fields = ['name', 'description', 'surveys']
+        fields = ['name', 'description', 'surveys', 'can_anonymous_user']
 
     def clean_surveys(self):
         surveys = list(self.cleaned_data['surveys'].split(","))

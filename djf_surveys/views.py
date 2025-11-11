@@ -16,7 +16,7 @@ from djf_surveys.mixin import ContextTitleMixin
 from djf_surveys import app_settings
 from djf_surveys.utils import NewPaginator
 
-
+# base class for survey list view
 class SurveyList(ContextTitleMixin, UserPassesTestMixin, ListView):
     paginate_by = app_settings.SURVEY_PAGINATION_NUMBER['survey_list']
     paginator_class = NewPaginator
@@ -102,7 +102,7 @@ class SurveyFormView(FormMixin, DetailView):
 class CreateSurveyFormView(ContextTitleMixin, SurveyFormView):
     model = Survey
     form_class = CreateSurveyForm
-    title_page = _("Add Survey")
+    title_page = _("Complete Survey")
 
     def dispatch(self, request, *args, **kwargs):
         survey = self.get_object()
@@ -130,7 +130,11 @@ class CreateSurveyFormView(ContextTitleMixin, SurveyFormView):
         return self.get_object().description
 
     def get_success_url(self):
-        return reverse("djf_surveys:success", kwargs={"slug": self.get_object().slug})
+        if self.kwargs.get("selection_slug") == "main":
+            return reverse("djf_surveys:success", kwargs={"slug": self.get_object().slug})
+        else:
+            messages.success(self.request, " Thank you for completing the survey.")
+            return reverse("djf_surveys:survey_selection", kwargs={"slug": self.kwargs.get("selection_slug")})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -270,4 +274,6 @@ class SurveySelectionDetailView(ContextTitleMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        slug = self.kwargs['slug']
+        context['survey_selection'] = get_object_or_404(SurveySelection, slug=slug)
         return context  

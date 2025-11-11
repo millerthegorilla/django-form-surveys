@@ -52,23 +52,26 @@ class AdminEditSurveyView(ContextTitleMixin, UpdateView):
     
     def get_form(self):
         form = super().get_form(self.form_class)
-        form.initial['survey_selections'] = form.instance.survey_selections.first()
+        if form.instance.survey_selections:
+            form.initial['survey_selections'] = form.instance.survey_selections
         return form
     
-    def post(self, request, *args, **kwargs):
-        form = self.get_form()
-        self.object = None
-        form.errors.pop('slug', None)
-        if form.is_valid():
-            obj = form.save()
-            if 'survey_selections' in request.POST:
-                selection = request.POST.getlist('survey_selections')
-                breakpoint()
-                sselection = SurveySelection.objects.get(id__in=selection)
-                obj.survey_selections.add(sselection)
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
+    def get_object(self, queryset=None):
+        return get_object_or_404(Survey, slug=self.kwargs['slug'])
+    
+    # def post(self, request, *args, **kwargs):
+    #     form = self.get_form()
+    #     breakpoint()
+    #     self.object = None
+    #     form.errors.pop('slug', None)
+    #     if form.is_valid():
+    #         obj = form.save()
+    #         if 'survey_selections' in request.POST:
+    #             selection = request.POST.getlist('survey_selections')
+    #             obj.survey_selections = SurveySelection.objects.get(id__in=selection)
+    #         return self.form_valid(form)
+    #     else:
+    #         return self.form_invalid(form)
         
 
 
@@ -248,7 +251,7 @@ class AdminCreateSurveySelectionView(ContextTitleMixin, View):
     template_name = 'djf_surveys/admins/form.html'
     form_class = SurveySelectionListForm
     model = SurveySelection
-    title_page = _("Select Survey")
+    title_page = _("Create Survey Selection List")
 
     def get(self, request, *args, **kwargs):
         form = self.get_form()
@@ -267,7 +270,6 @@ class AdminCreateSurveySelectionView(ContextTitleMixin, View):
         pobject = request.POST.copy()
         form = self.form_class(pobject)
         form.errors.pop('surveys', None)
-        breakpoint()
         if form.is_valid():
             survey_selection = form.save()
             for survey in Survey.objects.filter(pk__in=list(request.POST['surveys'].split(','))):
