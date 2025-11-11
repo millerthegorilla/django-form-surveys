@@ -265,7 +265,7 @@ class SuccessPageSurveyView(ContextTitleMixin, DetailView):
 
 class SurveySelectionDetailView(ContextTitleMixin, DetailView):
     model = SurveySelection
-    template_name = 'djf_surveys/survey_selection.html'
+    template_name = 'djf_surveys/survey_selection_long_desc.html' 
     title_page = _("Survey Selection")
 
     def get_context_data(self, **kwargs):

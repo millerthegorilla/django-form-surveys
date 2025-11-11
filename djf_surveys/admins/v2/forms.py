@@ -150,7 +150,7 @@ class SurveyForm(forms.ModelForm):
         self.fields['slug'].required = False
 
 
-class QuestionURLForm(forms.ModelForm):
+class SurveySelectionListForm(forms.ModelForm):
     name = forms.CharField(
         label=_("Name"), max_length=200,
         help_text=_("Name for this survey selection")
@@ -176,7 +176,6 @@ class QuestionURLForm(forms.ModelForm):
         fields = ['name', 'description', 'surveys']
 
     def clean_surveys(self):
-        breakpoint()
         surveys = list(self.cleaned_data['surveys'].split(","))
         if not surveys:
             raise forms.ValidationError(_("At least one survey must be selected."))

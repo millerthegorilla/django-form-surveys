@@ -1,0 +1,24 @@
+{% extends get_master_template %}
+{% load i18n %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'djf_surveys/te-starter/css/tw-elements.min.css' %}">
+    <link rel="stylesheet" href="{% static 'djf_surveys/css/custom.css' %}"/>
+{% endblock %}
+
+{% block content %}
+<div class="w-3/5 mx-auto">
+    <h1 class="text-center pt-4 mb-4"><b>{{ object.name }}</b></h1>
+    <p class="text-center mb-4">{{ object.description|safe }}</p>
+</div>
+    <h2 class="text-center mb-4">{% trans "Please select a survey:" %}</h2>
+    {% for survey in object.surveys.all %}
+        {% include 'djf_surveys/components/card_list_survey_selection_long_desc.html' %}
+        {% if not forloop.last %} <br/><h1 class="text-center mb-4">OR</h1><br/><br/>{% endif %}
+    {% endfor %}
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'djf_surveys/te-starter/js/tw-elements.min.js' %}"></script>
+{% endblock %}

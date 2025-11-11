@@ -21,7 +21,7 @@ from djf_surveys.mixin import ContextTitleMixin
 from djf_surveys.views import SurveyListView, SurveySelectionListView
 from djf_surveys.forms import BaseSurveyForm
 from djf_surveys.summary import SummaryResponse
-from djf_surveys.admins.v2.forms import SurveyForm, QuestionURLForm
+from djf_surveys.admins.v2.forms import SurveyForm, SurveySelectionListForm
 
 
 @method_decorator(staff_member_required, name='dispatch')
@@ -245,10 +245,10 @@ class SummaryResponseSurveyView(ContextTitleMixin, DetailView):
 
 @method_decorator(staff_member_required, name='dispatch')
 class AdminCreateSurveySelectionView(ContextTitleMixin, View):
-    template_name = 'djf_surveys/form.html'
-    title_page = _("Select Survey")
-    form_class = QuestionURLForm
+    template_name = 'djf_surveys/admins/form.html'
+    form_class = SurveySelectionListForm
     model = SurveySelection
+    title_page = _("Select Survey")
 
     def get(self, request, *args, **kwargs):
         form = self.get_form()
