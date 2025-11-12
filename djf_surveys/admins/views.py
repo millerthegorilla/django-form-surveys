@@ -58,21 +58,6 @@ class AdminEditSurveyView(ContextTitleMixin, UpdateView):
     
     def get_object(self, queryset=None):
         return get_object_or_404(Survey, slug=self.kwargs['slug'])
-    
-    # def post(self, request, *args, **kwargs):
-    #     form = self.get_form()
-    #     breakpoint()
-    #     self.object = None
-    #     form.errors.pop('slug', None)
-    #     if form.is_valid():
-    #         obj = form.save()
-    #         if 'survey_selections' in request.POST:
-    #             selection = request.POST.getlist('survey_selections')
-    #             obj.survey_selections = SurveySelection.objects.get(id__in=selection)
-    #         return self.form_valid(form)
-    #     else:
-    #         return self.form_invalid(form)
-        
 
 
 @method_decorator(staff_member_required, name='dispatch')
