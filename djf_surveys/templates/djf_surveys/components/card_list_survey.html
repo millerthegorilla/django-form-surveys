@@ -1,7 +1,7 @@
 <div>
     
     <div class="flex -space-x-4 hover:space-x-1 float-right">
-        <a href="{% url 'djf_surveys:create' survey.slug "main" %}" class="z-20 block p-4 text-purple-700 transition-all bg-purple-100 border-2 border-white rounded-full active:bg-purple-50 hover:scale-110 focus:outline-none focus:ring"
+        <a href="{% url 'djf_surveys:respond' survey.slug 'main' %}" class="z-20 block p-4 text-purple-700 transition-all bg-purple-100 border-2 border-white rounded-full active:bg-purple-50 hover:scale-110 focus:outline-none focus:ring"
                 type="button">
                 {% include "djf_surveys/buttons/add_button.html" %}
         </a>
@@ -30,7 +30,7 @@
         {% endif %}
     </div>
 
-    <a class="relative block p-8 overflow-hidden border border-gray-100 rounded-lg bg-white" href="{% if user.is_authenticated %}{% url 'djf_surveys:detail' survey.slug "main" %}{% else %}{% url 'djf_surveys:create' survey.slug "main" %}{% endif %}">
+    <a class="relative block p-8 overflow-hidden border border-gray-100 rounded-lg bg-white" href="{% if user.is_authenticated %}{% url 'djf_surveys:detail' survey.slug 'main' %}{% else %}{% url 'djf_surveys:respond' survey.slug 'main' %}{% endif %}">
         <span class="absolute inset-x-0 bottom-0 h-2  bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
         <div class="justify-between sm:flex">
             <div>

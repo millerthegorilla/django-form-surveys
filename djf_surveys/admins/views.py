@@ -61,6 +61,29 @@ class AdminEditSurveyView(ContextTitleMixin, UpdateView):
 
 
 @method_decorator(staff_member_required, name='dispatch')
+class AdminEditSurveySelectionView(ContextTitleMixin, UpdateView):
+    model = SurveySelection
+    form_class = SurveySelectionListForm
+    template_name = 'djf_surveys/admins/form.html'
+    title_page = _("Edit Survey Selection")
+        
+    def get_success_url(self):
+        surveyselection = self.object
+        messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
+                        page_action_name=capfirst(self.title_page.lower())))
+        return reverse("djf_surveys:admin_forms_survey", args=[surveyselection.slug])
+    
+    # def get_form(self):
+    #     form = super().get_form(self.form_class)
+    #     if form.instance.survey_selections:
+    #         form.initial['survey_selections'] = form.instance.survey_selections
+    #     return form
+    
+    def get_object(self, queryset=None):
+        return get_object_or_404(SurveySelection, slug=self.kwargs['slug'])
+
+
+@method_decorator(staff_member_required, name='dispatch')
 class AdminSurveyListView(SurveyListView):
     template_name = 'djf_surveys/admins/survey_list.html'
 
@@ -98,6 +121,17 @@ class AdminDeleteSurveyView(DetailView):
         messages.success(request, gettext("Survey %ss succesfully deleted.") % survey.name)
         return redirect("djf_surveys:admin_survey_list")
 
+
+@method_decorator(staff_member_required, name='dispatch')
+class AdminDeleteSurveySelectionView(DetailView):
+    model = SurveySelection
+
+    def get(self, request, *args, **kwargs):
+        survey_selection = self.get_object()
+        survey_selection.delete()
+        messages.success(request, gettext("Survey Selection %ss succesfully deleted.") % survey_selection.name)
+        return redirect("djf_surveys:admin_survey_selection_list")
+    
 
 @method_decorator(staff_member_required, name='dispatch')
 class AdminCreateQuestionView(ContextTitleMixin, CreateView):

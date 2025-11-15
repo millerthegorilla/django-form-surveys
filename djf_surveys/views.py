@@ -45,7 +45,6 @@ class SurveyList(ContextTitleMixin, UserPassesTestMixin, ListView):
         return context
 
 
-
 class SurveySelectionListView(SurveyList):
     model = SurveySelection
     title_page = 'Survey Selection List'
@@ -251,7 +250,7 @@ def share_link(request, slug):
         user_answer = UserAnswer.objects.filter(survey=survey, user=request.user).last()
         if user_answer:
             return redirect(reverse_lazy("djf_surveys:edit", kwargs={'pk': user_answer.id}))
-    return redirect(reverse_lazy("djf_surveys:create", kwargs={'slug': survey.slug}))
+    return redirect(reverse_lazy("djf_surveys:respond", kwargs={'slug': survey.slug}))
 
 
 class SuccessPageSurveyView(ContextTitleMixin, DetailView):
@@ -263,7 +262,7 @@ class SuccessPageSurveyView(ContextTitleMixin, DetailView):
         context = super().get_context_data(**kwargs)
         survey = self.get_object()
         if survey.cycle_survey == True:
-            context["link_back_on_success_page"] = reverse_lazy("djf_surveys:create", kwargs={'slug': survey.slug})
+            context["link_back_on_success_page"] = reverse_lazy("djf_surveys:respond", kwargs={'slug': survey.slug})
         return context
     
 

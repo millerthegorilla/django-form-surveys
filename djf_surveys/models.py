@@ -88,7 +88,7 @@ class Survey(BaseModel):
 
     def get_absolute_url(self):
         selection = self.survey_selections.slug if self.survey_selections else "main"
-        return reverse ('djf_surveys:create', kwargs={'slug': self.slug, 'selection_slug': selection})
+        return reverse ('djf_surveys:respond', kwargs={'slug': self.slug, 'selection_slug': selection})
 
 
 class Question(BaseModel):
