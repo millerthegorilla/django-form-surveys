@@ -70,14 +70,18 @@ class Survey(BaseModel):
     survey_selections = models.ForeignKey('SurveySelection',
                                           verbose_name=_("survey selection"),
                                           related_name="surveys",
-                                          on_delete=models.DO_NOTHING,
+                                          on_delete=models.SET_NULL,
                                           blank=True,
                                           null=True,)
-    
+    # ordering = models.PositiveIntegerField(_("choices"), default=0,
+    #                                        help_text=_("Defines the survey order within the survey selection."))
+
     class Meta:
         verbose_name = _("survey")
         verbose_name_plural = _("surveys")
-
+        #ordering = ["ordering"]
+        order_with_respect_to = 'survey_selections'
+        
     def __str__(self):
         return self.name
 

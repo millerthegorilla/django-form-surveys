@@ -73,15 +73,29 @@ class AdminEditSurveySelectionView(ContextTitleMixin, UpdateView):
                         page_action_name=capfirst(self.title_page.lower())))
         return reverse("djf_surveys:admin_forms_survey", args=[surveyselection.slug])
     
-    # def get_form(self):
-    #     form = super().get_form(self.form_class)
-    #     if form.instance.survey_selections:
-    #         form.initial['survey_selections'] = form.instance.survey_selections
-    #     return form
+    def get_form(self):
+        form = super().get_form(self.form_class)
+        return form
     
     def get_object(self, queryset=None):
         return get_object_or_404(SurveySelection, slug=self.kwargs['slug'])
-
+    
+    def post(self, request, *args, **kwargs):
+        pobject = request.POST.copy()
+        form = self.form_class(data=pobject, instance=self.get_object())
+        if form.is_valid():
+            survey_selection = form.save()
+            if 'surveys' in request.POST  and request.POST['surveys']:
+                survey_selection.surveys.clear()
+                for survey in Survey.objects.filter(pk__in=form.cleaned_data['surveys']):
+                    survey_selection.surveys.add(survey)
+                survey_selection.set_survey_order(form.cleaned_data['surveys'])
+                survey_selection.save()
+                messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
+                page_action_name=capfirst(self.title_page.lower())))
+            return redirect(survey_selection.get_absolute_url())
+        else:
+            return render(request, self.template_name, {'form': form})
 
 @method_decorator(staff_member_required, name='dispatch')
 class AdminSurveyListView(SurveyListView):
@@ -274,7 +288,10 @@ class AdminCreateSurveySelectionView(ContextTitleMixin, View):
 
     def get(self, request, *args, **kwargs):
         form = self.get_form()
-        return render(request, self.template_name, {'form': form})
+        return render(request,
+                      self.template_name,
+                      {'form': form, 
+                        'title_page': self.title_page})
 
     def get_form(self, form_class=None):
         if form_class is None:
@@ -287,13 +304,15 @@ class AdminCreateSurveySelectionView(ContextTitleMixin, View):
     
     def post(self, request, *args, **kwargs):
         pobject = request.POST.copy()
-        form = self.form_class(pobject)
-        form.errors.pop('surveys', None)
+        form = self.form_class(data=pobject)
         if form.is_valid():
             survey_selection = form.save()
-            for survey in Survey.objects.filter(pk__in=list(request.POST['surveys'].split(','))):
-                survey_selection.surveys.add(survey)
-            survey_selection.save()
+            if 'surveys' in request.POST  and request.POST['surveys']:
+                for survey in Survey.objects.filter(pk__in=form.cleaned_data['surveys']):
+                    survey_selection.surveys.add(survey)
+                survey_selection.set_survey_order(form.cleaned_data['surveys'])
+                survey_selection.save()
+
             messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
                 page_action_name=capfirst(self.title_page.lower())))
             return redirect(survey_selection.get_absolute_url())

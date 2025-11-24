@@ -150,12 +150,23 @@ class SurveyForm(forms.ModelForm):
         self.fields['slug'].required = False
 
 
+class CustomChoiceField(forms.ChoiceField):
+    def clean(self, value):
+        if value:
+            value = value.split(',')
+            value.pop(value.index('0')) if '0' in value else None
+            value =[int(x) for x in value ]
+            return value
+        else:
+            return []
+
+
 class SurveySelectionListForm(forms.ModelForm):
     name = forms.CharField(
         label=_("Name"), max_length=200,
         help_text=_("Name for this survey selection")
     )
-    surveys=forms.ChoiceField(
+    surveys=CustomChoiceField(
         label=_("Allowed Surveys"), help_text=_("Click Button Add Data"),
         widget=InlineChoiceSelectField()
     )
@@ -163,20 +174,26 @@ class SurveySelectionListForm(forms.ModelForm):
         label=_("Description"), widget=forms.Textarea,
         help_text=_("Description for this survey selection")
     )
-
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         survey_choices = ""
-        for survey in Survey.objects.all():
-            survey_choices = survey_choices + f"{survey.get_absolute_url()},{survey.name}:"
-        self.fields['surveys'].initial = survey_choices
+        if kwargs.get('instance'):   # Editing existing SurveySelection
+            survey_ids = kwargs['instance'].surveys
+            self.fields['surveys'].widget.attrs.update({'instance': kwargs['instance'].id})
+            self.fields['surveys'].choices = \
+                [(s.id, s.name) for s in SurveySelection.objects.get(id=kwargs['instance'].id).surveys.all()]
+        else: # Creating new SurveySelection
+            self.fields['surveys'].initial = None
 
     class Meta:
         model = SurveySelection
         fields = ['name', 'description', 'surveys', 'can_anonymous_user']
 
     def clean_surveys(self):
-        surveys = list(self.cleaned_data['surveys'].split(","))
-        if not surveys:
-            raise forms.ValidationError(_("At least one survey must be selected."))
+        surveys = self.cleaned_data['surveys']
+        if not surveys or len(surveys) < 2:
+            raise forms.ValidationError(_("At least two surveys must be selected."))
         return surveys
+    
+

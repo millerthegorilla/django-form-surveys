@@ -4,15 +4,17 @@
 <input type="{{ widget.type }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value }}"{% endif %}{% include "django/forms/widgets/attrs.html" %}>
 
 <!-- loop field value -->
-<div id="djf-wrapper-choice-field">
+<div id="super-wrapper">
 {% for survey in widget.surveys %}
+<div id="djf-wrapper-choice-field" class="djf-wrapper-choice-field">
     <div class="relative mb-2 djf-field-choice">
         <select 
             name="{{ widget.name }}_{{ forloop.counter }}"{% include "djf_surveys/widgets/attrs_exclude_id.html" %}
+            id="{{ widget.name }}_{{ forloop.counter }}"{% include "djf_surveys/widgets/attrs_exclude_id.html" %}
             class="djf-input-field w-6 h-6 border border-gray-200 rounded-md mb-4 dave"
             oninput="updateWidgetValue()">
-            <option value="">Select a survey to add to the list</option>
-            {% for survey in widget.surveys %}
+            <option value="{{ survey.id }}">{{ survey.name }}</option>
+            {% for survey in widget.all_surveys %}
                 <option value="{{ survey.id }}">{{ survey.name }}</option>
             {% endfor %}
         </select>
@@ -24,6 +26,36 @@
             </button>
         </div>
     </div>
+</div>
+{% endfor %}
+
+{% for extra in widget.extra %}
+<div id="djf-wrapper-choice-field" class="djf-wrapper-choice-field">
+    <div class="relative mb-2 djf-field-choice">
+        <select
+            {% if widget.surveys %}   
+                name="{{ widget.name }}_{{ forloop.counter|add:widget.surveys.count }}"{% include "djf_surveys/widgets/attrs_exclude_id.html" %}
+                id="{{ widget.name }}_{{ forloop.counter|add:widget.surveys.count }}"{% include "djf_surveys/widgets/attrs_exclude_id.html" %}
+            {% else %}
+                name="{{ widget.name }}_{{ forloop.counter }}"{% include "djf_surveys/widgets/attrs_exclude_id.html" %}
+                id="{{ widget.name }}_{{ forloop.counter }}"{% include "djf_surveys/widgets/attrs_exclude_id.html" %}
+            {% endif %}
+            class="djf-input-field w-6 h-6 border border-gray-200 rounded-md mb-4 dave"
+            oninput="updateWidgetValue()">
+            <option value="0">Select a survey to add to the list...</option>
+            {% for survey in widget.all_surveys %}
+                <option value="{{ survey.id }}">{{ survey.name }}</option>
+            {% endfor %}
+        </select>
+        <div class="absolute top-2 right-2">
+            <button class="djf-btn-remove-field py-2 px-2 text-white rounded-lg bg-red-500 hover:bg-red-600" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-white hover:stroke-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
 {% endfor %}
 </div>
 
@@ -37,18 +69,33 @@
 <script>
     let djfRemoveFieldButtons = [...document.getElementsByClassName("djf-btn-remove-field")];
     let djfFieldChoice = [...document.getElementsByClassName("djf-field-choice")];
+    let wrapper = [...document.getElementsByClassName("djf-wrapper-choice-field")];
+    let superWrapper = document.getElementById("super-wrapper");
     const djfBtnAddField = document.getElementById("djf-btn-add-field");
-    const wrapper = document.getElementById("djf-wrapper-choice-field");
     const widgetName = "{{ widget.name }}";
+    let hiddenField = document.getElementsByName("{{ widget.name }}")[0];
+    
+    window.onload = function() {
+       updateValues();
+       updateWidgetValue();
+    };
+    
+    function updateValues() {
+        let locals = [];
+        for (e of wrapper) {
+            const value = e.children[0].children[0].value;
+            locals.push(value);
+        }
+        hiddenField.value = locals;    
+    };
 
     function updateWidgetValue() {
-        // This function is used to update all fields then store the value in the hidden field
-        let values = [];
-        for (e of djfFieldChoice) {
-            const value = e.children[0].value;
-            values.push(value);
+        let localvalues = [];
+        for (e of wrapper) {
+            const value = e.children[0].children[0].value;
+            localvalues.push(value);
         }      
-        let widgetValue = values.filter(function (el) {
+        let widgetValue = localvalues.filter(function (el) {
             return el != "";
         });
         // loop through selects and remove select.value from each other select
@@ -64,45 +111,35 @@
                 }
             }
         }
-        document.getElementById("id_" + widgetName).value = widgetValue.toString();
+        updateValues();
     }
 
     function removeField(removeFieldButtons) {
-        // This function is used to remove field
         removeFieldButtons.map((removeBtn) => {
             removeBtn.onclick = () => {
-                if (djfFieldChoice.length > 2) {
-                    console.log(removeBtn.parentElement.parentElement);
-                    removeBtn.parentElement.parentElement.remove();
-
-                    // update element count
-                    djfFieldChoice = [...document.getElementsByClassName("djf-field-choice")];
+                console.log("superWrapper.children.length", superWrapper.children.length);
+                if (superWrapper.children.length > 2) {
+                    removeBtn.parentElement.parentElement.parentElement.remove();
+                    wrapper = [...document.getElementsByClassName("djf-wrapper-choice-field")];
                     updateWidgetValue();
                 } else {
                     alert("{% trans 'at least two choices' %}");
                 }
             };
         });
+        updateValues();
     }
     removeField(djfRemoveFieldButtons);
 
     djfBtnAddField.onclick = () => {
-        // This event is used to add field
-        const lastField = djfFieldChoice.slice(-1);
-        const fieldName = lastField[0].children[0].getAttribute("name");
-        const lastNumber = parseInt(fieldName.split("_")[1]);
-        const newLastNumer = lastNumber + 1;
-        const node = lastField[0].cloneNode(true);
-        node.children[0].setAttribute("name", "{{ widget.name }}_" + newLastNumer);
-        node.children[0].value = "";
-        document.getElementById("djf-wrapper-choice-field").appendChild(node);
-
-        // update element
+        const node = superWrapper.children[superWrapper.children.length -1].cloneNode(true);
+        node.children[0].children[0].selectedIndex = 0;
+        superWrapper.appendChild(node);
+        node.children[0].children[0].setAttribute("name", "{{ widget.name }}_" + (superWrapper.children.length));
         djfRemoveFieldButtons = [...document.getElementsByClassName("djf-btn-remove-field")];
         removeField(djfRemoveFieldButtons);
-
-        // update element count
-        djfFieldChoice = [...document.getElementsByClassName("djf-field-choice")];
+        wrapper = [...document.getElementsByClassName("djf-wrapper-choice-field")];
+        updateValues();
     }
 
 </script>

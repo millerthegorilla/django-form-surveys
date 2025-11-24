@@ -1,5 +1,5 @@
 from django import forms
-from djf_surveys.models import Survey
+from djf_surveys.models import Survey, SurveySelection
 
 
 class CheckboxSelectMultipleSurvey(forms.CheckboxSelectMultiple):
@@ -42,12 +42,13 @@ class InlineChoiceField(forms.HiddenInput):
 
 class InlineChoiceSelectField(forms.HiddenInput):
     template_name = 'djf_surveys/widgets/inline_choices_select.html'
-    extra = 0
+    extra = 1
 
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
-        if context['widget']['value']:
-            context['widget']['surveys'] = Survey.objects.all()
-        else:
-            context['widget']['surveys'] = []
+        context['widget']['all_surveys'] = Survey.objects.all()
+        survey_count = Survey.objects.count()
+        context['widget']['surveys'] = (SurveySelection.objects.get(id=self.attrs['instance']).surveys.all() 
+                                            if self.attrs.get('instance', None) else None)
+        context['widget']['extra'] = range(1 + survey_count, self.extra + 1 + survey_count)
         return context
