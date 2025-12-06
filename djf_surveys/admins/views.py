@@ -126,6 +126,24 @@ class AdminSurveyFormView(ContextTitleMixin, FormMixin, DetailView):
 
 
 @method_decorator(staff_member_required, name='dispatch')
+class AdminSurveySelectionFormView(ContextTitleMixin, FormMixin, DetailView):
+    model = SurveySelection
+    template_name = 'djf_surveys/admins/form_selection_preview.html'
+    form_class = SurveySelectionListForm
+
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.get_form_class()
+        return form_class(instance=self.object, **self.get_form_kwargs())
+
+    def get_title_page(self):
+        return self.object.name
+
+    def get_sub_title_page(self):
+        return self.object.description
+
+
+@method_decorator(staff_member_required, name='dispatch')
 class AdminDeleteSurveyView(DetailView):
     model = Survey
 
@@ -228,6 +246,20 @@ class AdminChangeOrderQuestionView(View):
 
         data = {
             'message': gettext("Update ordering of questions succeeded.")
+        }
+        return JsonResponse(data, status=200)
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class AdminChangeOrderSurveyView(View):
+    def post(self, request, *args, **kwargs):
+        SurveySelection.objects.get(
+            slug=request.POST['survey_selection_slug']
+            ).set_survey_order(
+                [x for x in request.POST['order_survey'].split(',') if x])
+
+        data = {
+            'message': gettext("Update ordering of surveys succeeded.")
         }
         return JsonResponse(data, status=200)
 

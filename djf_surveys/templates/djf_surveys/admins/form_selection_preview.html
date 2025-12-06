@@ -1,0 +1,124 @@
+{% extends 'djf_surveys/admins/master.html' %}
+{% load djf_survey_tags static i18n %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'djf_surveys/css/rating.css' %}"/>
+    <link rel="stylesheet" href="{% static 'djf_surveys/css/custom.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <div class="flex py-1 fixed bottom-10 right-10">
+        <button
+            class="z-20 block p-4 text-blue-100 transition-all bg-blue-700 border-2 border-white rounded-full active:bg-purple-50 hover:scale-110 focus:outline-none focus:ring"
+            data-te-toggle="modal"
+            data-te-target="#addQuestion"
+            data-te-ripple-init
+            data-te-ripple-color="light"
+            type="button">
+            {% include "djf_surveys/buttons/add_button.html" with size=6 %}
+            <span class="items-center float-right"> {% trans 'Question' %} </span>
+        </button>
+    </div>
+
+    <div class="max-w-screen-xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-lg mx-auto">
+            <div class="flex -space-x-4 hover:space-x-1 py-1 float-right">
+                <a href="{% url 'djf_surveys:admin_edit_survey_selection' object.slug %}"
+                   class="z-20 block p-4 text-blue-700 transition-all bg-blue-100 border-2 border-white rounded-full active:bg-blue-50 hover:scale-110 focus:outline-none focus:ring"
+                   type="button">
+                    {% include "djf_surveys/buttons/edit_button.html" %}
+                </a>
+                <a href="#" class="button-share z-20 block p-4 text-amber-700 transition-all bg-amber-100 border-2 border-white rounded-full active:bg-amber-50 hover:scale-110 focus:outline-none focus:ring"
+                    type="button" data-share-link="{% url 'djf_surveys:share_link' object.slug %}">
+                    {% include "djf_surveys/buttons/share_button.html" %}
+                </a>
+                <a class="button-delete z-30 block p-4 text-red-700 transition-all bg-red-100 border-2 border-white rounded-full hover:scale-110 focus:outline-none focus:ring active:bg-red-50"
+                   data-te-toggle="modal"
+                   data-te-target="#modalDelete"
+                   data-mdb-object_name="{{ object.name }}"
+                   data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_survey_selection' object.slug %}">
+                    {% include "djf_surveys/buttons/delete_button.html" %}
+                </a>
+            </div>
+            <h1 class="text-2xl font-bold text-center text-blue-500 sm:text-3xl">{{ title_page }}</h1>
+
+            <div class="no-tailwindcss-base mt-4">
+                {{ sub_title_page|safe }}
+            </div>
+
+            <form method="post" class="mx-auto mt-12" id="sortable">
+                {% csrf_token %}
+                    {% for survey in object.surveys.all %}
+                    <div class="ui-state-default" id="{{ survey.id }}">
+                        <div class="flex -space-x-4 hover:space-x-1 py-1">
+                            <a href="{% url 'djf_surveys:admin_edit_survey' survey.slug  %}"
+                               class="z-20 block p-4 text-blue-700 transition-all bg-blue-100 border-2 border-white rounded-full active:bg-blue-50 hover:scale-110 focus:outline-none focus:ring"
+                               type="button">
+                                {% include "djf_surveys/buttons/edit_button.html" %}
+                            </a>
+
+                            <a class="button-delete z-30 block p-4 text-red-700 transition-all bg-red-100 border-2 border-white rounded-full hover:scale-110 focus:outline-none focus:ring active:bg-red-50"
+                               data-te-toggle="modal"
+                               data-te-target="#modalDelete"
+                               data-mdb-object_name="{{ survey.name }}"
+                               data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_survey' survey.slug %}">
+                                {% include "djf_surveys/buttons/delete_button.html" %}
+                            </a>
+
+                        </div>
+
+                        <a href="#"
+                           class="float-right z-30 block p-2 m-2 text-gray-500 transition-all bg-gray-100 border-2 border-white rounded-full hover:scale-110 focus:outline-none focus:ring active:bg-red-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"/>
+                            </svg>
+                        </a>
+
+                        <b>Survey Name:</b> {{ survey.name }} <br/>
+                        <b>Survey Description:</b> {{ survey.description|safe|linebreaks }}
+                    </div>
+                    {% endfor %}
+            </form>
+        </div>
+
+        {% include 'djf_surveys/components/modal_delete.html' %}
+        {% include 'djf_surveys/components/modal_choice_field_type.html' %}
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#sortable").sortable({
+                opacity: 0.7,
+                update: function (event, ui) {
+                    const order = $(this).sortable('toArray');
+                    console.log(order);
+                    $.ajax({
+                        url: "{% url 'djf_surveys:admin_change_order_survey' %}",
+                        type: 'POST',
+                        headers: {"X-CSRFToken": '{{csrf_token}}'},
+                        data: {
+                            'survey_selection_slug': '{{ object.slug }}',
+                            'order_survey': order.toString(),
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log(data.message);
+                        },
+                        error: function (data) {
+                            alert("{% trans 'An error occured!' %}");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+    {% include 'djf_surveys/components/modal_delete_js.html' %}
+    {% include 'djf_surveys/components/share_link_button_js.html' %}
+{% endblock %}
