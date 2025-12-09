@@ -41,9 +41,64 @@
             </form>
         </div>
     </div>
-
+    <div id="idle-popup">
+        <h2>Are you still there?</h2>
+        <p>You will be redirected in <span id="countdown">120</span> seconds.</p>
+        <button id="stay-btn">I'm still here</button>
+    </div>
 {% endblock %}
 
 {% block extra_js %}
     <script src="{% static 'djf_surveys/te-starter/js/tw-elements.umd.min.js' %}"></script>
+    <script>
+      // many thanks to https://forum.squarespace.com/topic/319936-inactive-idle-user-site-redirect-to-homepage/#elComment_795026
+      (function() {
+        const idleDurationSecs = 60;  // 5 minutes     // Use this line to change the total time a user has until redirected
+        const countdownDurationSecs = 10;  // 2 minutes  // Use this line to how many seconds should remain for your pop-up to come up 
+        const redirectUrl = "{% url 'djf_surveys:index' %}";  // ADD URL TO WHICH YOU WANT TO REDIRECT USERS
+        let idleTimeout;
+        let countdownTimeout;
+        let countdownInterval;
+
+        const popup = document.getElementById('idle-popup');
+        const countdownElement = document.getElementById('countdown');
+        const stayButton = document.getElementById('stay-btn');
+
+        const resetIdleTimeout = function() {
+            if (idleTimeout) clearTimeout(idleTimeout);
+            if (countdownTimeout) clearTimeout(countdownTimeout);
+            if (countdownInterval) clearInterval(countdownInterval);
+            popup.style.display = 'none';
+            
+            idleTimeout = setTimeout(showPopup, idleDurationSecs * 1000);
+        };
+
+        const showPopup = function() {
+            popup.style.display = 'block';
+            let remainingSeconds = countdownDurationSecs;
+            
+            const updateCountdown = function() {
+                countdownElement.textContent = remainingSeconds;
+                if (remainingSeconds <= 0) {
+                    clearInterval(countdownInterval);
+                    location.href = redirectUrl;
+                }
+                remainingSeconds--;
+            };
+
+            updateCountdown();
+            countdownInterval = setInterval(updateCountdown, 1000);
+        };
+
+        stayButton.addEventListener('click', resetIdleTimeout);
+
+        // Init on page load
+        resetIdleTimeout();
+
+        // Reset the idle timeout on any of the events listed below
+        ['click', 'touchstart', 'mousemove', 'scroll'].forEach(evt => 
+            document.addEventListener(evt, resetIdleTimeout, false)
+        );
+    })();
+    </script>
 {% endblock %}

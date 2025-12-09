@@ -67,20 +67,17 @@ class Survey(BaseModel):
     notification_to = models.TextField(_("Notification To"), blank=True, null=True,
                                        help_text=_("Enter your email to be notified when the form is submitted"))
     success_page_content = HTMLField(_("Success Page Content"), blank=True, null=True)
-    survey_selections = models.ForeignKey('SurveySelection',
+    survey_selection = models.ForeignKey('SurveySelection',
                                           verbose_name=_("survey selection"),
                                           related_name="surveys",
                                           on_delete=models.SET_NULL,
                                           blank=True,
                                           null=True,)
-    # ordering = models.PositiveIntegerField(_("choices"), default=0,
-    #                                        help_text=_("Defines the survey order within the survey selection."))
 
     class Meta:
         verbose_name = _("survey")
         verbose_name_plural = _("surveys")
-        #ordering = ["ordering"]
-        order_with_respect_to = 'survey_selections'
+        order_with_respect_to = 'survey_selection'
         
     def __str__(self):
         return self.name
@@ -91,7 +88,7 @@ class Survey(BaseModel):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        selection = self.survey_selections.slug if self.survey_selections else "main"
+        selection = self.survey_selection.slug if self.survey_selection else "main"
         return reverse ('djf_surveys:respond', kwargs={'slug': self.slug, 'selection_slug': selection})
 
 
@@ -216,19 +213,20 @@ class TermsValidators(BaseModel):
         return f"{self.question}"
 
 
-class SurveySelection(models.Model):
+class SurveySelection(BaseModel):
     name = models.CharField(_("name"), max_length=200, null=False, blank=False)
     description = models.TextField(_("description"), blank=False, null=False)
     slug = models.SlugField(_("slug"), max_length=225, default='', unique=True)
     can_anonymous_user = models.BooleanField(_("anonymous submission"), default=False,
                                              help_text=_("If True, user without authentatication can view."))
-    
+    success_page_content = HTMLField(_("Success Page Content"), blank=True, null=True)
+
     class Meta:
         constraints = [
-            models.CheckConstraint(check=models.Q(name__length__gt=0), name="non_empty_name_survey_selection")
+            models.CheckConstraint(condition=models.Q(name__length__gt=0), name="non_empty_name_survey_selection")
         ]
         verbose_name = _("survey selection")
-        verbose_name_plural = _("survey selections")
+        #verbose_name_plural = _("survey selections")
 
     def __str__(self):
         return f"{self.name}"

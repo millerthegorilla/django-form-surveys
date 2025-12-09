@@ -32,3 +32,33 @@
         </div>
     </div>
 {% endblock %}
+{% block extra_js %}
+    <script>
+        (function() {
+            const TIMEOUT_SECONDS = 15; // 15 seconds
+            const REDIRECT_URL = "{{ link_back_on_success_page }}";
+            
+            let timeRemaining = TIMEOUT_SECONDS;
+            
+            // Show countdown
+            const countdownElement = document.createElement('p');
+            countdownElement.id = 'countdown';
+            countdownElement.className = 'mt-4 text-sm text-gray-600 font-semibold';
+            document.querySelector('.relative').appendChild(countdownElement);
+            
+            function updateCountdown() {
+                const mins = Math.floor(timeRemaining / 60);
+                const secs = timeRemaining % 60;
+                countdownElement.textContent = `{% trans "Redirecting in:" %} ${mins}:${secs.toString().padStart(2, '0')}`;
+                
+                timeRemaining--;
+                if (timeRemaining < 0) {
+                    window.location.href = REDIRECT_URL;
+                }
+            }
+            
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        })();
+    </script>
+{% endblock %}

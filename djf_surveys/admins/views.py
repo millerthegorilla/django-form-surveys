@@ -52,8 +52,8 @@ class AdminEditSurveyView(ContextTitleMixin, UpdateView):
     
     def get_form(self):
         form = super().get_form(self.form_class)
-        if form.instance.survey_selections:
-            form.initial['survey_selections'] = form.instance.survey_selections
+        if form.instance.survey_selection:
+            form.initial['survey_selection'] = form.instance.survey_selection
         return form
     
     def get_object(self, queryset=None):
@@ -148,6 +148,7 @@ class AdminDeleteSurveyView(DetailView):
     model = Survey
 
     def get(self, request, *args, **kwargs):
+        breakpoint()
         survey = self.get_object()
         survey.delete()
         messages.success(request, gettext("Survey %ss succesfully deleted.") % survey.name)

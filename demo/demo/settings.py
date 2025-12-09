@@ -139,3 +139,18 @@ SURVEY_ANONYMOUS_VIEW_LIST = True
 
 SURVEY_WELCOME_MESSAGE_TITLE = 'Welcome to the Mind survey app'
 SURVEY_WELCOME_MESSAGE_TAGLINE = 'Surveys for Mind Jersey'
+
+TINYMCE_DEFAULT_CONFIG: dict = {
+        "theme": "silver",
+        "height": 500,
+        "menubar": False,
+        "browser_spellcheck": True,
+        "plugins": "advlist,autolink,lists,link,image,charmap,preview,anchor,"
+        "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,"
+        "help,wordcount",
+        "toolbar": "undo redo | blocks | "
+        "bold italic backcolor | alignleft aligncenter "
+        "alignright alignjustify | bullist numlist outdent indent | "
+        "removeformat | help",
+        "license_key": "gpl",
+    }

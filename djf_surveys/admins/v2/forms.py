@@ -113,7 +113,7 @@ class QuestionTextAreaForm(forms.ModelForm):
 
 class SurveyForm(forms.ModelForm):
     
-    survey_selections = forms.ModelChoiceField(
+    survey_selection = forms.ModelChoiceField(
         label=_("Survey Selection to Return to..."),
         empty_label=_("No Survey Selection"),
         queryset=SurveySelection.objects.all(),
@@ -125,8 +125,9 @@ class SurveyForm(forms.ModelForm):
         model = Survey
         fields = [
             'name', 'slug', 'description', 'editable', 'deletable',
-            'duplicate_entry', 'cycle_survey', 'private_response', 'can_anonymous_user',
-            'notification_to', 'success_page_content', 'survey_selections'
+            'duplicate_entry', 'cycle_survey', 'survey_selection', 
+            'private_response', 'can_anonymous_user',
+            'notification_to', 'success_page_content'
         ]
         widgets = {
             'description': TinyMCE(mce_attrs=SURVEY_TINYMCE_DEFAULT_CONFIG),
@@ -170,10 +171,10 @@ class SurveySelectionListForm(forms.ModelForm):
         label=_("Allowed Surveys"), help_text=_("Click Button Add Data"),
         widget=InlineChoiceSelectField()
     )
-    description = forms.CharField(
-        label=_("Description"), widget=forms.Textarea,
-        help_text=_("Description for this survey selection")
-    )
+    # description = forms.CharField(
+    #     label=_("Description"),wi
+    #     help_text=_("Description for this survey selection")
+    # )
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -188,7 +189,15 @@ class SurveySelectionListForm(forms.ModelForm):
 
     class Meta:
         model = SurveySelection
-        fields = ['name', 'description', 'surveys', 'can_anonymous_user']
+        fields = ['name', 
+                  'description',
+                  'surveys',
+                  'can_anonymous_user',
+                  'success_page_content']
+        widgets = {
+            'description': TinyMCE(mce_attrs=SURVEY_TINYMCE_DEFAULT_CONFIG),
+            'success_page_content': TinyMCE(mce_attrs=SURVEY_TINYMCE_DEFAULT_CONFIG)
+        }    
 
     def clean_surveys(self):
         surveys = self.cleaned_data['surveys']

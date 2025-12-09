@@ -10,7 +10,12 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
 
-from djf_surveys.models import Survey, SurveySelection, UserAnswer, Question, TYPE_FIELD
+from djf_surveys.models import (BaseModel,
+                                Survey,
+                                SurveySelection,
+                                UserAnswer,
+                                Question, 
+                                TYPE_FIELD)
 from djf_surveys.forms import CreateSurveyForm, EditSurveyForm
 from djf_surveys.mixin import ContextTitleMixin
 from djf_surveys import app_settings
@@ -98,7 +103,7 @@ class SurveyFormView(FormMixin, DetailView):
             return self.form_invalid(form)
 
 
-class CreateSurveyFormView(ContextTitleMixin, SurveyFormView):
+class RespondSurveyFormView(ContextTitleMixin, SurveyFormView):
     model = Survey
     form_class = CreateSurveyForm
     title_page = _("Complete Survey")
@@ -110,10 +115,10 @@ class CreateSurveyFormView(ContextTitleMixin, SurveyFormView):
             messages.warning(request, gettext("Sorry, you must be logged in to fill out the survey."))
             return redirect("djf_surveys:index")
 
-        # handle if user have answer survey
+        # handle if user has already responded to survey and duplicate_entry is False
         if request.user.is_authenticated and not survey.duplicate_entry and \
                 UserAnswer.objects.filter(survey=survey, user=request.user).exists():
-            messages.warning(request, gettext("You have submitted out this survey."))
+            messages.warning(request, gettext("You have already completed this survey."))
             return redirect("djf_surveys:index")
         return super().dispatch(request, *args, **kwargs)
 
@@ -129,11 +134,13 @@ class CreateSurveyFormView(ContextTitleMixin, SurveyFormView):
         return self.get_object().description
 
     def get_success_url(self):
-        if self.kwargs.get("selection_slug") == "main":
-            return reverse("djf_surveys:success", kwargs={"slug": self.get_object().slug})
-        else:
-            messages.success(self.request, " Thank you for completing the survey.")
-            return reverse("djf_surveys:survey_selection", kwargs={"slug": self.kwargs.get("selection_slug")})
+        # breakpoint()
+        # if self.kwargs.get("selection_slug") == "main":
+        #    kwargs={"slug": self.get_object().slug}
+        # else:
+        #    kwargs={"slug": self.kwargs.get("selection_slug")}
+           # messages.success(self.request, " Thank you for completing the survey.")
+        return reverse("djf_surveys:success", kwargs=self.kwargs)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -254,15 +261,39 @@ def share_link(request, slug):
 
 
 class SuccessPageSurveyView(ContextTitleMixin, DetailView):
-    model = Survey
+    model = BaseModel
     template_name = "djf_surveys/success-page.html"
     title_page = _("Submitted Successfully")
 
+    def get_object(self, queryset=None):
+        if self.kwargs['selection_slug'] == "main":
+            return get_object_or_404(Survey, slug=self.kwargs['slug'])            
+        else:
+            return get_object_or_404(SurveySelection, slug=self.kwargs['selection_slug'])
+
+    def get(self, request, *args, **kwargs):
+        survey = get_object_or_404(Survey, slug=self.kwargs['slug'])
+        # messages.success(request, gettext("Thank you for completing the survey '%(survey_name)s'.") % dict(
+        #     survey_name=survey.name))
+        return super().get(request, *args, **kwargs)
+    
     def get_context_data(self, **kwargs) -> dict[str, any]:
         context = super().get_context_data(**kwargs)
-        survey = self.get_object()
+        survey = get_object_or_404(Survey, slug=self.kwargs['slug'])
         if survey.cycle_survey == True:
-            context["link_back_on_success_page"] = reverse_lazy("djf_surveys:respond", kwargs={'slug': survey.slug})
+            if self.kwargs['selection_slug'] == "main":
+                context["link_back_on_success_page"] = \
+                    reverse_lazy("djf_surveys:respond", 
+                                 kwargs={'slug': survey.slug, 
+                                         'selection_slug': 'main'})
+            else:
+                context["link_back_on_success_page"] = \
+                    reverse_lazy("djf_surveys:survey_selection", 
+                                 kwargs={'slug': 
+                                         self.kwargs['selection_slug']})    
+        else:
+            context["link_back_on_success_page"] = reverse_lazy(
+                "djf_surveys:index")
         return context
     
 
