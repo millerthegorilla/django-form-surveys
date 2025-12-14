@@ -1,3 +1,4 @@
+import uuid
 from django.urls import reverse_lazy, reverse
 from django.utils.text import capfirst
 from django.utils.translation import gettext, gettext_lazy as _
@@ -16,7 +17,7 @@ from djf_surveys.models import (BaseModel,
                                 UserAnswer,
                                 Question, 
                                 TYPE_FIELD)
-from djf_surveys.forms import CreateSurveyForm, EditSurveyForm
+from djf_surveys.forms import RespondToSurveyForm, EditSurveyForm
 from djf_surveys.mixin import ContextTitleMixin
 from djf_surveys import app_settings
 from djf_surveys.utils import NewPaginator
@@ -105,8 +106,8 @@ class SurveyFormView(FormMixin, DetailView):
 
 class RespondSurveyFormView(ContextTitleMixin, SurveyFormView):
     model = Survey
-    form_class = CreateSurveyForm
-    title_page = _("Complete Survey")
+    form_class = RespondToSurveyForm
+    title_page = _("Respond To Survey")
 
     def dispatch(self, request, *args, **kwargs):
         survey = self.get_object()
@@ -125,7 +126,16 @@ class RespondSurveyFormView(ContextTitleMixin, SurveyFormView):
     def get_form(self, form_class=None):
         if form_class is None:
             form_class = self.get_form_class()
-        return form_class(survey=self.get_object(), user=self.request.user, **self.get_form_kwargs())
+        return form_class(**self.get_form_kwargs())
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'survey': self.get_object(),
+            'user': self.request.user,
+            'initial': { 'gdpr_reference': str(uuid.uuid4()) }
+        })
+        return kwargs
 
     def get_title_page(self):
         return self.get_object().name
@@ -134,14 +144,28 @@ class RespondSurveyFormView(ContextTitleMixin, SurveyFormView):
         return self.get_object().description
 
     def get_success_url(self):
-        # breakpoint()
-        # if self.kwargs.get("selection_slug") == "main":
-        #    kwargs={"slug": self.get_object().slug}
-        # else:
-        #    kwargs={"slug": self.kwargs.get("selection_slug")}
-           # messages.success(self.request, " Thank you for completing the survey.")
         return reverse("djf_surveys:success", kwargs=self.kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        survey = self.get_object()
+        if survey.can_anonymous_user:
+            context['gdpr_reference'] = uuid.uuid4()
+        if survey.cycle_survey == True:
+            if self.kwargs['selection_slug'] == "main":
+                context["link_back_on_cancel"] = \
+                    reverse_lazy("djf_surveys:respond", 
+                                kwargs={'slug': survey.slug, 
+                                        'selection_slug': 'main'})
+            else:
+                context["link_back_on_cancel"] = \
+                    reverse_lazy("djf_surveys:survey_selection", 
+                                 kwargs={'slug': 
+                                         self.kwargs['selection_slug']})    
+        else:
+            context["link_back_on_cancel"] = reverse_lazy(
+                "djf_surveys:index")
+        return context
 
 @method_decorator(login_required, name='dispatch')
 class EditSurveyFormView(ContextTitleMixin, SurveyFormView):

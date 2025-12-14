@@ -20,7 +20,7 @@
                 {% if object.success_page_content %}
                     {{ object.success_page_content|safe }}
                 {% else %}
-                    {% trans "I really appreciate your effort and the time you devoted to filling the questionnaire. Your answers will help us." %}
+                    {% trans DEFAULT_THANK_YOU_MESSAGE %}
                 {% endif %}
             </p>
 

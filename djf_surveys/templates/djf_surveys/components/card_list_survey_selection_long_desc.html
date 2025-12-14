@@ -2,13 +2,13 @@
     <div class="flex -space-x-4 hover:space-x-1 float-right">
         <a href="{% url 'djf_surveys:respond' survey.slug object.slug %}" class="z-20 block p-4 text-purple-700 transition-all bg-purple-100 border-2 border-white rounded-full active:bg-purple-50 hover:scale-110 focus:outline-none focus:ring"
                 type="button">
-                {% include "djf_surveys/buttons/add_button.html" %}
+                {% include "djf_surveys/buttons/add_button.svg" %}
         </a>
 
         {% if user.is_superuser %}
             <a href="{% url 'djf_surveys:admin_forms_survey' survey.slug %}" class="z-20 block p-4 text-blue-700 transition-all bg-blue-100 border-2 border-white rounded-full active:bg-blue-50 hover:scale-110 focus:outline-none focus:ring"
                     type="button">
-                {% include "djf_surveys/buttons/edit_button.html" %}
+                {% include "djf_surveys/buttons/edit_button.svg" %}
             </a>
 
             <a href="{% url 'djf_surveys:admin_summary_survey' survey.slug %}" class="z-30 block p-4 text-green-700 transition-all bg-green-100 border-2 border-white rounded-full hover:scale-110 focus:outline-none focus:ring active:bg-gren50"
@@ -24,7 +24,7 @@
                     data-te-target="#modalDelete"
                     data-mdb-object_name="{{ survey.name }}"
                     data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_survey' survey.slug %}">
-                {% include "djf_surveys/buttons/delete_button.html" %}
+                {% include "djf_surveys/buttons/delete_button.svg" %}
             </button>
         {% endif %}
     </div>

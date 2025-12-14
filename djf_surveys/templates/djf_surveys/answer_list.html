@@ -37,12 +37,12 @@
                         <a href="{%  url 'djf_surveys:respond' survey.slug request.resolver_match.kwargs.selection_slug %}"
                            class="z-20 block p-4 text-green-700 transition-all bg-green-100 border-2 border-white rounded-full active:bg-green-50 hover:scale-110 focus:outline-none focus:ring"
                            type="button">
-                            {% include "djf_surveys/buttons/add_button.html" %}
+                            {% include "djf_surveys/buttons/add_button.svg" %}
                         </a>
                         <a href="#"
                            class="button-share z-20 block p-4 text-amber-700 transition-all bg-amber-100 border-2 border-white rounded-full active:bg-amber-50 hover:scale-110 focus:outline-none focus:ring"
                            type="button" data-share-link="{% url 'djf_surveys:share_link' survey.slug %}">
-                            {% include "djf_surveys/buttons/share_button.html" %}
+                            {% include "djf_surveys/buttons/share_button.svg" %}
                         </a>
                     </div>
                 </div>

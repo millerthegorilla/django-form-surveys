@@ -111,8 +111,7 @@ class QuestionTextAreaForm(forms.ModelForm):
         fields = ['label', 'key', 'help_text', 'required', 'max_length', 'min_length']
 
 
-class SurveyForm(forms.ModelForm):
-    
+class SurveyForm(forms.ModelForm):  
     survey_selection = forms.ModelChoiceField(
         label=_("Survey Selection to Return to..."),
         empty_label=_("No Survey Selection"),
@@ -121,13 +120,20 @@ class SurveyForm(forms.ModelForm):
         help_text=_("Select Survey Selection associated with this survey"),
     )
 
+    class Media:
+        js = ('djf_surveys/js/admin_survey_form.js',)
+        css = {
+            'all': ('djf_surveys/css/admin_survey_form.css',)
+        }
+
     class Meta:
         model = Survey
         fields = [
             'name', 'slug', 'description', 'editable', 'deletable',
-            'duplicate_entry', 'cycle_survey', 'survey_selection', 
-            'private_response', 'can_anonymous_user',
-            'notification_to', 'success_page_content'
+            'duplicate_entry', 'cancel_button','cycle_survey', 
+            'survey_selection', 'private_response', 
+            'can_anonymous_user', 'gdpr_compliant', 'notification_to',
+            'success_page_content'
         ]
         widgets = {
             'description': TinyMCE(mce_attrs=SURVEY_TINYMCE_DEFAULT_CONFIG),
@@ -171,10 +177,6 @@ class SurveySelectionListForm(forms.ModelForm):
         label=_("Allowed Surveys"), help_text=_("Click Button Add Data"),
         widget=InlineChoiceSelectField()
     )
-    # description = forms.CharField(
-    #     label=_("Description"),wi
-    #     help_text=_("Description for this survey selection")
-    # )
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -15,7 +15,7 @@
             data-te-ripple-init
             data-te-ripple-color="light"
             type="button">
-            {% include "djf_surveys/buttons/add_button.html" with size=6 %}
+            {% include "djf_surveys/buttons/add_button.svg" with size=6 %}
             <span class="items-center float-right"> {% trans 'Question' %} </span>
         </button>
     </div>
@@ -26,18 +26,18 @@
                 <a href="{% url 'djf_surveys:admin_edit_survey' object.slug %}"
                    class="z-20 block p-4 text-blue-700 transition-all bg-blue-100 border-2 border-white rounded-full active:bg-blue-50 hover:scale-110 focus:outline-none focus:ring"
                    type="button">
-                    {% include "djf_surveys/buttons/edit_button.html" %}
+                    {% include "djf_surveys/buttons/edit_button.svg" %}
                 </a>
                 <a href="#" class="button-share z-20 block p-4 text-amber-700 transition-all bg-amber-100 border-2 border-white rounded-full active:bg-amber-50 hover:scale-110 focus:outline-none focus:ring"
                     type="button" data-share-link="{% url 'djf_surveys:share_link' object.slug %}">
-                    {% include "djf_surveys/buttons/share_button.html" %}
+                    {% include "djf_surveys/buttons/share_button.svg" %}
                 </a>
                 <a class="button-delete z-30 block p-4 text-red-700 transition-all bg-red-100 border-2 border-white rounded-full hover:scale-110 focus:outline-none focus:ring active:bg-red-50"
                    data-te-toggle="modal"
                    data-te-target="#modalDelete"
                    data-mdb-object_name="{{ object.name }}"
                    data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_survey' object.slug %}">
-                    {% include "djf_surveys/buttons/delete_button.html" %}
+                    {% include "djf_surveys/buttons/delete_button.svg" %}
                 </a>
             </div>
             <h1 class="text-2xl font-bold text-center text-blue-500 sm:text-3xl">{{ title_page }}</h1>
@@ -54,7 +54,7 @@
                             <a href="{% url 'djf_surveys:admin_edit_question' field|get_id_field  %}"
                                class="z-20 block p-4 text-blue-700 transition-all bg-blue-100 border-2 border-white rounded-full active:bg-blue-50 hover:scale-110 focus:outline-none focus:ring"
                                type="button">
-                                {% include "djf_surveys/buttons/edit_button.html" %}
+                                {% include "djf_surveys/buttons/edit_button.svg" %}
                             </a>
 
                             <a class="button-delete z-30 block p-4 text-red-700 transition-all bg-red-100 border-2 border-white rounded-full hover:scale-110 focus:outline-none focus:ring active:bg-red-50"
@@ -62,7 +62,7 @@
                                data-te-target="#modalDelete"
                                data-mdb-object_name="{{ field.label }}"
                                data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_question' field|get_id_field %}">
-                                {% include "djf_surveys/buttons/delete_button.html" %}
+                                {% include "djf_surveys/buttons/delete_button.svg" %}
                             </a>
 
                         </div>

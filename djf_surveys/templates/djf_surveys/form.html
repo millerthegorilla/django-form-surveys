@@ -8,6 +8,17 @@
 {% endblock %}
 
 {% block content %}
+    {% if object.cancel_button %}
+        <div class="flex py-1 fixed bottom-10 right-10">
+            <a id="cancel_button" href="{{ link_back_on_cancel }}"
+                class="z-20 block p-4 text-blue-100 transition-all bg-blue-700 border-2 border-white rounded-full active:bg-purple-50 hover:scale-110 focus:outline-none focus:ring"
+                type="button">
+                {% include "djf_surveys/buttons/cancel_button.svg" with size=6 %}
+                <span class="items-center float-right"><b> {% trans 'Cancel' %} </b></span>
+            </a>
+        </div>
+    {% endif %}
+
     <div class="max-w-screen-xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
         <div class="max-w-lg mx-auto">
             <h1 class="text-2xl font-bold text-center text-blue-500 sm:text-3xl">{{ title_page }}</h1>
@@ -32,7 +43,6 @@
                         <p class="text-xs text-gray-400">{{ field.help_text }}</p>
                         <span class="text-xs text-red-400">{{ field.errors }}</span>
                     </div>
-
                 {% endfor %}
 
                 <button type="submit" class="block w-full mt-5 px-5 py-3 text-sm font-medium text-white bg-blue-500 rounded-lg">
@@ -55,7 +65,7 @@
       (function() {
         const idleDurationSecs = 60;  // 5 minutes     // Use this line to change the total time a user has until redirected
         const countdownDurationSecs = 10;  // 2 minutes  // Use this line to how many seconds should remain for your pop-up to come up 
-        const redirectUrl = "{% url 'djf_surveys:index' %}";  // ADD URL TO WHICH YOU WANT TO REDIRECT USERS
+        const redirectUrl = "{{ link_back_on_cancel }}";  // ADD URL TO WHICH YOU WANT TO REDIRECT USERS
         let idleTimeout;
         let countdownTimeout;
         let countdownInterval;

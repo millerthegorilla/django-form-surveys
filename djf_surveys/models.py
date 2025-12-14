@@ -1,5 +1,6 @@
 import random, string
 from collections import namedtuple
+import uuid
 from tinymce.models import HTMLField
 from django.db import models
 from django.contrib.auth import get_user_model
@@ -54,26 +55,56 @@ class Survey(BaseModel):
     description = HTMLField(_("description"), default='')
     slug = models.SlugField(_("slug"), max_length=225, default='')
     editable = models.BooleanField(_("editable"), default=True,
-                                   help_text=_("If False, user can't edit record."))
+                                   help_text=_("If False, user " \
+                                               "can't edit record."))
     deletable = models.BooleanField(_("deletable"), default=True,
-                                    help_text=_("If False, user can't delete record."))
-    duplicate_entry = models.BooleanField(_("mutiple submissions"), default=False,
-                                          help_text=_("If True, user can resubmit."))
-    cycle_survey = models.BooleanField(_("Cycle the survey"), default=False, help_text=_("If True, success page returns to survey"))
-    private_response = models.BooleanField(_("private response"), default=False,
-                                           help_text=_("If True, only admin and owner can access."))
-    can_anonymous_user = models.BooleanField(_("anonymous submission"), default=False,
-                                             help_text=_("If True, user without authentatication can submit."))
-    notification_to = models.TextField(_("Notification To"), blank=True, null=True,
-                                       help_text=_("Enter your email to be notified when the form is submitted"))
-    success_page_content = HTMLField(_("Success Page Content"), blank=True, null=True)
+                                    help_text=_("If False, user " \
+                                                "can't delete record."))
+    duplicate_entry = models.BooleanField(_("mutiple submissions"),
+                                          default=False,
+                                          help_text=_("If True, user " \
+                                                      "can resubmit."))
+    cancel_button = models.BooleanField(_("Show cancel button"),
+                                        default=False, 
+                                        help_text=_("If True, a button" \
+                                                    " to cancel the " \
+                                                    "survey is " \
+                                                    "displayed."))
+    cycle_survey = models.BooleanField(_("Cycle the survey"),
+                                       default=False,
+                                       help_text=_("If True, " \
+                                       "success page returns to survey"))
+    private_response = models.BooleanField(_("private response"),
+                                           default=False,
+                                           help_text=_("If True, only" \
+                                           " admin and owner can " \
+                                           "access."))
+    can_anonymous_user = models.BooleanField(_("anonymous submission"),
+                                             default=False,
+                                             help_text=_("If True, " \
+                                             "user without " \
+                                             "authentatication can " \
+                                             "submit."))
+    notification_to = models.TextField(_("Notification To"), 
+                                       blank=True, null=True,
+                                       help_text=_("Enter your email" \
+                                       " to be notified when the " \
+                                       "form is submitted"))
+    success_page_content = HTMLField(_("Success Page Content"),
+                                     blank=True, null=True)
     survey_selection = models.ForeignKey('SurveySelection',
-                                          verbose_name=_("survey selection"),
+                                          verbose_name=_("survey " \
+                                                         "selection"),
                                           related_name="surveys",
                                           on_delete=models.SET_NULL,
                                           blank=True,
                                           null=True,)
-
+    gdpr_compliant = models.BooleanField(_("GDPR compliant"), default=False,
+                                        help_text=_("If True, the " \
+                                        "survey will include a " \
+                                        "unique " \
+                                        "identifier for GDPR compliance."))
+        
     class Meta:
         verbose_name = _("survey")
         verbose_name_plural = _("surveys")
@@ -84,12 +115,18 @@ class Survey(BaseModel):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = generate_unique_slug(Survey, self.name, self.id)
+            self.slug = generate_unique_slug(Survey, 
+                                             self.name, 
+                                             self.id)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        selection = self.survey_selection.slug if self.survey_selection else "main"
-        return reverse ('djf_surveys:respond', kwargs={'slug': self.slug, 'selection_slug': selection})
+        selection = (self.survey_selection.slug
+                     if self.survey_selection 
+                     else "main")
+        return reverse ('djf_surveys:respond',
+                        kwargs={'slug': self.slug, 
+                                'selection_slug': selection})
 
 
 class Question(BaseModel):
@@ -108,16 +145,23 @@ class Question(BaseModel):
 
     key = models.CharField(
         _("key"), max_length=225, unique=True, null=True, blank=True,
-        help_text=_("Unique key for this question, fill in the blank if you want to use for automatic generation.")
+        help_text=_("Unique key for this question, fill in the blank"
+                    " if you want to use for automatic generation.")
     )
-    survey = models.ForeignKey(Survey, related_name='questions', on_delete=models.CASCADE, verbose_name=_("survey"))
-    label = models.CharField(_("label"), max_length=500, help_text=_("Enter your question in here."))
-    type_field = models.PositiveSmallIntegerField(_("type of input field"), choices=TYPE_FIELD)
+    survey = models.ForeignKey(Survey, related_name='questions', 
+                               on_delete=models.CASCADE, 
+                               verbose_name=_("survey"))
+    label = models.CharField(_("label"), max_length=500, 
+                             help_text=_("Enter your question in here."))
+    type_field = models.PositiveSmallIntegerField(_("type of " \
+                                                    "input field"), 
+                                                    choices=TYPE_FIELD)
     choices = models.TextField(
         _("choices"),
         blank=True, null=True,
         help_text=_(
-            "If type of field is radio, select, or multi select, fill in the options separated "
+            "If type of field is radio, select, or multi select, "
+            "fill in the options separated "
             "by commas. Ex: Male, Female.")
     )
     help_text = models.CharField(
@@ -126,9 +170,13 @@ class Question(BaseModel):
         help_text=_("You can add a help text in here.")
     )
     required = models.BooleanField(_("required"), default=True,
-                                   help_text=_("If True, the user must provide an answer to this question."))
+                                   help_text=_("If True, the user "
+                                   "must provide an answer to this "
+                                   "question."))
     ordering = models.PositiveIntegerField(_("choices"), default=0,
-                                           help_text=_("Defines the question order within the surveys."))
+                                           help_text=_("Defines the "
+                                           "question order within " \
+                                           "the surveys."))
 
     class Meta:
         verbose_name = _("question")
@@ -140,9 +188,15 @@ class Question(BaseModel):
 
     def save(self, *args, **kwargs):
         if self.key:
-            self.key = generate_unique_slug(Question, self.key, self.id, "key")
+            self.key = generate_unique_slug(Question, 
+                                            self.key, 
+                                            self.id, 
+                                            "key")
         else:
-            self.key = generate_unique_slug(Question, self.label, self.id, "key")
+            self.key = generate_unique_slug(Question, 
+                                            self.label, 
+                                            self.id, 
+                                            "key")
 
         super(Question, self).save(*args, **kwargs)
 
@@ -150,6 +204,8 @@ class Question(BaseModel):
 class UserAnswer(BaseModel):
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, verbose_name=_("survey"))
     user = models.ForeignKey(get_user_model(), blank=True, null=True, on_delete=models.CASCADE, verbose_name=_("user"))
+    gdpr_reference = models.UUIDField(_("GDPR reference"), default=None,
+                                     blank=True, null=True)
 
     class Meta:
         verbose_name = _("user answer")

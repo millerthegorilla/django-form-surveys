@@ -25,10 +25,10 @@ from djf_surveys.admins.v2.forms import SurveyForm, SurveySelectionListForm
 
 
 @method_decorator(staff_member_required, name='dispatch')
-class AdminCreateSurveyView(ContextTitleMixin, CreateView):
+class AdminRespondSurveyView(ContextTitleMixin, CreateView):
     template_name = 'djf_surveys/admins/form.html'
     form_class = SurveyForm
-    title_page = _("Add New Survey")
+    title_page = _("Add New Response")
 
     def get_success_url(self):
         survey = self.object

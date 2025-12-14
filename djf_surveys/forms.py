@@ -146,14 +146,26 @@ class BaseSurveyForm(forms.Form):
         return cleaned_data
 
 
-class CreateSurveyForm(BaseSurveyForm):
+class RespondToSurveyForm(BaseSurveyForm):
+
+    gdpr_reference = forms.CharField(label=_('GDPR Reference'), 
+                                     widget=forms.TextInput(attrs={'readonly':'readonly'}),
+                                     help_text=_('This is a unique reference \
+                                                 for your survey response. \
+                                                 Should you feel the need to \
+                                                 withdraw your response in the \
+                                                 future please note this number \
+                                                 and enter it into the withdraw response \
+                                                 page.'))
 
     @transaction.atomic
     def save(self):
         cleaned_data = super().clean()
-
+        breakpoint()
         user_answer = UserAnswer.objects.create(
-            survey=self.survey, user=self.user
+            survey=self.survey, 
+            user=self.user, 
+            gdpr_reference=cleaned_data['gdpr_reference']
         )
         for question in self.questions:
             field_name = f'field_survey_{question.id}'
