@@ -7,6 +7,7 @@ __pycache__/
 
 # demo
 demo/djf_surveys
+demo/djf_surveys/**
 
 # Distribution / packaging
 build/
