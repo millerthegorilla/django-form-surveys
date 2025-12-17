@@ -148,7 +148,6 @@ class AdminDeleteSurveyView(DetailView):
     model = Survey
 
     def get(self, request, *args, **kwargs):
-        breakpoint()
         survey = self.get_object()
         survey.delete()
         messages.success(request, gettext("Survey %ss succesfully deleted.") % survey.name)
@@ -309,6 +308,19 @@ class SummaryResponseSurveyView(ContextTitleMixin, DetailView):
         context = super().get_context_data(**kwargs)
         summary = SummaryResponse(survey=self.get_object())
         context['summary'] = summary
+        return context
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class SummaryResponseSurveySelectionView(ContextTitleMixin, DetailView):
+    model = SurveySelection
+    template_name = "djf_surveys/admins/selection_summary.html"
+    title_page = _("Summary")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['summaries'] = [SummaryResponse(survey) \
+                     for survey in self.object.surveys.all()]
         return context
 
 

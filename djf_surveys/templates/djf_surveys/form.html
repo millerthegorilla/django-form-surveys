@@ -62,9 +62,9 @@
     <script src="{% static 'djf_surveys/te-starter/js/tw-elements.umd.min.js' %}"></script>
     <script>
       // many thanks to https://forum.squarespace.com/topic/319936-inactive-idle-user-site-redirect-to-homepage/#elComment_795026
-      (function() {
-        const idleDurationSecs = 60;  // 5 minutes     // Use this line to change the total time a user has until redirected
-        const countdownDurationSecs = 10;  // 2 minutes  // Use this line to how many seconds should remain for your pop-up to come up 
+      function initialise_timeout() {
+        const idleDurationSecs = {{ SURVEY_FORM_TIMEOUT }}; // Use this line to change the total time a user has until redirected
+        const countdownDurationSecs = {{ SURVEY_FORM_TIMEOUT_DIALOG }};  // Use this line to how many seconds should remain for your pop-up to come up 
         const redirectUrl = "{{ link_back_on_cancel }}";  // ADD URL TO WHICH YOU WANT TO REDIRECT USERS
         let idleTimeout;
         let countdownTimeout;
@@ -108,6 +108,11 @@
         // Reset the idle timeout on any of the events listed below
         ['click', 'touchstart', 'mousemove', 'scroll'].forEach(evt => 
             document.addEventListener(evt, resetIdleTimeout, false)
+        );
+      }
+      (function() {
+            ['click', 'touchstart', 'mousemove', 'scroll'].forEach(evt => 
+            document.addEventListener(evt, initialise_timeout, false)
         );
     })();
     </script>

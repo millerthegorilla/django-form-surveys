@@ -104,7 +104,10 @@ class Survey(BaseModel):
                                         "survey will include a " \
                                         "unique " \
                                         "identifier for GDPR compliance."))
-        
+    show_on_index = models.BooleanField(_("Show on index page"), default=False,
+                                        help_text=_("If True, the " \
+                                        "survey will be listed on " \
+                                        "the index page."))   
     class Meta:
         verbose_name = _("survey")
         verbose_name_plural = _("surveys")
@@ -276,12 +279,16 @@ class SurveySelection(BaseModel):
     can_anonymous_user = models.BooleanField(_("anonymous submission"), default=False,
                                              help_text=_("If True, user without authentatication can view."))
     success_page_content = HTMLField(_("Success Page Content"), blank=True, null=True)
-
+    show_on_index = models.BooleanField(_("Show on index page"), default=False,
+                                        help_text=_("If True, the " \
+                                        "survey selection will be " \
+                                        "listed on the index page."))
     class Meta:
         constraints = [
             models.CheckConstraint(condition=models.Q(name__length__gt=0), name="non_empty_name_survey_selection")
         ]
         verbose_name = _("survey selection")
+        ordering = ['-created_at']
         #verbose_name_plural = _("survey selections")
 
     def __str__(self):

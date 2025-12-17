@@ -5,7 +5,8 @@ from django.db import transaction
 from django.core.mail import send_mail, BadHeaderError
 from django.core.validators import MaxLengthValidator, MinLengthValidator, MaxValueValidator, MinValueValidator
 from django.utils.translation import gettext_lazy as _
-
+from django.utils.safestring import mark_safe
+from django.urls import reverse
 from djf_surveys.models import Answer, TYPE_FIELD, UserAnswer, Question
 from djf_surveys.widgets import CheckboxSelectMultipleSurvey, RadioSelectSurvey, DateSurvey, RatingSurvey
 from djf_surveys.app_settings import DATE_INPUT_FORMAT, SURVEY_FIELD_VALIDATORS, SURVEY_EMAIL_FROM
@@ -147,21 +148,28 @@ class BaseSurveyForm(forms.Form):
 
 
 class RespondToSurveyForm(BaseSurveyForm):
-
+    link = ""
+    #link = '/surveys/withdraw/'
     gdpr_reference = forms.CharField(label=_('GDPR Reference'), 
-                                     widget=forms.TextInput(attrs={'readonly':'readonly'}),
-                                     help_text=_('This is a unique reference \
-                                                 for your survey response. \
-                                                 Should you feel the need to \
-                                                 withdraw your response in the \
-                                                 future please note this number \
-                                                 and enter it into the withdraw response \
-                                                 page.'))
+                                     widget=forms.TextInput(attrs={'readonly':'readonly'}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        link = reverse('djf_surveys:withdraw_response')
+        self.fields['gdpr_reference'].help_text= \
+            mark_safe(_("This is a unique reference \
+                        for your survey response. \
+                        Should you feel the need to \
+                        withdraw your response in the \
+                        future please note this number \
+                        and enter it into the \
+                        <a href='{}' \
+                        class='font-medium text-fg-brand text-blue-600 hover:underline'> \
+                        withdraw response page.</a>").format(link))
 
     @transaction.atomic
     def save(self):
         cleaned_data = super().clean()
-        breakpoint()
         user_answer = UserAnswer.objects.create(
             survey=self.survey, 
             user=self.user, 
@@ -235,3 +243,14 @@ class EditSurveyForm(BaseSurveyForm):
             if not created and answer:
                 answer.value = value
                 answer.save()
+
+
+class WithdrawResponseForm(forms.Form):
+
+    gdpr_reference = forms.CharField(label=_('GDPR Reference'), max_length=100)
+
+    def clean_gdpr_reference(self):
+        gdpr_reference = self.cleaned_data.get('gdpr_reference')
+        if not UserAnswer.objects.filter(gdpr_reference=gdpr_reference).exists():
+            raise forms.ValidationError(_('Invalid GDPR Reference'))
+        return gdpr_reference

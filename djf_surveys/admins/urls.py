@@ -22,4 +22,5 @@ urlpatterns = [
     path('survey/ordering/', admin_views.AdminChangeOrderSurveyView.as_view(), name='admin_change_order_survey'),
     path('download/survey/<str:slug>/', admin_views.DownloadResponseSurveyView.as_view(), name='admin_download_survey'),
     path('summary/survey/<str:slug>/', admin_views.SummaryResponseSurveyView.as_view(), name='admin_summary_survey'),
+    path('summary/survey_selection/<str:slug>/', admin_views.SummaryResponseSurveySelectionView.as_view(), name='admin_summary_survey_selection'),
 ]

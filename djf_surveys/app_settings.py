@@ -104,3 +104,11 @@ if hasattr(settings, 'SURVEY_DEFAULT_THANK_YOU_MESSAGE'):
 else:
     SURVEY_DEFAULT_THANK_YOU_MESSAGE = _("Thank you for taking" \
     " the time to complete this survey. Your feedback is appreciated.")
+
+# timeout in seconds
+SURVEY_FORM_TIMEOUT = settings.SURVEY_FORM_TIMEOUT \
+    if hasattr(settings, 'SURVEY_FORM_TIMEOUT') else 120
+
+# number of seconds to show timeout dialog
+SURVEY_FORM_TIMEOUT_DIALOG = settings.SURVEY_FORM_TIMEOUT_DIALOG \
+    if hasattr(settings, 'SURVEY_FORM_TIMEOUT_DIALOG') else 10

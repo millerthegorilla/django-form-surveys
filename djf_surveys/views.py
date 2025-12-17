@@ -2,13 +2,14 @@ import uuid
 from django.urls import reverse_lazy, reverse
 from django.utils.text import capfirst
 from django.utils.translation import gettext, gettext_lazy as _
+from django.views import View
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormMixin
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.utils.decorators import method_decorator
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 from django.contrib import messages
 
 from djf_surveys.models import (BaseModel,
@@ -17,11 +18,60 @@ from djf_surveys.models import (BaseModel,
                                 UserAnswer,
                                 Question, 
                                 TYPE_FIELD)
-from djf_surveys.forms import RespondToSurveyForm, EditSurveyForm
+from djf_surveys.forms import (RespondToSurveyForm, EditSurveyForm,
+                                    WithdrawResponseForm)
 from djf_surveys.mixin import ContextTitleMixin
 from djf_surveys import app_settings
 from djf_surveys.utils import NewPaginator
 
+
+class IndexView(ContextTitleMixin, View):
+    template_name = "djf_surveys/djf_surveys_index.html"
+    title_page = _("Survey Home")
+    paginate_by = app_settings.SURVEY_PAGINATION_NUMBER['survey_list']
+    paginator_class = NewPaginator
+
+    def get(self, request, *args, **kwargs):
+        filter = {}
+        if app_settings.SURVEY_ANONYMOUS_VIEW_LIST and not self.request.user.is_authenticated:
+            filter["can_anonymous_user"] = True
+        query = self.request.GET.get('q')
+        
+        if query:
+            surveys = Survey.objects.filter(name__icontains=query, **filter)
+        else:
+            surveys = Survey.objects.filter(**filter)
+
+        if query:
+            survey_selections = SurveySelection.objects.filter(name__icontains=query, **filter)
+        else:
+            survey_selections = SurveySelection.objects.filter(**filter)
+
+        # # Paginate surveys
+        # survey_paginator = self.paginator_class(surveys, self.paginate_by)
+        # survey_page_number = request.GET.get('page', 1)
+        # survey_page_obj = survey_paginator.get_page(survey_page_number)
+
+        # # Paginate survey selections
+        # selection_paginator = self.paginator_class(survey_selections, self.paginate_by)
+        # selection_page_number = request.GET.get('page', 1)
+        # selection_page_obj = selection_paginator.get_page(selection_page_number)
+        context = self.get_context_data(
+            surveys=surveys,
+            survey_selections=survey_selections,
+            reason="search" if query else "display",
+            search_query=query if query else "",)
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, **kwargs):
+       # page_number = self.request.GET.get('page', 1)
+        context = super().get_context_data(**kwargs)
+      #  page_range = context['survey_page_obj'].paginator.get_elided_page_range(number=page_number)
+       # context['page_range'] = page_range
+        context['welcome_message_title'] = app_settings.SURVEY_WELCOME_MESSAGE_TITLE
+        context['welcome_message_tagline'] = app_settings.SURVEY_WELCOME_MESSAGE_TAGLINE
+        return context
+    
 # base class for survey list view
 class SurveyList(ContextTitleMixin, UserPassesTestMixin, ListView):
     paginate_by = app_settings.SURVEY_PAGINATION_NUMBER['survey_list']
@@ -278,10 +328,16 @@ def share_link(request, slug):
     # this func to handle link redirect to create form or edit form
     survey = get_object_or_404(Survey, slug=slug)
     if request.user.is_authenticated:
-        user_answer = UserAnswer.objects.filter(survey=survey, user=request.user).last()
-        if user_answer:
-            return redirect(reverse_lazy("djf_surveys:edit", kwargs={'pk': user_answer.id}))
+        return redirect(reverse_lazy("djf_surveys:admin_summary_survey", kwargs={'slug': survey.slug}))
     return redirect(reverse_lazy("djf_surveys:respond", kwargs={'slug': survey.slug}))
+
+
+def selection_share_link(request, slug):
+    # this func to handle link redirect to create form or edit form
+    survey_selection = get_object_or_404(SurveySelection, slug=slug)
+    if request.user.is_authenticated:
+        return redirect(reverse_lazy("djf_surveys:admin_summary_survey_selection", kwargs={'slug': survey_selection.slug}))
+    return redirect(reverse_lazy("djf_surveys:survey_selection", kwargs={'slug': survey_selection.slug}))
 
 
 class SuccessPageSurveyView(ContextTitleMixin, DetailView):
@@ -330,4 +386,38 @@ class SurveySelectionDetailView(ContextTitleMixin, DetailView):
         context = super().get_context_data(**kwargs)
         slug = self.kwargs['slug']
         context['survey_selection'] = get_object_or_404(SurveySelection, slug=slug)
-        return context  
+        return context
+    
+
+class WithdrawResponseView(FormMixin, ContextTitleMixin, View):
+    model = Survey
+    template_name = "djf_surveys/form.html" # withdraw_response.html"
+    form_class = WithdrawResponseForm
+    title_page = _("Withdraw Survey Response")
+
+    def get_success_url(self):
+        return reverse("djf_surveys:index")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get(self, request, *args, **kwargs):
+        form = self.get_form()
+        context = self.get_context_data(form=form)
+        return render(request, self.template_name, context)
+    
+    def get_sub_title_page(self):
+        return gettext("Please provide your GDPR Reference to withdraw your survey response.")
+    
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            gdpr_reference = form.cleaned_data.get('gdpr_reference')
+            user_response = get_object_or_404(UserAnswer,gdpr_reference=gdpr_reference)
+            user_response.delete()
+            messages.success(self.request, gettext("Your survey response has been successfully withdrawn."))  
+            return redirect(self.get_success_url())
+        else:
+            messages.error(self.request, gettext("Something went wrong."))
+            return self.form_invalid(form)

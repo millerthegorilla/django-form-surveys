@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="h-{{ size|default:'4' }} w-{{ size|default:'4' }} float-left" fill="none" viewBox="0 0 24 24"
+     stroke="currentColor">
+   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M 7.7573593,16.242641 12,12 m 0,0 4.242641,-4.2426407 M 12,12 7.7573592,7.7573593 M 12,12 l 4.242641,4.242641"/>
+</svg>

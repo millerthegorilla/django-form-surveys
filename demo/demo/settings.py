@@ -116,7 +116,7 @@ LANGUAGE_CODE = 'en-us'
 # LANGUAGE_CODE = "fr"
 # LANGUAGE_CODE = 'id'
 
-TIME_ZONE = 'Asia/Jakarta'
+TIME_ZONE = 'Europe/Jersey'
 
 USE_I18N = True
 

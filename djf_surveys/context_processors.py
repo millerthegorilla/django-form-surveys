@@ -8,6 +8,8 @@ def surveys_context(request):
         'chart_js_src': app_settings.CHART_JS_SRC,
         'get_type_field': get_type_field,
         'link_back_on_success_page': app_settings.SURVEY_LINK_BACK_ON_SUCCESS_PAGE,
-        'DEFAULT_THANK_YOU_MESSAGE': app_settings.SURVEY_DEFAULT_THANK_YOU_MESSAGE
+        'DEFAULT_THANK_YOU_MESSAGE': app_settings.SURVEY_DEFAULT_THANK_YOU_MESSAGE,
+        'SURVEY_FORM_TIMEOUT': app_settings.SURVEY_FORM_TIMEOUT,
+        'SURVEY_FORM_TIMEOUT_DIALOG': app_settings.SURVEY_FORM_TIMEOUT_DIALOG,
     }
     return context
