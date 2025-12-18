@@ -5,6 +5,10 @@ from django.utils.translation import gettext as _
 SURVEY_MASTER_TEMPLATE = settings.SURVEY_MASTER_TEMPLATE \
     if hasattr(settings, "SURVEY_MASTER_TEMPLATE") else 'djf_surveys/master.html'
 
+# include navbar
+SURVEY_INCLUDE_NAVBAR = settings.SURVEY_INCLUDE_NAVBAR \
+    if hasattr(settings, 'SURVEY_INCLUDE_NAVBAR') else True
+
 # profile photo path
 SURVEY_USER_PHOTO_PROFILE = settings.SURVEY_USER_PHOTO_PROFILE \
     if hasattr(settings, 'SURVEY_USER_PHOTO_PROFILE') else ""

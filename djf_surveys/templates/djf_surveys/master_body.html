@@ -1,0 +1,9 @@
+{% load i18n static %}
+{% if messages %}
+    {% for message in messages %}
+        {% include 'djf_surveys/components/alert.html' %}
+    {% endfor %}
+{% endif %}
+
+{% include 'djf_surveys/components/alert_js.html' %}
+{% block extra_js %}{% endblock %}

@@ -26,7 +26,7 @@ from djf_surveys.utils import NewPaginator
 
 
 class IndexView(ContextTitleMixin, View):
-    template_name = "djf_surveys/index.html"
+    template_name = "djf_surveys/home.html"
     title_page = _("Survey Home")
     paginate_by = app_settings.SURVEY_PAGINATION_NUMBER['survey_list']
     paginator_class = NewPaginator

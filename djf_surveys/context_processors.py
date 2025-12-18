@@ -11,5 +11,6 @@ def surveys_context(request):
         'DEFAULT_THANK_YOU_MESSAGE': app_settings.SURVEY_DEFAULT_THANK_YOU_MESSAGE,
         'SURVEY_FORM_TIMEOUT': app_settings.SURVEY_FORM_TIMEOUT,
         'SURVEY_FORM_TIMEOUT_DIALOG': app_settings.SURVEY_FORM_TIMEOUT_DIALOG,
+        'SURVEY_INCLUDE_NAVBAR': app_settings.SURVEY_INCLUDE_NAVBAR,
     }
     return context

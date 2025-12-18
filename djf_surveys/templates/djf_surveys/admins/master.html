@@ -17,7 +17,10 @@
             {% include 'djf_surveys/components/alert.html' %}
         {% endfor %}
     {% endif %}
-    {% include 'djf_surveys/components/header_nav.html' %}
+
+    {% if SURVEY_INCLUDE_NAVBAR %}
+        {% include 'djf_surveys/components/header_nav.html' %}
+    {% endif %}
     <div class="container mx-auto">
         {% block content %} {% endblock %}
     </div>
