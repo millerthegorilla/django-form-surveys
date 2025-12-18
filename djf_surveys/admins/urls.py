@@ -6,7 +6,7 @@ from djf_surveys.admins.v2 import views as admin_views_v2
 urlpatterns = [
     path('', admin_views.AdminSurveyListView.as_view(), name='admin_survey_list'),
     path('survey_selections/', admin_views.AdminSurveySelectionListView.as_view(), name='admin_survey_selection_list'),
-    path('create/survey/', admin_views.AdminRespondSurveyView.as_view(), name='admin_create_survey'),
+    path('create/survey/', admin_views.AdminCreateSurveyView.as_view(), name='admin_create_survey'),
     path('create/survey_selection/', admin_views.AdminCreateSurveySelectionView.as_view(), name='admin_create_survey_selection'),
     path('edit/survey/<str:slug>/', admin_views.AdminEditSurveyView.as_view(), name='admin_edit_survey'),
     path('edit/survey_selection/<str:slug>/', admin_views.AdminEditSurveySelectionView.as_view(), name='admin_edit_survey_selection'),

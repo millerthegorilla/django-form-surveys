@@ -148,8 +148,6 @@ class BaseSurveyForm(forms.Form):
 
 
 class RespondToSurveyForm(BaseSurveyForm):
-    link = ""
-    #link = '/surveys/withdraw/'
     gdpr_reference = forms.CharField(label=_('GDPR Reference'), 
                                      widget=forms.TextInput(attrs={'readonly':'readonly'}))
 
