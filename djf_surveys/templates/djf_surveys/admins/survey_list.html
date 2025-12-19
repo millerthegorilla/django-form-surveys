@@ -28,7 +28,7 @@
                 {% include 'djf_surveys/components/pagination.html' %}
             </div>
         {% else %}
-            {% include 'djf_surveys/components/empty_state.html' %}
+            {% include 'djf_surveys/components/empty_state.html' with type="survey" reason=reason %}
         {% endif %}
     </div>
 

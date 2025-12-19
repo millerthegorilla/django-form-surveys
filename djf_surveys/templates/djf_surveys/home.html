@@ -34,7 +34,7 @@
                 {% endfor %}
             </div>
         {% else %}
-            {% include 'djf_surveys/components/empty_state.html' with type="Survey Selection" %}
+            {% include 'djf_surveys/components/empty_state.html' with type="Survey Selection" reason=reason %}
         {% endif %}
     </div>
 

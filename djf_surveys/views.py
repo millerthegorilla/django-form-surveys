@@ -78,7 +78,7 @@ class SurveyList(ContextTitleMixin, UserPassesTestMixin, ListView):
     paginator_class = NewPaginator
 
     def test_func(self):
-        return app_settings.SURVEY_ANONYMOUS_VIEW_LIST or self.request.user.is_authenticated
+       return app_settings.SURVEY_ANONYMOUS_VIEW_LIST or self.request.user.is_authenticated
 
     def get_queryset(self):
         filter = {}
@@ -95,6 +95,8 @@ class SurveyList(ContextTitleMixin, UserPassesTestMixin, ListView):
         page_number = self.request.GET.get('page', 1)
         context = super().get_context_data(**kwargs)
         page_range = context['page_obj'].paginator.get_elided_page_range(number=page_number)
+        query = self.request.GET.get('q')
+        context['reason'] = "search" if query else "display"
         context['page_range'] = page_range
         context['welcome_message_title'] = app_settings.SURVEY_WELCOME_MESSAGE_TITLE
         context['welcome_message_tagline'] = app_settings.SURVEY_WELCOME_MESSAGE_TAGLINE
