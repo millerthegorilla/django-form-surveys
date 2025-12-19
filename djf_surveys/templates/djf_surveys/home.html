@@ -39,10 +39,9 @@
     </div>
 
     {% include 'djf_surveys/components/modal_delete.html' %}
-
 {% endblock %}
 
-{% block extra_js %}
-    <script src="{% static 'djf_surveys/te-starter/js/tw-elements.umd.min.js' %}"></script>
-    {% include 'djf_surveys/components/modal_delete_js.html' %}
-{% endblock %}
+<script src="{% static 'djf_surveys/te-starter/js/tw-elements.umd.min.js' %}"></script>
+{% include 'djf_surveys/components/modal_delete_js.html' %}
+
+{% block extra_js %}{% endblock %}
