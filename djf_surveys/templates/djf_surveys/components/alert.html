@@ -1,19 +1,19 @@
-<div class="tw:flex tw:py-1 tw:fixed tw:top-10 tw:right-10" id="alert-message">
-<div class="tw:flex tw:p-4 tw:text-white {% if message.tags == 'success' %} tw:bg-green-600 {% elif message.tags == 'warning' %} tw:bg-amber-600 {% elif message.tags == 'info' %} tw:bg-sky-600 {% elif message.tags == 'error' %} tw:bg-red-600 {% else %} tw:bg-gray-600 {% endif %} tw:rounded" role="alert">
-<button class="tw:absolute tw:opacity-90 tw:top-4 tw:right-4 close-alert" type="button">
-<span class="tw:sr-only"> Close </span>
-<svg class="tw:w-4 tw:h-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<div class="flex py-1 fixed top-10 right-10" id="alert-message">
+<div class="flex p-4 text-white {% if message.tags == 'success' %} bg-green-600 {% elif message.tags == 'warning' %} bg-amber-600 {% elif message.tags == 'info' %} bg-sky-600 {% elif message.tags == 'error' %} bg-red-600 {% else %} bg-gray-600 {% endif %} rounded" role="alert">
+<button class="absolute opacity-90 top-4 right-4 close-alert" type="button">
+<span class="sr-only"> Close </span>
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 <path clip-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" fill-rule="evenodd"></path>
 </svg>
 </button>
-<svg class="tw:shrink-0 tw:w-5 tw:h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<svg class="shrink-0 w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
 </svg>
-<div class="tw:ml-3 tw:-mt-0.25">
-<h3 class="tw:text-sm tw:font-medium">
+<div class="ml-3 -mt-0.25">
+<h3 class="text-sm font-medium">
                 {{ message.tags }}
             </h3>
-<p class="tw:mt-1 tw:text-xs tw:opacity-90">
+<p class="mt-1 text-xs opacity-90">
                 {{ message }}
             </p>
 </div>

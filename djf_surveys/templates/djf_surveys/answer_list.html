@@ -7,31 +7,31 @@
 {% endblock %}
 
 {% block content %}
-    <div class="tw:container tw:px-5 tw:py-5">
+    <div class="container px-5 py-5">
 <section>
-<div class="tw:py-16 tw:lg:items-end tw:lg:justify-between tw:lg:flex tw:sm:px-6 tw:lg:px-8">
-<h2 class="tw:max-w-xl tw:text-2xl tw:font-bold tw:sm:text-3xl">
+<div class="py-16 lg:items-end lg:justify-between lg:flex sm:px-6 lg:px-8">
+<h2 class="max-w-xl text-2xl font-bold sm:text-3xl">
                     {% trans "Result" %} - {{ object.name }}
                 </h2>
 <div class="btn-group">
-<div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:float-right">
+<div class="flex -space-x-4 hover:space-x-1 float-right">
                         {% if user.is_superuser %}
-                            <a class="tw:z-20 tw:block tw:p-4 tw:text-purple-700 tw:transition-all tw:bg-purple-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-purple-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{% url 'djf_surveys:admin_download_survey' survey.slug %}" type="button">
-<svg class="tw:h-4 tw:w-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <a class="z-20 block p-4 text-purple-700 transition-all bg-purple-100 border-2 border-white rounded-full active:bg-purple-50 hover:scale-110 focus:outline-none focus:ring" href="{% url 'djf_surveys:admin_download_survey' survey.slug %}" type="button">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </a>
-<a class="tw:z-20 tw:block tw:p-4 tw:text-blue-700 tw:transition-all tw:bg-blue-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-blue-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{% url 'djf_surveys:admin_summary_survey' survey.slug %}" type="button">
-<svg class="tw:h-4 tw:w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<a class="z-20 block p-4 text-blue-700 transition-all bg-blue-100 border-2 border-white rounded-full active:bg-blue-50 hover:scale-110 focus:outline-none focus:ring" href="{% url 'djf_surveys:admin_summary_survey' survey.slug %}" type="button">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
 <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
 </svg>
 </a>
                         {% endif %}
-                        <a class="tw:z-20 tw:block tw:p-4 tw:text-green-700 tw:transition-all tw:bg-green-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-green-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{%  url 'djf_surveys:respond' survey.slug request.resolver_match.kwargs.selection_slug %}" type="button">
+                        <a class="z-20 block p-4 text-green-700 transition-all bg-green-100 border-2 border-white rounded-full active:bg-green-50 hover:scale-110 focus:outline-none focus:ring" href="{%  url 'djf_surveys:respond' survey.slug request.resolver_match.kwargs.selection_slug %}" type="button">
                             {% include "djf_surveys/buttons/add_button.svg" %}
                         </a>
-<a class="button-share tw:z-20 tw:block tw:p-4 tw:text-amber-700 tw:transition-all tw:bg-amber-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-amber-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" data-share-link="{% url 'djf_surveys:share_link' survey.slug %}" href="#" type="button">
+<a class="button-share z-20 block p-4 text-amber-700 transition-all bg-amber-100 border-2 border-white rounded-full active:bg-amber-50 hover:scale-110 focus:outline-none focus:ring" data-share-link="{% url 'djf_surveys:share_link' survey.slug %}" href="#" type="button">
                             {% include "djf_surveys/buttons/share_button.svg" %}
                         </a>
 </div>
@@ -40,12 +40,12 @@
 </section>
 
         {% if page_obj %}
-            <div class="tw:grid tw:sm:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-2 tw:xl:grid-cols-3 tw:gap-4">
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
                 {% for object in page_obj %}
                     {% include 'djf_surveys/components/card_list_answer.html' %}
                 {% endfor %}
             </div>
-<div class="tw:py-10">
+<div class="py-10">
                 {% include 'djf_surveys/components/pagination.html' %}
             </div>
         {% else %}

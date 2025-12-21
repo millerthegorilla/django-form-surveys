@@ -7,17 +7,17 @@
 {% endblock %}
 
 {% block content %}
-    <div class="tw:container tw:px-5 tw:py-5">
+    <div class="container px-5 py-5">
         {% include 'djf_surveys/components/section_welcome.html' %}
 
         {% include 'djf_surveys/components/search_form.html' %}
         {% if object_list %}
-            <div class="tw:grid tw:sm:grid-cols-2 tw:md:grid-cols-2 tw:lg:grid-cols-2 tw:xl:grid-cols-2 tw:gap-4">
+            <div class="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4">
                 {% for survey_selection in page_obj %}
                     {% include 'djf_surveys/components/card_list_survey_selection_list.html' %}
                 {% endfor %}
             </div>
-<div class="tw:py-10">
+<div class="py-10">
                 {% include 'djf_surveys/components/pagination.html' %}
             </div>
         {% else %}

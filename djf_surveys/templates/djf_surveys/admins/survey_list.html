@@ -1,16 +1,16 @@
 {% extends 'djf_surveys/admins/master.html' %}
 {% load i18n %}
 {% block content %}
-    <div class="tw:container tw:px-5 tw:py-5">
+    <div class="container px-5 py-5">
         {% include 'djf_surveys/components/section_welcome.html' %}
 
         <section>
-<div class="tw:py-6 tw:justify-start tw:items-center tw:flex">
-<h2 class="tw:max-w-xl tw:text-2xl tw:font-bold tw:sm:text-3xl">
+<div class="py-6 justify-start items-center flex">
+<h2 class="max-w-xl text-2xl font-bold sm:text-3xl">
                     {% trans "Create a survey" %}
                 </h2>
-<div class="tw:ms-10">
-<a class="tw:inline-block tw:px-5 tw:py-3 tw:mt-4 tw:font-medium tw:text-white tw:bg-blue-500 tw:rounded-lg tw:sm:m-0" href="{% url 'djf_surveys:admin_create_survey' %}">
+<div class="ms-10">
+<a class="inline-block px-5 py-3 mt-4 font-medium text-white bg-blue-500 rounded-lg sm:m-0" href="{% url 'djf_surveys:admin_create_survey' %}">
                         {% include "djf_surveys/buttons/add_button.svg" %}
                     </a>
 </div>
@@ -19,12 +19,12 @@
 
         {% include 'djf_surveys/components/search_form.html' %}
         {% if object_list %}
-            <div class="tw:grid tw:sm:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-2 tw:xl:grid-cols-2 tw:gap-4">
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4">
                 {% for survey in page_obj %}
                     {% include 'djf_surveys/components/card_list_survey.html' %}
                 {% endfor %}
             </div>
-<div class="tw:py-10">
+<div class="py-10">
                 {% include 'djf_surveys/components/pagination.html' %}
             </div>
         {% else %}

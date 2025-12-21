@@ -7,56 +7,56 @@
 {% endblock %}
 
 {% block content %}
-    <div class="tw:flex tw:py-1 tw:fixed tw:bottom-10 tw:right-10">
-<button class="tw:z-20 tw:block tw:p-4 tw:text-blue-100 tw:transition-all tw:bg-blue-700 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-purple-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" data-te-ripple-color="light" data-te-ripple-init="" data-te-target="#addQuestion" data-te-toggle="modal" type="button">
+    <div class="flex py-1 fixed bottom-10 right-10">
+<button class="z-20 block p-4 text-blue-100 transition-all bg-blue-700 border-2 border-white rounded-full active:bg-purple-50 hover:scale-110 focus:outline-none focus:ring" data-te-ripple-color="light" data-te-ripple-init="" data-te-target="#addQuestion" data-te-toggle="modal" type="button">
             {% include "djf_surveys/buttons/add_button.svg" with size=6 %}
-            <span class="tw:items-center tw:float-right"> {% trans 'Question' %} </span>
+            <span class="items-center float-right"> {% trans 'Question' %} </span>
 </button>
 </div>
-<div class="tw:max-w-(--breakpoint-xl) tw:px-4 tw:py-16 tw:mx-auto tw:sm:px-6 tw:lg:px-8">
-<div class="tw:max-w-lg tw:mx-auto">
-<div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:py-1 tw:float-right">
-<a class="tw:z-20 tw:block tw:p-4 tw:text-blue-700 tw:transition-all tw:bg-blue-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-blue-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{% url 'djf_surveys:admin_edit_survey' object.slug %}" type="button">
+<div class="max-w-(--breakpoint-xl) px-4 py-16 mx-auto sm:px-6 lg:px-8">
+<div class="max-w-lg mx-auto">
+<div class="flex -space-x-4 hover:space-x-1 py-1 float-right">
+<a class="z-20 block p-4 text-blue-700 transition-all bg-blue-100 border-2 border-white rounded-full active:bg-blue-50 hover:scale-110 focus:outline-none focus:ring" href="{% url 'djf_surveys:admin_edit_survey' object.slug %}" type="button">
                     {% include "djf_surveys/buttons/edit_button.svg" %}
                 </a>
-<a class="button-share tw:z-20 tw:block tw:p-4 tw:text-amber-700 tw:transition-all tw:bg-amber-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-amber-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" data-share-link="{% url 'djf_surveys:share_link' object.slug %}" href="#" type="button">
+<a class="button-share z-20 block p-4 text-amber-700 transition-all bg-amber-100 border-2 border-white rounded-full active:bg-amber-50 hover:scale-110 focus:outline-none focus:ring" data-share-link="{% url 'djf_surveys:share_link' object.slug %}" href="#" type="button">
                     {% include "djf_surveys/buttons/share_button.svg" %}
                 </a>
-<a class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50" data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_survey' object.slug %}" data-mdb-object_name="{{ object.name }}" data-te-target="#modalDelete" data-te-toggle="modal">
+<a class="button-delete z-30 block p-4 text-red-700 transition-all bg-red-100 border-2 border-white rounded-full hover:scale-110 focus:outline-none focus:ring active:bg-red-50" data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_survey' object.slug %}" data-mdb-object_name="{{ object.name }}" data-te-target="#modalDelete" data-te-toggle="modal">
                     {% include "djf_surveys/buttons/delete_button.svg" %}
                 </a>
 </div>
-<h1 class="tw:text-2xl tw:font-bold tw:text-center tw:text-blue-500 tw:sm:text-3xl">{{ title_page }}</h1>
-<div class="no-tailwindcss-base tw:mt-4">
+<h1 class="text-2xl font-bold text-center text-blue-500 sm:text-3xl">{{ title_page }}</h1>
+<div class="no-tailwindcss-base mt-4">
                 {{ sub_title_page|safe }}
             </div>
-<form class="tw:mx-auto tw:mt-12" id="sortable" method="post">
+<form class="mx-auto mt-12" id="sortable" method="post">
                 {% csrf_token %}
                 {% for field in form %}
                     <div class="ui-state-default" id="{{ field|get_id_field }}">
-<div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:py-1">
-<a class="tw:z-20 tw:block tw:p-4 tw:text-blue-700 tw:transition-all tw:bg-blue-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-blue-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{% url 'djf_surveys:admin_edit_question' field|get_id_field  %}" type="button">
+<div class="flex -space-x-4 hover:space-x-1 py-1">
+<a class="z-20 block p-4 text-blue-700 transition-all bg-blue-100 border-2 border-white rounded-full active:bg-blue-50 hover:scale-110 focus:outline-none focus:ring" href="{% url 'djf_surveys:admin_edit_question' field|get_id_field  %}" type="button">
                                 {% include "djf_surveys/buttons/edit_button.svg" %}
                             </a>
-<a class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50" data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_question' field|get_id_field %}" data-mdb-object_name="{{ field.label }}" data-te-target="#modalDelete" data-te-toggle="modal">
+<a class="button-delete z-30 block p-4 text-red-700 transition-all bg-red-100 border-2 border-white rounded-full hover:scale-110 focus:outline-none focus:ring active:bg-red-50" data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_question' field|get_id_field %}" data-mdb-object_name="{{ field.label }}" data-te-target="#modalDelete" data-te-toggle="modal">
                                 {% include "djf_surveys/buttons/delete_button.svg" %}
                             </a>
 </div>
-<a class="tw:float-right tw:z-30 tw:block tw:p-2 tw:m-2 tw:text-gray-500 tw:transition-all tw:bg-gray-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50" href="#">
-<svg class="tw:h-6 tw:w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<a class="float-right z-30 block p-2 m-2 text-gray-500 transition-all bg-gray-100 border-2 border-white rounded-full hover:scale-110 focus:outline-none focus:ring active:bg-red-50" href="#">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
 </svg>
 </a>
-<div class="tw:p-8 tw:mb-6 tw:rounded-lg tw:shadow-md tw:border tw:border-gray-200 tw:bg-white">
-<label class="tw:text-base tw:font-medium" for="email">{{ field.label }}</label>
-<div class="tw:mt-1">
+<div class="p-8 mb-6 rounded-lg shadow-md border border-gray-200 bg-white">
+<label class="text-base font-medium" for="email">{{ field.label }}</label>
+<div class="mt-1">
                                 {% if field.field.widget.input_type == 'radio' or field.field.widget.input_type == 'checkbox' %}
                                     {{ field }}
                                 {% else %}
                                     {{ field|addclass:'w-full p-4 pr-12 text-sm border-gray-500 rounded-lg shadow-sm' }}
                                 {% endif %}
                             </div>
-<p class="tw:text-xs tw:text-gray-400 tw:mt-2">{{ field.help_text }}</p>
+<p class="text-xs text-gray-400 mt-2">{{ field.help_text }}</p>
 </div>
 </div>
 

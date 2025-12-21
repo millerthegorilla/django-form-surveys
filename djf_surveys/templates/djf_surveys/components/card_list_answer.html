@@ -1,40 +1,40 @@
 <div class="swiper-slide">
-<blockquote class="tw:p-6 tw:border tw:border-gray-100 tw:rounded-lg tw:shadow-lg tw:bg-white">
+<blockquote class="p-6 border border-gray-100 rounded-lg shadow-lg bg-white">
         {% if object.user == user %}
-            <div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:float-right">
+            <div class="flex -space-x-4 hover:space-x-1 float-right">
                 {% if object.survey.editable %}
-                    <a class="tw:z-20 tw:block tw:p-4 tw:text-blue-700 tw:transition-all tw:bg-blue-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-blue-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{% url 'djf_surveys:edit' object.id %}" type="button">
+                    <a class="z-20 block p-4 text-blue-700 transition-all bg-blue-100 border-2 border-white rounded-full active:bg-blue-50 hover:scale-110 focus:outline-none focus:ring" href="{% url 'djf_surveys:edit' object.id %}" type="button">
                         {% include "djf_surveys/buttons/edit_button.svg" %}
                     </a>
                 {% endif %}
                 {% if not on_detail %}
-                    <a class="tw:z-20 tw:block tw:p-4 tw:text-green-700 tw:transition-all tw:bg-green-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-green-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{% url 'djf_surveys:detail_result' object.id %}" type="button">
-<svg class="tw:h-4 tw:w-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <a class="z-20 block p-4 text-green-700 transition-all bg-green-100 border-2 border-white rounded-full active:bg-green-50 hover:scale-110 focus:outline-none focus:ring" href="{% url 'djf_surveys:detail_result' object.id %}" type="button">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
 <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </a>
                 {% endif %}
                 {% if object.survey.deletable %}
-                    <a class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50" data-mdb-object_delete_url="{% url 'djf_surveys:delete' object.id %}" data-mdb-object_name="your answer" data-te-target="#modalDelete" data-te-toggle="modal">
+                    <a class="button-delete z-30 block p-4 text-red-700 transition-all bg-red-100 border-2 border-white rounded-full hover:scale-110 focus:outline-none focus:ring active:bg-red-50" data-mdb-object_delete_url="{% url 'djf_surveys:delete' object.id %}" data-mdb-object_name="your answer" data-te-target="#modalDelete" data-te-toggle="modal">
                         {% include "djf_surveys/buttons/delete_button.svg" %}
                     </a>
                 {% endif %}
             </div>
         {% endif %}
-        <cite class="tw:flex tw:items-center tw:mb-8 tw:not-italic">
-<img alt="" class="tw:object-cover tw:w-12 tw:h-12 tw:rounded-full" src="{{ object.get_user_photo }}"/>
-<p class="tw:ml-3 tw:leading-none">
-<span class="tw:block tw:font-medium"> {{ object.user }} </span>
-<span class="tw:text-sm tw:text-gray-500"> {{ object.created_at }} </span>
+        <cite class="flex items-center mb-8 not-italic">
+<img alt="" class="object-cover w-12 h-12 rounded-full" src="{{ object.get_user_photo }}"/>
+<p class="ml-3 leading-none">
+<span class="block font-medium"> {{ object.user }} </span>
+<span class="text-sm text-gray-500"> {{ object.created_at }} </span>
 </p>
 </cite>
-<hr class="tw:mt-3 tw:mb-3"/>
+<hr class="mt-3 mb-3"/>
 
         {% for answer in object.answer_set.all %}
-            <p class="tw:text-lg tw:text-neutral-900">{{ answer.question.label }}</p>
-<p class="tw:text-slate-400 tw:wrap-break-word">{{ answer.get_value }}</p>
-<hr class="tw:mt-3 tw:mb-3"/>
+            <p class="text-lg text-neutral-900">{{ answer.question.label }}</p>
+<p class="text-slate-400 wrap-break-word">{{ answer.get_value }}</p>
+<hr class="mt-3 mb-3"/>
         {% endfor %}
 
     </blockquote>

@@ -5,13 +5,13 @@
 
 
 
+
 {% load i18n static tailwind_tags %}
 <html>
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>{% trans "Survey" %} - {{ title }}</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
     {% tailwind_css %}
     {% block extra_css %}{% endblock %}
 </head>
@@ -21,7 +21,7 @@
             {% include 'djf_surveys/components/alert.html' %}
         {% endfor %}
     {% endif %}
-    <div class="tw:container tw:mx-auto">
+    <div class="container mx-auto">
         {% block content %} {% endblock %}
     </div>
 

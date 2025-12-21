@@ -8,15 +8,15 @@
 
 {% block content %}
 
-<div class="tw:w-3/5 tw:mx-auto">
-<h1 class="tw:text-4xl tw:text-center tw:pt-4 tw:mb-4"><b>{{ object.name }}</b></h1>
-<span class="tw:text-2xl"><p class="tw:text-center tw:mb-4">{{ object.description|safe }}</p></span>
+<div class="w-3/5 mx-auto">
+<h1 class="text-4xl text-center pt-4 mb-4"><b>{{ object.name }}</b></h1>
+<span class="text-2xl"><p class="text-center mb-4">{{ object.description|safe }}</p></span>
 </div>
-<div class="tw:container tw:px-5 tw:py-5">
-<h2 class="tw:text-2xl tw:text-center tw:mb-4">{% trans "Please select a survey:" %}</h2>
+<div class="container px-5 py-5">
+<h2 class="text-2xl text-center mb-4">{% trans "Please select a survey:" %}</h2>
     {% for survey in object.surveys.all %}
         {% include 'djf_surveys/components/card_list_survey_selection_long_desc.html' %}
-        {% if not forloop.last %} <br/><h1 class="tw:text-2xl tw:text-center tw:mb-4">OR</h1><br/><br/>{% endif %}
+        {% if not forloop.last %} <br/><h1 class="text-2xl text-center mb-4">OR</h1><br/><br/>{% endif %}
     {% endfor %}
 </div>
     {% include 'djf_surveys/components/modal_delete.html' %}
