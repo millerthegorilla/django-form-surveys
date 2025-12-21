@@ -100,6 +100,26 @@ def extract_css_classes(css_file_path):
     return classes
 
 
+def force_remove_prefix_from_html(html_files, prefix):
+    """Remove a specific prefix from class names in HTML files."""
+    for html_file in html_files:
+        with open(html_file, 'r', encoding='utf-8') as f:
+            soup = BeautifulSoup(f, 'html.parser')
+
+        for tag in soup.find_all(attrs={'class': True}):
+            new_classes = []
+            for cls in tag['class']:
+                if cls.startswith(prefix + ':'):
+                    new_cls = cls[len(prefix) + 1:]
+                else:
+                    new_cls = cls
+                new_classes.append(new_cls)
+            tag['class'] = new_classes
+
+        with open(html_file, 'w', encoding='utf-8') as f:
+            f.write(str(soup))
+
+
 def prefix_css_classes_in_html(css_file_path, html_files, prefix, action='add'):
     """
     Scan a CSS file for class definitions, then in the given HTML files,
@@ -124,9 +144,7 @@ def prefix_css_classes_in_html(css_file_path, html_files, prefix, action='add'):
                     else:
                         new_cls = cls
                 elif action == 'remove':
-                    breakpoint()
                     if cls.startswith(prefix + ':') and cls[len(prefix) + 1:] in classes:
-                        breakpoint()
                         new_cls = cls[len(prefix) + 1:]
                     else:
                         new_cls = cls
@@ -149,7 +167,8 @@ if __name__ == "__main__":
     if len(sys.argv) < 4:
         print(
             "Usage: python process_css.py [--extract_css (input_file/directory) (output_file/directory) output.css]" \
-            "   [--prefix_css (css_file) (html_file/directory) (prefix) (add|remove)]"
+            "   [--prefix_css (css_file) (html_file/directory) (prefix) (add|remove)]" \
+            "   [--force-remove-prefix (html_file/directory) (prefix)]"
         )
         sys.exit(1)
 
@@ -192,11 +211,21 @@ if __name__ == "__main__":
             prefix_css_classes_in_html(css_file, [html_path], prefix, action)
         elif os.path.isdir(html_path):
             html_files = find_html_files(html_path)
-            breakpoint()
             prefix_css_classes_in_html(css_file, html_files, prefix, action)
         else:
             print(f"{html_path} does not exist or is not a regular file/directory.")
             sys.exit(1)
+    elif switch == "--force-remove-prefix":
+        html_path = sys.argv[2]
+        prefix = sys.argv[3]
+        if os.path.isfile(html_path):
+            force_remove_prefix_from_html([html_path], prefix)
+        elif os.path.isdir(html_path):
+            html_files = find_html_files(html_path)
+            force_remove_prefix_from_html(html_files, prefix)
+        else:
+            print(f"{html_path} does not exist or is not a regular file/directory.")
+            sys.exit(1)
     else:
-        print("Unknown switch. Use --extract_css or --prefix_css.")
+        print("Unknown switch. Use --extract_css, --prefix_css, or --force-remove-prefix.")
         sys.exit(1)
