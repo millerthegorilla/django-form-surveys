@@ -3,7 +3,10 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'djf_surveys/te-starter/css/tw-elements.min.css' %}">
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" />
+    {% comment %} <link rel="stylesheet" href="{% static 'djf_surveys/te-starter/css/tw-elements.min.css' %}"> {% endcomment %}
     <link rel="stylesheet" href="{% static 'djf_surveys/css/custom.css' %}"/>
 {% endblock %}
 
@@ -44,7 +47,8 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'djf_surveys/te-starter/js/tw-elements.umd.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script> 
+    {% comment %} <script src="{% static 'djf_surveys/te-starter/js/tw-elements.umd.min.js' %}"></script> {% endcomment %}
     {% include 'djf_surveys/components/modal_delete_js.html' %}
     {% include 'djf_surveys/components/share_link_button_js.html' %}
 {% endblock %}

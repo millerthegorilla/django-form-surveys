@@ -2,46 +2,49 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'djf_surveys/te-starter/css/tw-elements.min.css' %}">
     <link rel="stylesheet" href="{% static 'djf_surveys/css/custom.css' %}"/>
 {% endblock %}
 
 {% block content %}
-    <div class="container mx-auto px-4 py-8">
+    <div class="container px-5 py-5">
         {% include 'djf_surveys/components/section_welcome.html' %}
 
         {% include 'djf_surveys/components/search_form.html' %}
+        <div>
         {% if surveys %}
-            <h5 class="mt-10 text-2xl">Surveys</h5><br/>
             <div class="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
-             {% for survey in surveys %}
-                    {% if survey.show_on_index %}
-                        {% include 'djf_surveys/components/card_list_survey.html' %}
-                    {% endif %}
+                {% for survey in surveys %}
+                    {% include 'djf_surveys/components/card_list_survey.html' %}
                 {% endfor %}
+            </div>
+            <div class="py-10">
+                {% include 'djf_surveys/components/pagination.html' %}
             </div>
         {% else %}
             {% include 'djf_surveys/components/empty_state.html' with type="Survey" reason=reason %}
         {% endif %}
-        
+        </div>
+        <div>
         {% if survey_selections %}
-            <h5 class="mt-10 text-2xl">Survey Selections</h5><br/>
             <div class="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
                 {% for survey_selection in survey_selections %}
-                    {% if survey_selection.show_on_index %}
-                        {% include 'djf_surveys/components/card_list_survey_selection_list.html' %}
-                    {% endif %}
+                    {% include 'djf_surveys/components/card_list_survey_selection_list.html' %}
                 {% endfor %}
+            </div>
+            <div class="py-10">
+                {% include 'djf_surveys/components/pagination.html' %}
             </div>
         {% else %}
             {% include 'djf_surveys/components/empty_state.html' with type="Survey Selection" reason=reason %}
         {% endif %}
+        </div>
     </div>
 
     {% include 'djf_surveys/components/modal_delete.html' %}
+
 {% endblock %}
 
-<script src="{% static 'djf_surveys/te-starter/js/tw-elements.umd.min.js' %}"></script>
-{% include 'djf_surveys/components/modal_delete_js.html' %}
-
-{% block extra_js %}{% endblock %}
+{% block extra_js %}
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script>
+    {% include 'djf_surveys/components/modal_delete_js.html' %}
+{% endblock %}

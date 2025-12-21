@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'djf_surveys',
     'demo',
-    'tinymce'
+    'tinymce',
+    'tailwind',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +155,21 @@ SURVEY_WELCOME_MESSAGE_TAGLINE = 'Surveys for Mind Jersey'
 #         "removeformat | help",
 #         "license_key": "gpl",
 #     }
+
+TAILWIND_APP_NAME = "djf_surveys"
+
+if DEBUG:
+    # Add django_browser_reload only in DEBUG mode
+    INSTALLED_APPS += ["django_browser_reload"]
+
+if DEBUG:
+    # Add django_browser_reload middleware only in DEBUG mode
+    MIDDLEWARE += [
+        "django_browser_reload.middleware.BrowserReloadMiddleware",
+    ]
+
+TAILWIND_STANDALONE_START_COMMAND_ARGS = (
+    "-i ../djf_surveys/static_src/src/styles.css -o ../djf_surveys/static/djf_surveys/css/styles.css --watch"
+)
+
+TAILWIND_CSS_PATH = "djf_surveys/css/styles.css"
