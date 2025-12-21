@@ -41,10 +41,11 @@ def is_new_branch():
 
 
 def find_html_files(directory, extra_files=tuple()):
+    file_extensions = (".html", ".htm") + extra_files
     html_files = []
     for root, _, files in os.walk(directory):
         for file in files:
-            if file.lower().endswith((".html", ".htm", extra_files)):
+            if file.lower().endswith(file_extensions):
                 html_files.append(os.path.join(root, file))
     return html_files
 
@@ -179,6 +180,8 @@ if __name__ == "__main__":
         # Remove these from sys.argv to avoid confusion later
         sys.argv.pop(extra_index)  # Remove --extra-files
         sys.argv.pop(extra_index)  # Remove the extensions argument
+    else:
+        extra_files = tuple()
     switch = sys.argv[1]
     if switch == "--extract_css":
         in_path = sys.argv[2]
@@ -194,7 +197,7 @@ if __name__ == "__main__":
         if os.path.isfile(in_path) and os.path.isfile(out_path):
             extract_inline_css(in_path, css_file, out_path)
         elif os.path.isdir(in_path) and os.path.isdir(out_path):
-            html_files = find_html_files(in_path, extra_files=tuple())
+            html_files = find_html_files(in_path, extra_files=extra_files)
             for html_file in html_files:
                 relative_path = os.path.relpath(html_file, in_path)
                 output_html_file = os.path.join(out_path, relative_path)
@@ -217,7 +220,7 @@ if __name__ == "__main__":
         if os.path.isfile(html_path):
             prefix_css_classes_in_html(css_file, [html_path], prefix, action)
         elif os.path.isdir(html_path):
-            html_files = find_html_files(html_path, extra_files=tuple())
+            html_files = find_html_files(html_path, extra_files=extra_files)
             prefix_css_classes_in_html(css_file, html_files, prefix, action)
         else:
             print(f"{html_path} does not exist or is not a regular file/directory.")
@@ -228,7 +231,7 @@ if __name__ == "__main__":
         if os.path.isfile(html_path):
             force_remove_prefix_from_html([html_path], prefix)
         elif os.path.isdir(html_path):
-            html_files = find_html_files(html_path)
+            html_files = find_html_files(html_path, extra_files=extra_files)
             force_remove_prefix_from_html(html_files, prefix)
         else:
             print(f"{html_path} does not exist or is not a regular file/directory.")
