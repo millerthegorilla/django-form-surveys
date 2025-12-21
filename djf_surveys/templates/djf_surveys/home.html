@@ -12,7 +12,7 @@
         {% include 'djf_surveys/components/search_form.html' %}
         <div>
         {% if surveys %}
-            <div class="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4">
                 {% for survey in surveys %}
                     {% include 'djf_surveys/components/card_list_survey.html' %}
                 {% endfor %}
@@ -26,7 +26,7 @@
         </div>
         <div>
         {% if survey_selections %}
-            <div class="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4">
                 {% for survey_selection in survey_selections %}
                     {% include 'djf_surveys/components/card_list_survey_selection_list.html' %}
                 {% endfor %}
