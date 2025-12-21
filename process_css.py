@@ -124,6 +124,7 @@ def prefix_css_classes_in_html(css_file_path, html_files, prefix, action='add'):
                     else:
                         new_cls = cls
                 elif action == 'remove':
+                    breakpoint()
                     if cls.startswith(prefix + ':') and cls[len(prefix) + 1:] in classes:
                         breakpoint()
                         new_cls = cls[len(prefix) + 1:]
