@@ -5,7 +5,6 @@
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" />
-    {% comment %} <link rel="stylesheet" href="{% static 'djf_surveys/te-starter/css/tw-elements.min.css' %}"> {% endcomment %}
     <link rel="stylesheet" href="{% static 'djf_surveys/css/custom.css' %}"/>
 {% endblock %}
 
@@ -15,7 +14,7 @@
 
         {% include 'djf_surveys/components/search_form.html' %}
         {% if object_list %}
-            <div class="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4">
                 {% for survey in page_obj %}
                     {% include 'djf_surveys/components/card_list_survey.html' %}
                 {% endfor %}
@@ -34,6 +33,5 @@
 
 {% block extra_js %}
     <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script>
-    {% comment %} <script src="{% static 'djf_surveys/te-starter/js/tw-elements.umd.min.js' %}"></script> {% endcomment %}
     {% include 'djf_surveys/components/modal_delete_js.html' %}
 {% endblock %}

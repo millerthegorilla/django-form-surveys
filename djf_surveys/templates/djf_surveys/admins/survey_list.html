@@ -19,7 +19,7 @@
 
         {% include 'djf_surveys/components/search_form.html' %}
         {% if object_list %}
-            <div class="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4">
                 {% for survey in page_obj %}
                     {% include 'djf_surveys/components/card_list_survey.html' %}
                 {% endfor %}

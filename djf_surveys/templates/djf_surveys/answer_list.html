@@ -3,9 +3,8 @@
 
 {% block extra_css %}
     <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" />
-    {% comment %} <link rel="stylesheet" href="{% static 'djf_surveys/te-starter/css/tw-elements.min.css' %}"> {% endcomment %}
+       rel="stylesheet"
+       href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" />
     <link rel="stylesheet" href="{% static 'djf_surveys/css/rating.css' %}"/>
 {% endblock %}
 
@@ -53,7 +52,7 @@
         </section>
 
         {% if page_obj %}
-            <div class="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
                 {% for object in page_obj %}
                     {% include 'djf_surveys/components/card_list_answer.html' %}
                 {% endfor %}
@@ -71,7 +70,7 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'djf_surveys/te-starter/js/tw-elements.umd.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script>
     {% include 'djf_surveys/components/modal_delete_js.html' %}
     {% include 'djf_surveys/components/share_link_button_js.html' %}
 {% endblock %}

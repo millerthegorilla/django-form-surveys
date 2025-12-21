@@ -2,12 +2,11 @@
 {% load static i18n %}
 
 {% block extra_css %}
-    {{ chart_js_src|safe }}
-    <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" />
-    {% comment %} <link rel="stylesheet" href="{% static 'djf_surveys/te-starter/css/tw-elements.min.css' %}"> {% endcomment %}
-    <link rel="stylesheet" href="{% static 'djf_surveys/css/rating.css' %}"/>
+  {{ chart_js_src|safe }}
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" />
+  <link rel="stylesheet" href="{% static 'djf_surveys/css/rating.css' %}"/>
 {% endblock %}
 
 {% block content %}
@@ -33,7 +32,7 @@
             </div>
         </section>
 
-        <div class="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
             {{ summary.generate|safe }}
         </div>
 
