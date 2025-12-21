@@ -8,16 +8,16 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container px-5 py-5">
+    <div class="tw:container tw:px-5 tw:py-5">
         {% for summary in summaries %}
         <section>
-<div class="py-6 lg:items-end justify-between flex">
-<h2 class="max-w-xl text-2xl font-bold sm:text-3xl">
+<div class="tw:py-6 tw:lg:items-end tw:justify-between tw:flex">
+<h2 class="tw:max-w-xl tw:text-2xl tw:font-bold tw:sm:text-3xl">
                     {% trans "Summary" %} - {{ summary.survey.name }}
                 </h2>
-<div class="flex -space-x-4 hover:space-x-1 float-right">
-<a class="z-20 block p-4 text-green-700 transition-all bg-green-100 border-2 border-white rounded-full active:bg-green-50 hover:scale-110 focus:outline-none focus:ring" href="{% url 'djf_surveys:detail' summary.survey.slug 'main' %}" type="button">
-<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:float-right">
+<a class="tw:z-20 tw:block tw:p-4 tw:text-green-700 tw:transition-all tw:bg-green-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-green-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{% url 'djf_surveys:detail' summary.survey.slug 'main' %}" type="button">
+<svg class="tw:h-4 tw:w-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
 <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
@@ -25,7 +25,7 @@
 </div>
 </div>
 </section>
-<div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+<div class="tw:grid tw:sm:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-2 tw:xl:grid-cols-3 tw:gap-4">
             {{ summary.generate|safe }}
         </div>
         {% endfor %}

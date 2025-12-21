@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import "tailwindcss" prefix(tw);
 
 /**
   * A catch-all path to Django template files, JavaScript, and Python files

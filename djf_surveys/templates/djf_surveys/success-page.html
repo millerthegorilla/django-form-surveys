@@ -6,25 +6,25 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container px-5 lg:py-32 sm:py-16">
-<div class="relative p-8 text-center border border-gray-200 rounded-lg">
-<div class="flex justify-center">
+    <div class="tw:container tw:px-5 tw:lg:py-32 tw:sm:py-16">
+<div class="tw:relative tw:p-8 tw:text-center tw:border tw:border-gray-200 tw:rounded-lg">
+<div class="tw:flex tw:justify-center">
 <svg height="100" viewbox="0 0 48 48" width="100" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px">
 <path d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z" fill="#4caf50"></path><path d="M34.602,14.602L21,28.199l-5.602-5.598l-2.797,2.797L21,33.801l16.398-16.402L34.602,14.602z" fill="#ccff90"></path>
 </svg>
 </div>
-<h1 class="text-3xl pb-6 font-medium">
+<h1 class="tw:text-3xl tw:pb-6 tw:font-medium">
                {% trans 'Thank you for completing this survey' %}
             </h1>
-<p class="mt-4 text-sm text-gray-500">
+<p class="tw:mt-4 tw:text-sm tw:text-gray-500">
                 {% if object.success_page_content %}
                     {{ object.success_page_content|safe }}
                 {% else %}
                     {% trans DEFAULT_THANK_YOU_MESSAGE %}
                 {% endif %}
             </p>
-<div class="flex justify-center py-6">
-<a class="block mt-5 px-5 py-3 text-sm font-medium text-white bg-blue-500 rounded-lg" href="{{ link_back_on_success_page }}">
+<div class="tw:flex tw:justify-center tw:py-6">
+<a class="tw:block tw:mt-5 tw:px-5 tw:py-3 tw:text-sm tw:font-medium tw:text-white tw:bg-blue-500 tw:rounded-lg" href="{{ link_back_on_success_page }}">
                     {% trans "Back" %}
                 </a>
 </div>

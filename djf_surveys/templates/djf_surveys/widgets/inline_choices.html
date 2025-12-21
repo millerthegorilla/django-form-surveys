@@ -5,11 +5,11 @@
 <!-- loop field value -->
 <div id="djf-wrapper-choice-field">
 {% for value in widget.choice_value %}
-    <div class="relative mb-2 djf-field-choice">
-<input "djf_surveys="" %}="" attrs_exclude_id.html"="" class="djf-input-field w-6 h-6 border border-gray-200 rounded-md mb-4" include="" name="{{ widget.name }}_{{ forloop.counter }}" oninput="updateWidgetValue()" type="text" value="{{ value }}" widgets="" {%=""/>
-<div class="absolute top-2 right-2">
-<button class="djf-btn-remove-field py-2 px-2 text-white rounded-lg bg-red-500 hover:bg-red-600" type="button">
-<svg class="h-6 w-6 stroke-white hover:stroke-white" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">#}
+    <div class="tw:relative tw:mb-2 djf-field-choice">
+<input "djf_surveys="" %}="" attrs_exclude_id.html"="" class="djf-input-field tw:w-6 tw:h-6 tw:border tw:border-gray-200 tw:rounded-md tw:mb-4" include="" name="{{ widget.name }}_{{ forloop.counter }}" oninput="updateWidgetValue()" type="text" value="{{ value }}" widgets="" {%=""/>
+<div class="tw:absolute tw:top-2 tw:right-2">
+<button class="djf-btn-remove-field tw:py-2 tw:px-2 tw:text-white tw:rounded-lg tw:bg-red-500 tw:hover:bg-red-600" type="button">
+<svg class="tw:h-6 tw:w-6 tw:stroke-white tw:hover:stroke-white" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">#}
                     <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
 </svg>
 </button>
@@ -19,11 +19,11 @@
 
 <!-- loop field extra -->
 {% for extra in widget.extra %}
-    <div class="relative mb-2 djf-field-choice">
-<input "djf_surveys="" %}="" attrs_exclude_id.html"="" class="djf-input-field w-6 h-6 border border-gray-200 rounded-md mb-4" include="" name="{{ widget.name }}_{{ extra }}" oninput="updateWidgetValue()" type="text" widgets="" {%=""/>
-<div class="absolute top-2 right-2">
-<button class="djf-btn-remove-field py-2 px-2 text-white rounded-lg bg-red-500 hover:bg-red-600" type="button">
-<svg class="h-6 w-6 stroke-white hover:stroke-white" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">#}
+    <div class="tw:relative tw:mb-2 djf-field-choice">
+<input "djf_surveys="" %}="" attrs_exclude_id.html"="" class="djf-input-field tw:w-6 tw:h-6 tw:border tw:border-gray-200 tw:rounded-md tw:mb-4" include="" name="{{ widget.name }}_{{ extra }}" oninput="updateWidgetValue()" type="text" widgets="" {%=""/>
+<div class="tw:absolute tw:top-2 tw:right-2">
+<button class="djf-btn-remove-field tw:py-2 tw:px-2 tw:text-white tw:rounded-lg tw:bg-red-500 tw:hover:bg-red-600" type="button">
+<svg class="tw:h-6 tw:w-6 tw:stroke-white tw:hover:stroke-white" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">#}
                     <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
 </svg>
 </button>
@@ -31,12 +31,12 @@
 </div>
 {% endfor %}
 </div>
-<button class="py-2 px-2 text-white rounded-lg bg-blue-500 hover:bg-blue-600" id="djf-btn-add-field" type="button">
-<svg class="h-6 w-6 float-left" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<button class="tw:py-2 tw:px-2 tw:text-white tw:rounded-lg tw:bg-blue-500 tw:hover:bg-blue-600" id="djf-btn-add-field" type="button">
+<svg class="tw:h-6 tw:w-6 tw:float-left" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M12 6v6m0 0v6m0-6h6m-6 0H6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
 </svg>
 </button>
-<span class="ml-3 font-medium">{{ widget.choice_label }}</span>
+<span class="tw:ml-3 tw:font-medium">{{ widget.choice_label }}</span>
 <script>
     let djfRemoveFieldButtons = [...document.getElementsByClassName("djf-btn-remove-field")];
     let djfFieldChoice = [...document.getElementsByClassName("djf-field-choice")];

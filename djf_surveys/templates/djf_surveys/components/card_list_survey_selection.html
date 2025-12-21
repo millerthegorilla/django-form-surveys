@@ -1,14 +1,14 @@
 <div>
-<a class="relative block p-8 overflow-hidden border border-gray-100 rounded-lg bg-white" href="{% if user.is_authenticated %}{% url 'djf_surveys:detail' survey.slug %}{% else %}{% url 'djf_surveys:respond' survey.slug %}{% endif %}">
-<span class="absolute inset-x-0 bottom-0 h-2 bg-linear-to-r from-green-300 via-blue-500 to-purple-600"></span>
-<div class="justify-between sm:flex">
+<a class="tw:relative tw:block tw:p-8 tw:overflow-hidden tw:border tw:border-gray-100 tw:rounded-lg tw:bg-white" href="{% if user.is_authenticated %}{% url 'djf_surveys:detail' survey.slug %}{% else %}{% url 'djf_surveys:respond' survey.slug %}{% endif %}">
+<span class="tw:absolute tw:inset-x-0 tw:bottom-0 tw:h-2 tw:bg-linear-to-r tw:from-green-300 tw:via-blue-500 tw:to-purple-600"></span>
+<div class="tw:justify-between tw:sm:flex">
 <div>
-<h5 class="text-xl font-bold text-gray-900">
+<h5 class="tw:text-xl tw:font-bold tw:text-gray-900">
                     {{ survey.name }}
                 </h5>
 </div>
 </div>
-<div class="no-tailwindcss-base mt-4 sm:pr-8">
+<div class="no-tailwindcss-base tw:mt-4 tw:sm:pr-8">
             {{ survey.description|safe|truncatechars:30 }}
         </div>
 </a>

@@ -40,11 +40,11 @@ def is_new_branch():
         return False
 
 
-def find_html_files(directory):
+def find_html_files(directory, extra_files=tuple()):
     html_files = []
     for root, _, files in os.walk(directory):
         for file in files:
-            if file.lower().endswith((".html", ".htm")):
+            if file.lower().endswith((".html", ".htm", extra_files)):
                 html_files.append(os.path.join(root, file))
     return html_files
 
@@ -92,7 +92,7 @@ def extract_css_classes(css_file_path):
         content = f.read()
     # Find all .classname patterns
     # todo add switch to detect if this is tailwind css and remove
-    # escape characters
+    # escape characters - doing it anyway for now
     content = content.replace('\\','')
     classes = set(re.findall(r'\..+?(?=\s{)', content))
     # remove the leading dot
@@ -169,10 +169,12 @@ if __name__ == "__main__":
             "Usage: python process_css.py [--extract_css (input_file/directory) (output_file/directory) output.css]" \
             "   [--prefix_css (css_file) (html_file/directory) (prefix) (add|remove)]" \
             "   [--force-remove-prefix (html_file/directory) (prefix)]"
+            "   [--extra-files (comma separated file extensions)]"
         )
         sys.exit(1)
 
     switch = sys.argv[1]
+    breakpoint()
     if switch == "--extract_css":
         in_path = sys.argv[2]
         out_path = sys.argv[3]
@@ -187,7 +189,7 @@ if __name__ == "__main__":
         if os.path.isfile(in_path) and os.path.isfile(out_path):
             extract_inline_css(in_path, css_file, out_path)
         elif os.path.isdir(in_path) and os.path.isdir(out_path):
-            html_files = find_html_files(in_path)
+            html_files = find_html_files(in_path, extra_files=tuple())
             for html_file in html_files:
                 relative_path = os.path.relpath(html_file, in_path)
                 output_html_file = os.path.join(out_path, relative_path)
@@ -210,7 +212,7 @@ if __name__ == "__main__":
         if os.path.isfile(html_path):
             prefix_css_classes_in_html(css_file, [html_path], prefix, action)
         elif os.path.isdir(html_path):
-            html_files = find_html_files(html_path)
+            html_files = find_html_files(html_path, extra_files=)
             prefix_css_classes_in_html(css_file, html_files, prefix, action)
         else:
             print(f"{html_path} does not exist or is not a regular file/directory.")
