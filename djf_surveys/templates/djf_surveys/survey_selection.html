@@ -3,21 +3,19 @@
 {% load static %}
 
 {% block extra_css %}
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" />
-  <link rel="stylesheet" href="{% static 'djf_surveys/css/custom.css' %}"/>
+  <link href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" rel="stylesheet"/>
+<link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet"/>
 {% endblock %}
 
 {% block content %}
-<div class="w-3/5 mx-auto">
-    <h1 class="text-center pt-4 mb-4"><b>{{ object.name }}</b></h1>
-    <p class="text-center mb-4">{{ object.description|safe }}</p>
+<div class="tw:w-3/5 tw:mx-auto">
+<h1 class="tw:text-center tw:pt-4 tw:mb-4"><b>{{ object.name }}</b></h1>
+<p class="tw:text-center tw:mb-4">{{ object.description|safe }}</p>
 </div>
-    <h2 class="text-center mb-4">{% trans "Please select a survey:" %}</h2>
+<h2 class="tw:text-center tw:mb-4">{% trans "Please select a survey:" %}</h2>
     {% for survey in object.surveys.all %}
         {% include 'djf_surveys/components/card_list_survey_selection.html' %}
-        {% if not forloop.last %} <br/><h1 class="text-center mb-4">OR</h1><br/><br/>{% endif %}
+        {% if not forloop.last %} <br/><h1 class="tw:text-center tw:mb-4">OR</h1><br/><br/>{% endif %}
     {% endfor %}
 {% endblock %}
 

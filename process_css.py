@@ -97,7 +97,6 @@ def extract_css_classes(css_file_path):
     classes = set(re.findall(r'\..+?(?=\s{)', content))
     # remove the leading dot
     classes = {cls[1:] for cls in classes}
-    breakpoint()
     return classes
 
 

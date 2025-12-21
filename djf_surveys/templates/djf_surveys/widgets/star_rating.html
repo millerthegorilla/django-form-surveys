@@ -1,6 +1,6 @@
 {% load static djf_survey_tags %}
 
-<input type="{{ widget.type }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value }}" {% else %} value="0" {% endif %}{% include "django/forms/widgets/attrs.html" %}>
+<input !="None" "django="" %}="" %}{%="" attrs.html"="" else="" endif="" forms="" if="" include="" name="{{ widget.name }}" type="{{ widget.type }}" value="0" widget.value="" widgets="" {%=""/>
 {% if widget.value != None %}
     {% create_star widget.value widget.attrs.id widget.num_ratings %}
 {% else %}

@@ -4,12 +4,12 @@
 {{ form.media }}
 
 {% block content %}
-    <div class="container">
-        <h2>Withdraw Response</h2>
-        <form method="post">
+    <div class="tw:container">
+<h2>Withdraw Response</h2>
+<form method="post">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Withdraw Response</button>
-        </form>
-    </div>
+</form>
+</div>
 {% endblock %}
