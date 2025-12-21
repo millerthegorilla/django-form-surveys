@@ -212,7 +212,7 @@ if __name__ == "__main__":
         if os.path.isfile(html_path):
             prefix_css_classes_in_html(css_file, [html_path], prefix, action)
         elif os.path.isdir(html_path):
-            html_files = find_html_files(html_path, extra_files=)
+            html_files = find_html_files(html_path, extra_files=tuple())
             prefix_css_classes_in_html(css_file, html_files, prefix, action)
         else:
             print(f"{html_path} does not exist or is not a regular file/directory.")
