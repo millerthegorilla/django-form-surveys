@@ -3,11 +3,10 @@
 
 {% block extra_css %}
 <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" />
-    {% comment %} <link rel="stylesheet" href="{% static 'djf_surveys/te-starter/css/tw-elements.min.css' %}"> {% endcomment %}
-    <link rel="stylesheet" href="{% static 'djf_surveys/css/rating.css' %}"/>
-    <link rel="stylesheet" href="{% static 'djf_surveys/css/custom.css' %}"/>
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" />
+  <link rel="stylesheet" href="{% static 'djf_surveys/css/rating.css' %}"/>
+  <link rel="stylesheet" href="{% static 'djf_surveys/css/custom.css' %}"/>
 {% endblock %}
 
 {% block content %}
@@ -22,7 +21,7 @@
         </div>
     {% endif %}
 
-    <div class="max-w-screen-xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
+    <div class="max-w-(--breakpoint-xl) px-4 py-16 mx-auto sm:px-6 lg:px-8">
         <div class="max-w-lg mx-auto">
             <h1 class="text-2xl font-bold text-center text-blue-500 sm:text-3xl">{{ title_page }}</h1>
 
@@ -62,7 +61,7 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'djf_surveys/te-starter/js/tw-elements.umd.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script>
     <script>
       // many thanks to https://forum.squarespace.com/topic/319936-inactive-idle-user-site-redirect-to-homepage/#elComment_795026
       function initialise_timeout() {
