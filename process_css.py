@@ -168,13 +168,18 @@ if __name__ == "__main__":
         print(
             "Usage: python process_css.py [--extract_css (input_file/directory) (output_file/directory) output.css]" \
             "   [--prefix_css (css_file) (html_file/directory) (prefix) (add|remove)]" \
-            "   [--force-remove-prefix (html_file/directory) (prefix)]"
-            "   [--extra-files (comma separated file extensions)]"
+            "   or [--force-remove-prefix (html_file/directory) (prefix)]"
+            "   and [--extra-files (comma separated file extensions)]"
         )
         sys.exit(1)
 
+    if "--extra-files" in sys.argv:
+        extra_index = sys.argv.index("--extra-files")
+        extra_files = tuple(ext.strip() for ext in sys.argv[extra_index + 1].split(","))
+        # Remove these from sys.argv to avoid confusion later
+        sys.argv.pop(extra_index)  # Remove --extra-files
+        sys.argv.pop(extra_index)  # Remove the extensions argument
     switch = sys.argv[1]
-    breakpoint()
     if switch == "--extract_css":
         in_path = sys.argv[2]
         out_path = sys.argv[3]
