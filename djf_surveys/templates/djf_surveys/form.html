@@ -39,7 +39,7 @@
                             {% if field.field.widget.input_type == 'radio' or field.field.widget.input_type == 'checkbox' %}
                                 {{ field }}
                             {% else %}
-                                {{ field|addclass:'w-full p-4 pr-12 text-sm border-gray-500 rounded-lg shadow-sm' }}
+                                {{ field|addclass:'w-full p-4 pr-12 text-sm border border-gray-500 rounded-lg shadow-sm' }}
                             {% endif %}
                         </div>
                         <p class="text-xs text-gray-400">{{ field.help_text }}</p>
