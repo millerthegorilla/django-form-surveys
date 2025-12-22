@@ -642,6 +642,9 @@
   .tw\:border-gray-200 {
     border-color: var(--tw-color-gray-200);
   }
+  .tw\:border-gray-500 {
+    border-color: var(--tw-color-gray-500);
+  }
   .tw\:border-neutral-100 {
     border-color: var(--tw-color-neutral-100);
   }
@@ -803,6 +806,9 @@
   .tw\:pr-10 {
     padding-right: calc(var(--tw-spacing) * 10);
   }
+  .tw\:pr-12 {
+    padding-right: calc(var(--tw-spacing) * 12);
+  }
   .tw\:pb-2 {
     padding-bottom: calc(var(--tw-spacing) * 2);
   }
@@ -892,6 +898,9 @@
   .tw\:text-blue-500 {
     color: var(--tw-color-blue-500);
   }
+  .tw\:text-blue-600 {
+    color: var(--tw-color-blue-600);
+  }
   .tw\:text-blue-700 {
     color: var(--tw-color-blue-700);
   }
@@ -963,6 +972,10 @@
   }
   .tw\:shadow-md {
     --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .tw\:shadow-sm {
+    --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   .tw\:transition {
@@ -1102,6 +1115,13 @@
     &:hover {
       @media (hover: hover) {
         text-decoration-line: none;
+      }
+    }
+  }
+  .tw\:hover\:underline {
+    &:hover {
+      @media (hover: hover) {
+        text-decoration-line: underline;
       }
     }
   }

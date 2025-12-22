@@ -162,7 +162,7 @@ class RespondToSurveyForm(BaseSurveyForm):
                         future please note this number \
                         and enter it into the \
                         <a href='{}' \
-                        class='font-medium text-fg-brand text-blue-600 hover:underline'> \
+                        class='tw:font-medium tw:text-fg-brand tw:text-blue-600 tw:hover:underline'> \
                         withdraw response page.</a>").format(link))
 
     @transaction.atomic

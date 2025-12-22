@@ -1,55 +1,71 @@
 {% load i18n %}
 
 <!-- hidden field -->
-<input !="None" "django="" %}="" %}{%="" attrs.html"="" endif="" forms="" if="" include="" name="{{ widget.name }}" type="{{ widget.type }}" value="{{ widget.value }}" widget.value="" widgets="" {%=""/>
+<input type="{{ widget.type }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value }}"{% endif %}{% include "django/forms/widgets/attrs.html" %}>
+
 <!-- loop field value -->
 <div id="super-wrapper">
 {% for survey in widget.surveys %}
-<div class="djf-wrapper-choice-field" id="djf-wrapper-choice-field">
-<div class="tw:relative tw:mb-2 djf-field-choice">
-<select "djf_surveys="" %}="" attrs_exclude_id.html"="" class="djf-input-field tw:w-6 tw:h-6 tw:border tw:border-gray-200 tw:rounded-md tw:mb-4 dave" id="{{ widget.name }}_{{ forloop.counter }}" include="" name="{{ widget.name }}_{{ forloop.counter }}" oninput="updateWidgetValue()" widgets="" {%="">
-<option value="{{ survey.id }}">{{ survey.name }}</option>
+<div id="djf-wrapper-choice-field" class="djf-wrapper-choice-field">
+    <div class="relative mb-2 djf-field-choice">
+        <select 
+            name="{{ widget.name }}_{{ forloop.counter }}"{% include "djf_surveys/widgets/attrs_exclude_id.html" %}
+            id="{{ widget.name }}_{{ forloop.counter }}"{% include "djf_surveys/widgets/attrs_exclude_id.html" %}
+            class="djf-input-field w-6 h-6 border border-gray-200 rounded-md mb-4 dave"
+            oninput="updateWidgetValue()">
+            <option value="{{ survey.id }}">{{ survey.name }}</option>
             {% for survey in widget.all_surveys %}
                 <option value="{{ survey.id }}">{{ survey.name }}</option>
             {% endfor %}
         </select>
-<div class="tw:absolute tw:top-2 tw:right-2">
-<button class="djf-btn-remove-field tw:py-2 tw:px-2 tw:text-white tw:rounded-lg tw:bg-red-500 tw:hover:bg-red-600" type="button">
-<svg class="tw:h-6 tw:w-6 tw:stroke-white tw:hover:stroke-white" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-</svg>
-</button>
-</div>
-</div>
+        <div class="absolute top-2 right-2">
+            <button class="djf-btn-remove-field py-2 px-2 text-white rounded-lg bg-red-500 hover:bg-red-600" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-white hover:stroke-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
 </div>
 {% endfor %}
 
 {% for extra in widget.extra %}
-<div class="djf-wrapper-choice-field" id="djf-wrapper-choice-field">
-<div class="tw:relative tw:mb-2 djf-field-choice">
-<select "djf_surveys="" %}="" attrs_exclude_id.html"="" class="djf-input-field tw:w-6 tw:h-6 tw:border tw:border-gray-200 tw:rounded-md tw:mb-4 dave" else="" endif="" id="{{ widget.name }}_{{ forloop.counter }}" if="" include="" name="{{ widget.name }}_{{ forloop.counter }}" oninput="updateWidgetValue()" widget.surveys="" widgets="" {%="">
-<option value="0">Select a survey to add to the list...</option>
+<div id="djf-wrapper-choice-field" class="djf-wrapper-choice-field">
+    <div class="relative mb-2 djf-field-choice">
+        <select
+            {% if widget.surveys %}   
+                name="{{ widget.name }}_{{ forloop.counter|add:widget.surveys.count }}"{% include "djf_surveys/widgets/attrs_exclude_id.html" %}
+                id="{{ widget.name }}_{{ forloop.counter|add:widget.surveys.count }}"{% include "djf_surveys/widgets/attrs_exclude_id.html" %}
+            {% else %}
+                name="{{ widget.name }}_{{ forloop.counter }}"{% include "djf_surveys/widgets/attrs_exclude_id.html" %}
+                id="{{ widget.name }}_{{ forloop.counter }}"{% include "djf_surveys/widgets/attrs_exclude_id.html" %}
+            {% endif %}
+            class="djf-input-field w-6 h-6 border border-gray-200 rounded-md mb-4 dave"
+            oninput="updateWidgetValue()">
+            <option value="0">Select a survey to add to the list...</option>
             {% for survey in widget.all_surveys %}
                 <option value="{{ survey.id }}">{{ survey.name }}</option>
             {% endfor %}
         </select>
-<div class="tw:absolute tw:top-2 tw:right-2">
-<button class="djf-btn-remove-field tw:py-2 tw:px-2 tw:text-white tw:rounded-lg tw:bg-red-500 tw:hover:bg-red-600" type="button">
-<svg class="tw:h-6 tw:w-6 tw:stroke-white tw:hover:stroke-white" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-</svg>
-</button>
-</div>
-</div>
+        <div class="absolute top-2 right-2">
+            <button class="djf-btn-remove-field py-2 px-2 text-white rounded-lg bg-red-500 hover:bg-red-600" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-white hover:stroke-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
 </div>
 {% endfor %}
 </div>
-<button class="tw:py-2 tw:px-2 tw:text-white tw:rounded-lg tw:bg-blue-500 tw:hover:bg-blue-600" id="djf-btn-add-field" type="button">
-<svg class="tw:h-6 tw:w-6 tw:float-left" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 6v6m0 0v6m0-6h6m-6 0H6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-</svg>
+
+<button class="py-2 px-2 text-white rounded-lg bg-blue-500 hover:bg-blue-600" type="button" id="djf-btn-add-field">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 float-left" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+    </svg>
 </button>
-<span class="tw:ml-3 tw:font-medium">{{ widget.choice_label }}</span>
+<span class="ml-3 font-medium">{{ widget.choice_label }}</span>
+
 <script>
     let djfRemoveFieldButtons = [...document.getElementsByClassName("djf-btn-remove-field")];
     let djfFieldChoice = [...document.getElementsByClassName("djf-field-choice")];
