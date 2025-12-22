@@ -107,6 +107,8 @@
         );
       }
       (function() {
+            const popup = document.getElementById('idle-popup');
+            popup.style.display = 'none';
             ['click', 'touchstart', 'mousemove', 'scroll'].forEach(evt => 
             document.addEventListener(evt, initialise_timeout, false)
         );
