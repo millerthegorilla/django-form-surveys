@@ -172,4 +172,8 @@ TAILWIND_STANDALONE_START_COMMAND_ARGS = (
     "-i ../djf_surveys/static_src/src/styles.css -o ../djf_surveys/static/djf_surveys/css/styles.css --watch"
 )
 
+TAILWIND_STANDALONE_BUILD_COMMAND_ARGS = (
+    "-i ../djf_surveys/static_src/src/styles.css -o ../djf_surveys/static/djf_surveys/css/styles.css"
+)
+
 TAILWIND_CSS_PATH = "djf_surveys/css/styles.css"
