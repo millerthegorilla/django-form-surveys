@@ -1,81 +1,50 @@
-<!-- Modal -->
-<div
-  data-twe-modal-init
-  data-twe-backdrop="false"
-  class="static left-0 top-0 z-[1055] block h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-  id="exampleModalComponents"
-  tabindex="-1"
-  aria-labelledby="exampleModalComponentsLabel"
-  aria-hidden="true">
-  <div
-    data-twe-modal-dialog-ref
-    class="pointer-events-none relative w-auto opacity-100 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:my-7 min-[576px]:max-w-[500px]">
-    <div
-      class="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-4 outline-none dark:bg-surface-dark">
-      <div
-        class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 p-4 dark:border-white/10">
-        <h5
-          class="text-xl font-medium leading-normal text-surface dark:text-white"
-          id="exampleModalComponentsLabel">
-          Modal title
-        </h5>
-        <button
-          type="button"
-          class="box-content rounded-none border-none text-neutral-500 hover:text-neutral-800 hover:no-underline focus:text-neutral-800 focus:opacity-100 focus:shadow-none focus:outline-none dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
-          data-twe-modal-dismiss
-          aria-label="Close">
-          <span class="[&>svg]:h-6 [&>svg]:w-6">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </span>
-        </button>
-      </div>
-      <div class="relative flex-auto p-4" data-twe-modal-body-ref>
-         <section>
-          <ul class="tw:bg-slate-50 tw:p-4 tw:sm:px-8 tw:sm:pt-6 tw:sm:pb-8 tw:lg:p-4 tw:xl:px-8 tw:xl:pt-6 tw:xl:pb-8 tw:grid tw:grid-cols-1 tw:sm:grid-cols-2 tw:lg:grid-cols-1 tw:xl:grid-cols-2 tw:gap-4 tw:text-sm tw:leading-6">
-            {% for type_field in get_type_field %}
-            <li class="tw:flex">
-            <a class="tw:hover:border-blue-500 tw:hover:border-solid tw:hover:bg-white tw:hover:text-blue-500 group tw:w-full tw:flex tw:flex-col tw:items-center tw:justify-center tw:rounded-md tw:border-2 tw:border-slate-300 tw:text-sm tw:leading-6 tw:text-slate-900 tw:font-medium tw:py-3" href="{% url 'djf_surveys:admin_create_question' object.id type_field.id %}">
-              <i class="{{ type_field.icon }}">
-              </i>
-              {{ type_field.label }}
-            </a>
-            </li>
-            {% endfor %}
-          </ul>
-        </section>
-      </div>
-      <div
-        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 p-4 dark:border-white/10">
-        <button
-          type="button"
-          class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
-          data-twe-modal-dismiss
-          data-twe-ripple-init
-          data-twe-ripple-color="light">
-          Close
-        </button>
-        <button
-          type="button"
-          class="ms-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-          data-twe-ripple-init
-          data-twe-ripple-color="light">
-          Save changes
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+{% block extra_css %}
+  <link href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" rel="stylesheet"/>
+{% endblock %}
 
+<!-- Modal -->
+<div aria-hidden="true" aria-labelledby="exampleModalComponentsLabel" class="tw:static tw:left-0 tw:top-0 tw:z-[1055] tw:block tw:h-full tw:w-full tw:overflow-y-auto tw:overflow-x-hidden tw:outline-none" data-twe-backdrop="false" data-twe-modal-init="" id="addQuestion" tabindex="-1">
+ <div class="tw:pointer-events-none tw:relative tw:w-auto tw:opacity-100 tw:transition-all tw:duration-300 tw:ease-in-out min-[576px]:mx-auto min-[576px]:my-7 min-[576px]:max-w-[500px]" data-twe-modal-dialog-ref="">
+  <div class="tw:pointer-events-auto tw:relative tw:flex tw:w-full tw:flex-col tw:rounded-md tw:border-none tw:bg-white tw:bg-clip-padding tw:text-current shadow-4 tw:outline-none dark:bg-surface-dark">
+   <div class="tw:flex tw:flex-shrink-0 tw:items-center tw:justify-between tw:rounded-t-md tw:border-b-2 tw:border-neutral-100 tw:p-4 tw:dark:border-white/10">
+    <h5 class="tw:text-xl tw:font-medium tw:leading-normal text-surface tw:dark:text-white" id="exampleModalComponentsLabel">
+     Modal title
+    </h5>
+    <button aria-label="Close" class="tw:box-content tw:rounded-none tw:border-none tw:text-neutral-500 tw:hover:text-neutral-800 tw:hover:no-underline tw:focus:text-neutral-800 tw:focus:opacity-100 tw:focus:shadow-none tw:focus:outline-none tw:dark:text-neutral-400 tw:dark:hover:text-neutral-300 tw:dark:focus:text-neutral-300" data-twe-modal-dismiss="" type="button">
+     <span class="[&amp;&gt;svg]:h-6 [&amp;&gt;svg]:w-6">
+      <svg fill="currentColor" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round">
+       </path>
+      </svg>
+     </span>
+    </button>
+   </div>
+   <div class="tw:relative flex-auto tw:p-4" data-twe-modal-body-ref="">
+    <section>
+     <ul class="tw:bg-slate-50 tw:p-4 tw:sm:px-8 tw:sm:pt-6 tw:sm:pb-8 tw:lg:p-4 tw:xl:px-8 tw:xl:pt-6 tw:xl:pb-8 tw:grid tw:grid-cols-1 tw:sm:grid-cols-2 tw:lg:grid-cols-1 tw:xl:grid-cols-2 tw:gap-4 tw:text-sm tw:leading-6">
+      {% for type_field in get_type_field %}
+      <li class="tw:flex">
+       <a class="tw:hover:border-blue-500 tw:hover:border-solid tw:hover:bg-white tw:hover:text-blue-500 group tw:w-full tw:flex tw:flex-col tw:items-center tw:justify-center tw:rounded-md tw:border-2 tw:border-slate-300 tw:text-sm tw:leading-6 tw:text-slate-900 tw:font-medium tw:py-3" href="{% url 'djf_surveys:admin_create_question' object.id type_field.id %}">
+        <i class="{{ type_field.icon }}">
+        </i>
+        {{ type_field.label }}
+       </a>
+      </li>
+      {% endfor %}
+     </ul>
+    </section>
+   </div>
+   <div class="tw:flex tw:flex-shrink-0 tw:flex-wrap tw:items-center tw:justify-end tw:rounded-b-md tw:border-t-2 tw:border-neutral-100 tw:p-4 tw:dark:border-white/10">
+    <button class="tw:inline-block tw:rounded bg-primary-100 tw:px-6 tw:pb-2 pt-2.5 tw:text-xs tw:font-medium tw:uppercase tw:leading-normal text-primary-700 tw:transition tw:duration-150 tw:ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 tw:focus:outline-none tw:focus:ring-0 active:bg-primary-accent-200 dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400" data-twe-modal-dismiss="" data-twe-ripple-color="light" data-twe-ripple-init="" type="button">
+     Close
+    </button>
+    <button class="ms-1 tw:inline-block tw:rounded bg-primary tw:px-6 tw:pb-2 pt-2.5 tw:text-xs tw:font-medium tw:uppercase tw:leading-normal tw:text-white shadow-primary-3 tw:transition tw:duration-150 tw:ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 tw:focus:outline-none tw:focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong" data-twe-ripple-color="light" data-twe-ripple-init="" type="button">
+     Save changes
+    </button>
+   </div>
+  </div>
+ </div>
+</div>
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js">
 </script>
