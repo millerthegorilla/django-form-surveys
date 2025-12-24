@@ -1,29 +1,28 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
-
 <html>
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Survey - {{ title }}</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Survey - {{ title }}</title>
     {% tailwind_css %}
     {% block extra_css %}{% endblock %}
-</head>
-<body>
+  </head>
+  <body>
     {% if messages %}
-        {% for message in messages %}
-            {% include 'djf_surveys/components/alert.html' %}
-        {% endfor %}
+      {% for message in messages %}
+        {% include "djf_surveys/components/alert.html" %}
+      {% endfor %}
     {% endif %}
-
     {% if SURVEY_INCLUDE_NAVBAR %}
-        {% include 'djf_surveys/components/header_nav.html' %}
+      {% include "djf_surveys/components/header_nav.html" %}
     {% endif %}
     <div class="tw:container tw:mx-auto">
-        {% block content %} {% endblock %}
+      {% block content %}
+      {% endblock content %}
     </div>
-    {% include 'djf_surveys/components/alert_js.html' %}
-    {% block extra_js %}{% endblock %}
-</body>
-</html>
+    {% include "djf_surveys/components/alert_js.html" %}
+    {% block extra_js %}
+    {% endblock extra_js %}
+    </body>
+  </html>
