@@ -206,7 +206,7 @@
     display: none !important;
   }
 }
-
+@layer utilities {
   .absolute {
     position: absolute;
   }
@@ -673,7 +673,7 @@
       padding-inline: calc(var(--spacing) * 8);
     }
   }
-
+}
 @property --tw-space-y-reverse {
   syntax: "*";
   inherits: false;
