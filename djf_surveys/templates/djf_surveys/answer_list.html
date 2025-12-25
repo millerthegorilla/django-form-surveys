@@ -29,10 +29,10 @@
 </a>
                         {% endif %}
                         <a class="tw:z-20 tw:block tw:p-4 tw:text-green-700 tw:transition-all tw:bg-green-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-green-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{%  url 'djf_surveys:respond' survey.slug request.resolver_match.kwargs.selection_slug %}" type="button">
-                            {% include "djf_surveys/buttons/add_button.svg" %}
+                            {% include "djf_surveys/buttons/add_button.html" %}
                         </a>
 <a class="button-share tw:z-20 tw:block tw:p-4 tw:text-amber-700 tw:transition-all tw:bg-amber-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-amber-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" data-share-link="{% url 'djf_surveys:share_link' survey.slug %}" href="#" type="button">
-                            {% include "djf_surveys/buttons/share_button.svg" %}
+                            {% include "djf_surveys/buttons/share_button.html" %}
                         </a>
 </div>
 </div>

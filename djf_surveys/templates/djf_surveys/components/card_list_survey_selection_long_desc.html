@@ -1,12 +1,12 @@
 <div>
 <div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:float-right">
 <a class="tw:z-20 tw:block tw:p-4 tw:text-purple-700 tw:transition-all tw:bg-purple-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-purple-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{% url 'djf_surveys:respond' survey.slug object.slug %}" type="button">
-                {% include "djf_surveys/buttons/add_button.svg" %}
+                {% include "djf_surveys/buttons/add_button.html" %}
         </a>
 
         {% if user.is_superuser %}
             <a class="tw:z-20 tw:block tw:p-4 tw:text-blue-700 tw:transition-all tw:bg-blue-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-blue-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{% url 'djf_surveys:admin_forms_survey' survey.slug %}" type="button">
-                {% include "djf_surveys/buttons/edit_button.svg" %}
+                {% include "djf_surveys/buttons/edit_button.html" %}
             </a>
 <a class="tw:z-30 tw:block tw:p-4 tw:text-green-700 tw:transition-all tw:bg-green-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring active:bg-gren50" href="{% url 'djf_surveys:admin_summary_survey' survey.slug %}" type="button">
 <svg class="tw:h-4 tw:w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -15,7 +15,7 @@
 </svg>
 </a>
 <button class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50" data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_survey' survey.slug %}" data-mdb-object_name="{{ survey.name }}" data-te-target="#modalDelete" data-te-toggle="modal">
-                {% include "djf_surveys/buttons/delete_button.svg" %}
+                {% include "djf_surveys/buttons/delete_button.html" %}
             </button>
         {% endif %}
     </div>

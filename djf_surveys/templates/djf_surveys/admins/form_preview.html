@@ -9,7 +9,7 @@
 {% block content %}
 <div class="tw:flex tw:py-1 tw:fixed tw:bottom-10 tw:right-10">
  <button class="tw:z-20 tw:block tw:p-4 tw:text-blue-100 tw:transition-all tw:bg-blue-700 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-purple-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" data-twe-ripple-color="light" data-twe-ripple-init="" data-twe-target="#addQuestion" data-twe-toggle="modal" type="button">
-  {% include "djf_surveys/buttons/add_button.svg" with size=6 %}
+  {% include "djf_surveys/buttons/add_button.html" with size=6 %}
   <span class="tw:items-center tw:float-right">
    {% trans 'Question' %}
   </span>
@@ -19,13 +19,13 @@
  <div class="tw:max-w-lg tw:mx-auto">
   <div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:py-1 tw:float-right">
    <a class="tw:z-20 tw:block tw:p-4 tw:text-blue-700 tw:transition-all tw:bg-blue-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-blue-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{% url 'djf_surveys:admin_edit_survey' object.slug %}" type="button">
-    {% include "djf_surveys/buttons/edit_button.svg" %}
+    {% include "djf_surveys/buttons/edit_button.html" %}
    </a>
    <a class="button-share tw:z-20 tw:block tw:p-4 tw:text-amber-700 tw:transition-all tw:bg-amber-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-amber-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" data-share-link="{% url 'djf_surveys:share_link' object.slug %}" href="#" type="button">
-    {% include "djf_surveys/buttons/share_button.svg" %}
+    {% include "djf_surveys/buttons/share_button.html" %}
    </a>
    <a class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50" data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_survey' object.slug %}" data-mdb-object_name="{{ object.name }}" data-te-target="#modalDelete" data-te-toggle="modal">
-    {% include "djf_surveys/buttons/delete_button.svg" %}
+    {% include "djf_surveys/buttons/delete_button.html" %}
    </a>
   </div>
   <h1 class="tw:text-2xl tw:font-bold tw:text-center tw:text-blue-500 tw:sm:text-3xl">
@@ -40,10 +40,10 @@
    <div class="ui-state-default" id="{{ field|get_id_field }}">
     <div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:py-1">
      <a class="tw:z-20 tw:block tw:p-4 tw:text-blue-700 tw:transition-all tw:bg-blue-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-blue-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{% url 'djf_surveys:admin_edit_question' field|get_id_field  %}" type="button">
-      {% include "djf_surveys/buttons/edit_button.svg" %}
+      {% include "djf_surveys/buttons/edit_button.html" %}
      </a>
      <a class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50" data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_question' field|get_id_field %}" data-mdb-object_name="{{ field.label }}" data-te-target="#modalDelete" data-te-toggle="modal">
-      {% include "djf_surveys/buttons/delete_button.svg" %}
+      {% include "djf_surveys/buttons/delete_button.html" %}
      </a>
     </div>
     <a class="tw:float-right tw:z-30 tw:block tw:p-2 tw:m-2 tw:text-gray-500 tw:transition-all tw:bg-gray-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50" href="#">

@@ -11,7 +11,7 @@
     {% if object.cancel_button %}
         <div class="tw:flex tw:py-1 tw:fixed tw:bottom-10 tw:right-10">
             <a class="tw:inline-block tw:px-5 tw:py-3 tw:mt-4 tw:font-medium tw:text-white tw:bg-blue-500 tw:rounded-lg tw:sm:m-0" href="{{ link_back_on_cancel }}" id="cancel_button" type="button">
-                            {% include "djf_surveys/buttons/cancel_button.svg" with size=6 %}
+                            {% include "djf_surveys/buttons/cancel_button.html" with size=6 %}
                             <span class="tw:items-center tw:float-right"><b> {% trans 'Cancel' %} </b></span>
             </a>
         </div>
