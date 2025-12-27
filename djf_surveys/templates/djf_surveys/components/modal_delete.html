@@ -1,33 +1,37 @@
 {% load i18n %}
 
-<div aria-hidden="true" aria-labelledby="modalDeleteLabel" class="tw:fixed tw:left-0 tw:top-0 tw:z-1055 tw:hidden tw:h-full tw:w-full tw:overflow-y-auto tw:overflow-x-hidden tw:outline-none" data-te-modal-init="" id="modalDelete" tabindex="-1">
-<div class="tw:pointer-events-none tw:relative tw:w-auto tw:translate-y-[-50px] tw:opacity-0 tw:transition-all tw:duration-300 tw:ease-in-out tw:min-[576px]:mx-auto tw:min-[576px]:mt-7 tw:min-[576px]:max-w-[500px]" data-te-modal-dialog-ref="">
-<div class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] tw:pointer-events-auto tw:relative tw:flex tw:w-full tw:flex-col tw:rounded-md tw:border-none tw:bg-white tw:bg-clip-padding tw:text-current tw:shadow-lg tw:outline-none tw:dark:bg-neutral-600">
-<div class="tw:flex tw:shrink-0 tw:items-center tw:justify-between tw:rounded-t-md tw:border-b-2 tw:border-neutral-100 border-opacity-100 tw:p-4 dark:border-opacity-50">
 <!--Modal title-->
-<h5 class="tw:text-xl tw:font-medium tw:leading-normal tw:text-neutral-800 tw:dark:text-neutral-200" id="modalDeleteLabel">
-          {% trans "Confirmation" %}
-        </h5>
-<!--Close button-->
-<button aria-label="Close" class="tw:box-content tw:rounded-none tw:border-none tw:hover:no-underline tw:hover:opacity-75 tw:focus:opacity-100 tw:focus:shadow-none tw:focus:outline-none" data-te-modal-dismiss="" type="button">
-<svg class="tw:h-6 tw:w-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>
-</button>
-</div>
+<dialog class="modal" id="modalDelete">
+  <!--Modal title-->
+  <div class="modal-box tw:relative tw:p-4">
+    <h5 class="tw:text-xl tw:text-blue-600 tw:font-medium tw:leading-normal tw:dark:text-blue-600">
+      {% trans "Add Question" %}
+    </h5>
+    <!--Close button-->
+    <!--Modal body-->
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
 <!--Modal body-->
 <div class="tw:relative tw:flex-auto tw:p-4" data-te-modal-body-ref="">
 <p>{% blocktrans with html='<span class="tw:font-medium" id="object_name"></span>' %}Are you sure to delete {{ html }}?{% endblocktrans %}</p>
 </div>
 <!--Modal footer-->
 <div class="tw:flex tw:shrink-0 tw:flex-wrap tw:items-center tw:justify-end tw:rounded-b-md tw:border-t-2 tw:border-neutral-100 border-opacity-100 tw:p-4 dark:border-opacity-50">
-<button class="tw:inline-block tw:px-6 tw:py-2.5 tw:bg-red-400 tw:text-white tw:font-medium tw:text-xs tw:leading-tight tw:uppercase tw:rounded tw:shadow-md tw:hover:bg-red-700 tw:hover:shadow-lg tw:focus:outline-none tw:focus:ring-0 tw:transition tw:duration-150 tw:ease-in-out" data-te-modal-dismiss="" data-te-ripple-color="light" data-te-ripple-init="" type="button">
-          {% trans "Close" %}
-        </button>
-<a class="tw:inline-block tw:px-6 tw:py-2.5 tw:bg-blue-500 tw:text-white tw:font-medium tw:text-xs tw:leading-tight tw:uppercase tw:rounded tw:shadow-md tw:hover:bg-blue-700 tw:focus:bg-blue-700 tw:focus:shadow-lg tw:focus:outline-none tw:focus:ring-0 tw:active:bg-blue-800 tw:transition tw:duration-150 tw:ease-in-out tw:ml-1" data-te-ripple-color="light" data-te-ripple-init="" id="confirmDeleteButton">
-          {% trans "Yes" %}
-        </a>
+</div>
+<div class="modal-action">
+<form method="dialog">
+  <button class="btn tw:inline-block tw:px-6 tw:py-2.5 tw:bg-red-400 tw:text-white tw:font-medium tw:text-xs tw:leading-tight tw:uppercase tw:rounded tw:shadow-md tw:hover:bg-red-700 tw:hover:shadow-lg tw:focus:outline-none tw:focus:ring-0 tw:transition tw:duration-150 tw:ease-in-out">
+    {% trans "Close" %}
+  </button>
+  <a class="tw:inline-block tw:px-6 tw:py-2.5 tw:bg-blue-500 tw:text-white tw:font-medium tw:text-xs tw:leading-tight tw:uppercase tw:rounded tw:shadow-md tw:hover:bg-blue-700 tw:focus:bg-blue-700 tw:focus:shadow-lg tw:focus:outline-none tw:focus:ring-0 tw:active:bg-blue-800 tw:transition tw:duration-150 tw:ease-in-out tw:ml-1" data-te-ripple-color="light" data-te-ripple-init="" id="confirmDeleteButton">
+            {% trans "Yes" %}
+          </a>
+</form>
 </div>
 </div>
-</div>
-</div>
+<form class="modal-backdrop"method="dialog">
+      <button>close</button>
+    </form>
+</dialog>
+

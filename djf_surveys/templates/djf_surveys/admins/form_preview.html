@@ -2,19 +2,14 @@
 {% load djf_survey_tags static i18n %}
 
 {% block extra_css %}
+
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 <link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet"/>
 <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet"/>
 {% endblock %}
 
 {% block content %}
-<div class="tw:flex tw:py-1 tw:fixed tw:bottom-10 tw:right-10">
- <button class="tw:z-20 tw:block tw:p-4 tw:text-blue-100 tw:transition-all tw:bg-blue-700 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-purple-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" data-twe-ripple-color="light" data-twe-ripple-init="" data-twe-target="#addQuestion" data-twe-toggle="modal" type="button">
-  {% include "djf_surveys/buttons/add_button.html" with size=6 %}
-  <span class="tw:items-center tw:float-right">
-   {% trans 'Question' %}
-  </span>
- </button>
-</div>
 <div class="tw:max-w-screen-xl tw:px-4 tw:py-16 tw:mx-auto tw:sm:px-6 tw:lg:px-8">
  <div class="tw:max-w-lg tw:mx-auto">
   <div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:py-1 tw:float-right">
@@ -24,7 +19,7 @@
    <a class="button-share tw:z-20 tw:block tw:p-4 tw:text-amber-700 tw:transition-all tw:bg-amber-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-amber-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" data-share-link="{% url 'djf_surveys:share_link' object.slug %}" href="#" type="button">
     {% include "djf_surveys/buttons/share_button.html" %}
    </a>
-   <a class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50" data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_survey' object.slug %}" data-mdb-object_name="{{ object.name }}" data-te-target="#modalDelete" data-te-toggle="modal">
+   <a onclick="modalDelete.showModal()"class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50" data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_survey' object.slug %}" data-mdb-object_name="{{ object.name }}" data-te-target="#modalDelete" data-te-toggle="modal" href="#" type=button>
     {% include "djf_surveys/buttons/delete_button.html" %}
    </a>
   </div>
@@ -42,7 +37,7 @@
      <a class="tw:z-20 tw:block tw:p-4 tw:text-blue-700 tw:transition-all tw:bg-blue-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-blue-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{% url 'djf_surveys:admin_edit_question' field|get_id_field  %}" type="button">
       {% include "djf_surveys/buttons/edit_button.html" %}
      </a>
-     <a class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50" data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_question' field|get_id_field %}" data-mdb-object_name="{{ field.label }}" data-te-target="#modalDelete" data-te-toggle="modal">
+     <a onclick="modalDelete.showModal()" class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50" data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_question' field|get_id_field %}" data-mdb-object_name="{{ field.label }}" data-te-target="#modalDelete" data-te-toggle="modal">
       {% include "djf_surveys/buttons/delete_button.html" %}
      </a>
     </div>
@@ -71,8 +66,8 @@
    {% endfor %}
   </form>
  </div>
- {% include 'djf_surveys/components/modal_delete.html' %}
-        {% include 'djf_surveys/components/modal_choice_field_type.html' %}
+{% include 'djf_surveys/components/modal_delete.html' %}
+{% include 'djf_surveys/components/modal_choice_field_type.html' %}
 </div>
 {% endblock %}
 
@@ -83,6 +78,11 @@
 </script>
 <script>
  $(function () {
+            //$("#addQuestion").hide();
+            //$("#addQuestionButton").click(function () {
+            //$("#addQuestion").toggle('pulsate', 500);
+            //console.log("clicked");
+            //});
             $("#sortable").sortable({
                 opacity: 0.7,
                 update: function (event, ui) {
@@ -108,5 +108,5 @@
         });
 </script>
 {% include 'djf_surveys/components/modal_delete_js.html' %}
-    {% include 'djf_surveys/components/share_link_button_js.html' %}
+{% include 'djf_surveys/components/share_link_button_js.html' %}
 {% endblock %}

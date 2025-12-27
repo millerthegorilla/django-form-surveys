@@ -1,3 +1,6 @@
-<div class="datepicker" data-te-datepicker-init="">
-<input !="None" "django="" %}="" %}{%="" attrs.html"="" data-te-datepicker-toggle-button-ref="" data-te-datepicker-toggle-ref="" endif="" forms="" if="" include="" name="{{ widget.name }}" type="{{ widget.type }}" value="{{ widget.value }}" widget.value="" widgets="" {%=""/>
+<div data-te-datepicker-init class="datepicker">
+    <input type="{{ widget.type }}" name="{{ widget.name }}"{% if widget.value != None %}
+        value="{{ widget.value }}"{% endif %}{% include "django/forms/widgets/attrs.html" %}
+        data-te-datepicker-toggle-ref
+        data-te-datepicker-toggle-button-ref/>
 </div>
