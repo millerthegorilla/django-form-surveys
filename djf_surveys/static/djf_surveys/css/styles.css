@@ -484,6 +484,9 @@
   .tw\:flex-col {
     flex-direction: column;
   }
+  .tw\:flex-row {
+    flex-direction: row;
+  }
   .tw\:flex-wrap {
     flex-wrap: wrap;
   }
@@ -691,6 +694,9 @@
   }
   .tw\:object-cover {
     object-fit: cover;
+  }
+  .tw\:p-1 {
+    padding: calc(var(--tw-spacing) * 1);
   }
   .tw\:p-2 {
     padding: calc(var(--tw-spacing) * 2);

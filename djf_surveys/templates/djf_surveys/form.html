@@ -1,62 +1,59 @@
 {% extends get_master_template %}
 {% load djf_survey_tags i18n static %}
-
 {% block extra_css %}
-<link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet"/>
-<link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet"/>
+    <link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet" />
+    <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
 {% endblock %}
-
 {% block content %}
-<div class="survey-background">
-    {% if object.cancel_button %}
-        <div class="tw:flex tw:py-1 tw:fixed tw:bottom-10 tw:right-10">
-            <a class="tw:inline-block tw:px-5 tw:py-3 tw:mt-4 tw:font-medium tw:text-white tw:bg-blue-500 tw:rounded-lg tw:sm:m-0" href="{{ link_back_on_cancel }}" id="cancel_button" type="button">
-                            {% include "djf_surveys/buttons/cancel_button.html" with size=6 %}
-                            <span class="tw:items-center tw:float-right"><b> {% trans 'Cancel' %} </b></span>
-            </a>
-        </div>
-    {% endif %}
-
-    <div class="tw:max-w-(--breakpoint-xl) tw:px-4 tw:py-16 tw:mx-auto tw:sm:px-6 tw:lg:px-8">
-        <div class="tw:max-w-lg tw:mx-auto">
-            <h1 class="tw:text-2xl tw:font-bold tw:text-center tw:text-blue-500 tw:sm:text-3xl">{{ title_page }}</h1>
-            <div class="no-tailwindcss-base tw:mt-4">
-                {{ sub_title_page|safe }}
+    <div class="survey-background">
+        {% if object.cancel_button %}
+            <div class="tw:flex tw:py-1 tw:fixed tw:bottom-10 tw:right-10">
+                <a class="tw:inline-block tw:px-5 tw:py-3 tw:mt-4 tw:font-medium tw:text-white tw:bg-blue-500 tw:rounded-lg tw:sm:m-0"
+                   href="{{ link_back_on_cancel }}"
+                   id="cancel_button"
+                   type="button">
+                    {% include "djf_surveys/buttons/cancel_button.html" with size=6 %}
+                    <span class="tw:items-center tw:float-right"><b> {% trans 'Cancel' %} </b></span>
+                </a>
             </div>
-            <form method="post">
-                {% csrf_token %}
-                {% for field in form %}
-                    <div class="tw:p-8 tw:mt-6 tw:mb-0 tw:space-y-4 tw:rounded-lg tw:shadow-md tw:border tw:border-gray-200 tw:bg-white">
-                        <label class="tw:text-base tw:font-medium" for="email">{{ field.label }}</label>
-                        <div class="tw:mt-1">
-                            {% if field.field.widget.input_type == 'radio' or field.field.widget.input_type == 'checkbox' %}
-                                {{ field }}
-                            {% else %}
-                                {{ field|addclass:'tw:w-full tw:p-4 tw:pr-12 tw:text-sm tw:border tw:border-gray-500 tw:rounded-lg tw:shadow-sm' }}
-                            {% endif %}
+        {% endif %}
+        <div class="tw:max-w-(--breakpoint-xl) tw:px-4 tw:py-16 tw:mx-auto tw:sm:px-6 tw:lg:px-8">
+            <div class="tw:max-w-lg tw:mx-auto">
+                <h1 class="tw:text-2xl tw:font-bold tw:text-center tw:text-blue-500 tw:sm:text-3xl">{{ title_page }}</h1>
+                <div class="no-tailwindcss-base tw:mt-4">{{ sub_title_page|safe }}</div>
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="tw:p-8 tw:mt-6 tw:mb-0 tw:space-y-4 tw:rounded-lg tw:shadow-md tw:border tw:border-gray-200 tw:bg-white">
+                            <label class="tw:text-base tw:font-medium" for="email">{{ field.label }}</label>
+                            <div class="tw:mt-1">
+                                {% if field.field.widget.input_type == 'radio' or field.field.widget.input_type == 'checkbox' %}
+                                    {{ field }}
+                                {% else %}
+                                    {{ field|addclass:'tw:w-full tw:p-4 tw:pr-12 tw:text-sm tw:border tw:border-gray-500 tw:rounded-lg tw:shadow-sm' }}
+                                {% endif %}
+                            </div>
+                            <p class="tw:text-xs tw:text-gray-400">{{ field.help_text }}</p>
+                            <span class="tw:text-xs tw:text-red-400">{{ field.errors }}</span>
                         </div>
-                        <p class="tw:text-xs tw:text-gray-400">{{ field.help_text }}</p>
-                        <span class="tw:text-xs tw:text-red-400">{{ field.errors }}</span>
-                    </div>
-                {% endfor %}
-
-                <button class="tw:block tw:w-full tw:mt-5 tw:px-5 tw:py-3 tw:text-sm tw:font-medium tw:text-white tw:bg-blue-500 tw:rounded-lg" type="submit">
-                    {% trans "Submit" %}
-                </button>
-            </form>
+                    {% endfor %}
+                    <button class="tw:block tw:w-full tw:mt-5 tw:px-5 tw:py-3 tw:text-sm tw:font-medium tw:text-white tw:bg-blue-500 tw:rounded-lg"
+                            type="submit">{% trans "Submit" %}</button>
+                </form>
+            </div>
+        </div>
+        <div id="idle-popup">
+            <h2>Are you still there?</h2>
+            <p>
+                You will be redirected in <span id="countdown">120</span> seconds.
+            </p>
+            <button id="stay-btn">I'm still here</button>
         </div>
     </div>
-    <div id="idle-popup">
-        <h2>Are you still there?</h2>
-        <p>You will be redirected in <span id="countdown">120</span> seconds.</p>
-        <button id="stay-btn">I'm still here</button>
-    </div>
-</div>
 {% endblock %}
-
 {% block extra_js %}
     <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script>
-<script>
+    <script>
       // many thanks to https://forum.squarespace.com/topic/319936-inactive-idle-user-site-redirect-to-homepage/#elComment_795026
       function initialise_timeout() {
         const idleDurationSecs = {{ SURVEY_FORM_TIMEOUT }}; // Use this line to change the total time a user has until redirected

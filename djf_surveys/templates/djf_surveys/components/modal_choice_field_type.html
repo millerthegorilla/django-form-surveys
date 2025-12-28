@@ -1,6 +1,6 @@
 {% load i18n %}
 <!-- button -->
-<div class="tw:flex tw:py-1 tw:fixed tw:bottom-10 tw:right-10">
+<div class="tw:flex tw:justify-end">
   <button id="addQuestionButton"
           class="tw:z-20 tw:block tw:p-4 tw:text-blue-100 tw:transition-all tw:bg-blue-700 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-purple-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring"
           data-twe-ripple-init=""
@@ -12,17 +12,19 @@
   </button>
 </div>
 <!--Verically centered modal-->
-<dialog class="modal" id="addQuestion">
+<dialog class="tw:modal tw:mx-auto tw:mt-12" id="addQuestion">
   <!--Modal title-->
-  <div class="modal-box tw:relative tw:p-4">
-    <h5 class="tw:text-xl tw:text-blue-600 tw:font-medium tw:leading-normal tw:dark:text-blue-600">
-      {% trans "Add Question" %}
-    </h5>
-    <!--Close button-->
-    <!--Modal body-->
-    <form method="dialog">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-    </form>
+  <div class="tw:modal-box tw:relative tw:p-4">
+    <span class="tw:p-1 tw:flex tw:flex-row tw:justify-between">
+      <h5 class="tw:text-xl tw:text-blue-600 tw:font-medium tw:leading-normal tw:dark:text-blue-600">
+        {% trans "Add Question" %}
+      </h5>
+      <!--Close button-->
+      <!--Modal body-->
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+    </span>
     <section>
       <ul class="tw:bg-slate-50 tw:p-4 tw:sm:px-8 tw:sm:pt-6 tw:sm:pb-8 tw:lg:p-4 tw:xl:px-8 tw:xl:pt-6 tw:xl:pb-8 tw:grid tw:grid-cols-1 tw:sm:grid-cols-2 tw:lg:grid-cols-1 tw:xl:grid-cols-2 tw:gap-4 tw:text-sm tw:leading-6">
         {% for type_field in get_type_field %}
@@ -37,9 +39,11 @@
         {% endfor %}
       </ul>
     </section>
-  <!--Modal footer-->
-</div>
-    <form class="modal-backdrop"method="dialog">
-      <button>close</button>
+    <!--Modal footer-->
+    <form class="tw:modal-backdrop" method="dialog">
+      <button class="btn tw:inline-block tw:px-6 tw:py-2.5 tw:bg-red-400 tw:text-white tw:font-medium tw:text-xs tw:leading-tight tw:uppercase tw:rounded tw:shadow-md tw:hover:bg-red-700 tw:hover:shadow-lg tw:focus:outline-none tw:focus:ring-0 tw:transition tw:duration-150 tw:ease-in-out">
+        close
+      </button>
     </form>
+  </div>
 </dialog>

@@ -1,15 +1,13 @@
 {% extends get_master_template %}
 {% load static %}
-
 {{ form.media }}
-
 {% block content %}
     <div class="tw:container">
-<h2>Withdraw Response</h2>
-<form method="post">
+        <h2>Withdraw Response</h2>
+        <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Withdraw Response</button>
-</form>
-</div>
+        </form>
+    </div>
 {% endblock %}

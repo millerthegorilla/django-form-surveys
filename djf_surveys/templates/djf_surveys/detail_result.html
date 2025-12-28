@@ -1,25 +1,19 @@
 {% extends get_master_template %}
 {% load djf_survey_tags static %}
-
 {% block extra_css %}
-  <link href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" rel="stylesheet"/>
-<link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css"
+          rel="stylesheet" />
+    <link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet" />
 {% endblock %}
-
 {% block content %}
     <div class="tw:max-w-(--breakpoint-xl) tw:px-4 tw:py-16 tw:mx-auto tw:sm:px-6 tw:lg:px-8">
-<div class="tw:max-w-lg tw:mx-auto">
-<h1 class="tw:text-2xl tw:font-bold tw:text-center tw:text-blue-500 tw:sm:text-3xl">{{ title_page }}</h1>
-<p class="tw:max-w-md tw:mx-auto tw:mt-4 tw:mb-4 tw:text-center tw:text-gray-500">
-                {{ sub_title_page }}
-            </p>
-
+        <div class="tw:max-w-lg tw:mx-auto">
+            <h1 class="tw:text-2xl tw:font-bold tw:text-center tw:text-blue-500 tw:sm:text-3xl">{{ title_page }}</h1>
+            <p class="tw:max-w-md tw:mx-auto tw:mt-4 tw:mb-4 tw:text-center tw:text-gray-500">{{ sub_title_page }}</p>
             {% include 'djf_surveys/components/card_list_answer.html' %}
         </div>
-</div>
-
+    </div>
 {% endblock %}
-
 {% block extra_js %}
     <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script>
 {% endblock %}

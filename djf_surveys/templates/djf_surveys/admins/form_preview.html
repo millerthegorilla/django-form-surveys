@@ -1,80 +1,82 @@
 {% extends get_admin_master_template %}
 {% load djf_survey_tags static i18n %}
-
 {% block extra_css %}
-<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
-<link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet"/>
-<link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet"/>
+    <link href="{% static 'djf_surveys/css/daisyui_modal.css' %}"
+          rel="stylesheet" />
+    <link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet" />
+    <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
 {% endblock %}
-
 {% block content %}
-<div class="tw:max-w-screen-xl tw:px-4 tw:py-16 tw:mx-auto tw:sm:px-6 tw:lg:px-8">
- <div class="tw:max-w-lg tw:mx-auto">
-  <div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:py-1 tw:float-right">
-   <a class="tw:z-20 tw:block tw:p-4 tw:text-blue-700 tw:transition-all tw:bg-blue-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-blue-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{% url 'djf_surveys:admin_edit_survey' object.slug %}" type="button">
-    {% include "djf_surveys/buttons/edit_button.html" %}
-   </a>
-   <a class="button-share tw:z-20 tw:block tw:p-4 tw:text-amber-700 tw:transition-all tw:bg-amber-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-amber-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" data-share-link="{% url 'djf_surveys:share_link' object.slug %}" href="#" type="button">
-    {% include "djf_surveys/buttons/share_button.html" %}
-   </a>
-   <a onclick="modalDelete.showModal()"class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50" data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_survey' object.slug %}" data-mdb-object_name="{{ object.name }}" data-te-target="#modalDelete" data-te-toggle="modal" href="#" type=button>
-    {% include "djf_surveys/buttons/delete_button.html" %}
-   </a>
-  </div>
-  <h1 class="tw:text-2xl tw:font-bold tw:text-center tw:text-blue-500 tw:sm:text-3xl">
-   {{ title_page }}
-  </h1>
-  <div class="no-tailwindcss-base tw:mt-4">
-   {{ sub_title_page|safe }}
-  </div>
-  <form class="tw:mx-auto tw:mt-12" id="sortable" method="post">
-   {% csrf_token %}
+    <div class="tw:max-w-screen-xl tw:px-4 tw:py-16 tw:mx-auto tw:sm:px-6 tw:lg:px-8">
+        <div class="tw:max-w-lg tw:mx-auto">
+            <div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:py-1 tw:float-right">
+                <a class="tw:z-20 tw:block tw:p-4 tw:text-blue-700 tw:transition-all tw:bg-blue-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-blue-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring"
+                   href="{% url 'djf_surveys:admin_edit_survey' object.slug %}"
+                   type="button">{% include "djf_surveys/buttons/edit_button.html" %}</a>
+                <a class="button-share tw:z-20 tw:block tw:p-4 tw:text-amber-700 tw:transition-all tw:bg-amber-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-amber-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring"
+                   data-share-link="{% url 'djf_surveys:share_link' object.slug %}"
+                   href="#"
+                   type="button">{% include "djf_surveys/buttons/share_button.html" %}</a>
+                <a onclick="modalDelete.showModal()"
+                   class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50"
+                   data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_survey' object.slug %}"
+                   data-mdb-object_name="{{ object.name }}"
+                   data-te-target="#modalDelete"
+                   data-te-toggle="modal"
+                   href="#"
+                   type="button">{% include "djf_surveys/buttons/delete_button.html" %}</a>
+            </div>
+            <h1 class="tw:text-2xl tw:font-bold tw:text-center tw:text-blue-500 tw:sm:text-3xl">{{ title_page }}</h1>
+            <div class="no-tailwindcss-base tw:mt-4">{{ sub_title_page|safe }}</div>
+            <form class="tw:mx-auto tw:mt-12" id="sortable" method="post">
+                {% csrf_token %}
                 {% for field in form %}
-   <div class="ui-state-default" id="{{ field|get_id_field }}">
-    <div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:py-1">
-     <a class="tw:z-20 tw:block tw:p-4 tw:text-blue-700 tw:transition-all tw:bg-blue-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-blue-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring" href="{% url 'djf_surveys:admin_edit_question' field|get_id_field  %}" type="button">
-      {% include "djf_surveys/buttons/edit_button.html" %}
-     </a>
-     <a onclick="modalDelete.showModal()" class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50" data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_question' field|get_id_field %}" data-mdb-object_name="{{ field.label }}" data-te-target="#modalDelete" data-te-toggle="modal">
-      {% include "djf_surveys/buttons/delete_button.html" %}
-     </a>
-    </div>
-    <a class="tw:float-right tw:z-30 tw:block tw:p-2 tw:m-2 tw:text-gray-500 tw:transition-all tw:bg-gray-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50" href="#">
-     <svg class="tw:h-6 tw:w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-      </path>
-     </svg>
-    </a>
-    <div class="tw:p-8 tw:mb-6 tw:rounded-lg tw:shadow-md tw:border tw:border-gray-200 tw:bg-white">
-     <label class="tw:text-base tw:font-medium" for="email">
-      {{ field.label }}
-     </label>
-     <div class="tw:mt-1">
-      {% if field.field.widget.input_type == 'radio' or field.field.widget.input_type == 'checkbox' %}
+                    <div class="ui-state-default" id="{{ field|get_id_field }}">
+                        <div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:py-1">
+                            <a class="tw:z-20 tw:block tw:p-4 tw:text-blue-700 tw:transition-all tw:bg-blue-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-blue-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring"
+                               href="{% url 'djf_surveys:admin_edit_question' field|get_id_field %}"
+                               type="button">{% include "djf_surveys/buttons/edit_button.html" %}</a>
+                            <a onclick="modalDelete.showModal()"
+                               class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50"
+                               data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_question' field|get_id_field %}"
+                               data-mdb-object_name="{{ field.label }}"
+                               data-te-target="#modalDelete"
+                               data-te-toggle="modal">{% include "djf_surveys/buttons/delete_button.html" %}</a>
+                        </div>
+                        <a class="tw:float-right tw:z-30 tw:block tw:p-2 tw:m-2 tw:text-gray-500 tw:transition-all tw:bg-gray-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50"
+                           href="#">
+                            <svg class="tw:h-6 tw:w-6"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 viewbox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                </path>
+                            </svg>
+                        </a>
+                        <div class="tw:p-8 tw:mb-6 tw:rounded-lg tw:shadow-md tw:border tw:border-gray-200 tw:bg-white">
+                            <label class="tw:text-base tw:font-medium" for="email">{{ field.label }}</label>
+                            <div class="tw:mt-1">
+                                {% if field.field.widget.input_type == 'radio' or field.field.widget.input_type == 'checkbox' %}
                                     {{ field }}
                                 {% else %}
                                     {{ field|addclass:'w-full p-4 pr-12 text-sm border-gray-500 rounded-lg shadow-sm' }}
                                 {% endif %}
-     </div>
-     <p class="tw:text-xs tw:text-gray-400 tw:mt-2">
-      {{ field.help_text }}
-     </p>
+                            </div>
+                            <p class="tw:text-xs tw:text-gray-400 tw:mt-2">{{ field.help_text }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </form>
+        </div>
+        {% include 'djf_surveys/components/modal_delete.html' %}
+        {% include 'djf_surveys/components/modal_choice_field_type.html' %}
     </div>
-   </div>
-   {% endfor %}
-  </form>
- </div>
-{% include 'djf_surveys/components/modal_delete.html' %}
-{% include 'djf_surveys/components/modal_choice_field_type.html' %}
-</div>
 {% endblock %}
-
 {% block extra_js %}
-<script src="https://code.jquery.com/jquery-3.6.1.js">
-</script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js">
-</script>
-<script>
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
  $(function () {
             //$("#addQuestion").hide();
             //$("#addQuestionButton").click(function () {
@@ -104,7 +106,7 @@
                 }
             });
         });
-</script>
-{% include 'djf_surveys/components/modal_delete_js.html' %}
-{% include 'djf_surveys/components/share_link_button_js.html' %}
+    </script>
+    {% include 'djf_surveys/components/modal_delete_js.html' %}
+    {% include 'djf_surveys/components/share_link_button_js.html' %}
 {% endblock %}

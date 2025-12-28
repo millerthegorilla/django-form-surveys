@@ -1,26 +1,25 @@
 <!DOCTYPE html>
 {% load i18n static tailwind_tags %}
 <html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta name="description" content="{% trans 'Survey application' %}"/>
-<meta name="keywords" content="survey, questionnaire"/>
-<title>{% trans "Survey" %} - {{ title }}</title>
-    {% block extra_css %}{% endblock %}
-    {% tailwind_css %}
-</head>
-<body>
-    {% if messages %}
-        {% for message in messages %}
-            {% include 'djf_surveys/components/alert.html' %}
-        {% endfor %}
-    {% endif %}
-    <div class="tw:container tw:mx-auto">
-        {% block content %} {% endblock %}
-    </div>
-
-    {% include 'djf_surveys/components/alert_js.html' %}
-    {% block extra_js %}{% endblock %}
-</body>
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <meta name="description" content="{% trans 'Survey application' %}" />
+        <meta name="keywords" content="survey, questionnaire" />
+        <title>{% trans "Survey" %} - {{ title }}</title>
+        {% block extra_css %}{% endblock %}
+        {% tailwind_css %}
+    </head>
+    <body>
+        {% if messages %}
+            {% for message in messages %}
+                {% include 'djf_surveys/components/alert.html' %}
+            {% endfor %}
+        {% endif %}
+        <div class="tw:container tw:mx-auto">
+            {% block content %}{% endblock %}
+        </div>
+        {% include 'djf_surveys/components/alert_js.html' %}
+        {% block extra_js %}{% endblock %}
+    </body>
 </html>

@@ -1,18 +1,27 @@
 {% load i18n %}
 <div class="tw:flex tw:space-x-4 tw:mb-5">
-<form class="">
-<div class="tw:relative">
-<input class="tw:h-10 tw:pr-10 tw:text-sm tw:placeholder-gray-300 tw:border tw:border-gray-200 tw:rounded-lg tw:focus:z-10" name="q" placeholder="{% trans 'Search...' %}" type="text" value="{{ search_query}}"/>
-<button class="tw:absolute tw:inset-y-0 tw:right-0 tw:p-2 tw:mr-px tw:text-gray-600 tw:rounded-r-lg" type="submit">
-<svg class="tw:w-5 tw:h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path clip-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" fill-rule="evenodd"></path>
-</svg>
-</button>
-<button class="tw:absolute tw:inset-y-0 tw:right-5 tw:p-2 tw:mr-px tw:text-gray-600 tw:rounded-r-lg" id="cancel_button" type="cancel">
-            {% include "djf_surveys/buttons/cancel_search_button.html" with size=5 %}
-          </button>
-</div>
-</form>
+    <form class="">
+        <div class="tw:relative">
+            <input class="tw:h-10 tw:pr-10 tw:text-sm tw:placeholder-gray-300 tw:border tw:border-gray-200 tw:rounded-lg tw:focus:z-10"
+                   name="q"
+                   placeholder="{% trans 'Search...' %}"
+                   type="text"
+                   value="{{ search_query }}" />
+            <button class="tw:absolute tw:inset-y-0 tw:right-0 tw:p-2 tw:mr-px tw:text-gray-600 tw:rounded-r-lg"
+                    type="submit">
+                <svg class="tw:w-5 tw:h-5"
+                     fill="currentColor"
+                     viewbox="0 0 20 20"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path clip-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" fill-rule="evenodd">
+                    </path>
+                </svg>
+            </button>
+            <button class="tw:absolute tw:inset-y-0 tw:right-5 tw:p-2 tw:mr-px tw:text-gray-600 tw:rounded-r-lg"
+                    id="cancel_button"
+                    type="cancel">{% include "djf_surveys/buttons/cancel_search_button.html" with size=5 %}</button>
+        </div>
+    </form>
 </div>
 <script>
     const cancelButton = document.getElementById('cancel_button');

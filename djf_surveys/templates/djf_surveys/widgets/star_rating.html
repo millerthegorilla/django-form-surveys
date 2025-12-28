@@ -1,12 +1,13 @@
 {% load static djf_survey_tags %}
-
-<input type="{{ widget.type }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value }}" {% else %} value="0" {% endif %}{% include "django/forms/widgets/attrs.html" %}>
+<input type="{{ widget.type }}"
+       name="{{ widget.name }}"
+       {% if widget.value != None %} value="{{ widget.value }}" {% else %} value="0" {% endif %}
+       {% include "django/forms/widgets/attrs.html" %}>
 {% if widget.value != None %}
-{% create_star widget.value widget.attrs.id widget.num_ratings %}
+    {% create_star widget.value widget.attrs.id widget.num_ratings %}
 {% else %}
     {% create_star "0" widget.attrs.id widget.num_ratings %}
 {% endif %}
-
 <script>
     const ratingStars_{{ widget.attrs.id }} = [...document.getElementById("parent_start_{{ widget.attrs.id }}").getElementsByClassName("rating__star")];
 

@@ -1,23 +1,19 @@
 {% extends get_admin_master_template %}
 {% load i18n %}
-
 {% block content %}
     <div class="tw:container tw:px-5 tw:py-5">
         {% include 'djf_surveys/components/section_welcome.html' %}
-
         <section>
-<div class="tw:py-6 tw:justify-start tw:items-center tw:flex">
-<h2 class="tw:max-w-xl tw:text-2xl tw:font-bold tw:sm:text-3xl">
-                    {% trans "Create a survey selection list" %}
-                </h2>
-<div class="tw:ms-10">
-<a class="tw:inline-block tw:px-5 tw:py-3 tw:mt-4 tw:font-medium tw:text-white tw:bg-blue-500 tw:rounded-lg tw:sm:m-0" href="{% url 'djf_surveys:admin_create_survey_selection' %}">
+            <div class="tw:py-6 tw:justify-start tw:items-center tw:flex">
+                <h2 class="tw:max-w-xl tw:text-2xl tw:font-bold tw:sm:text-3xl">{% trans "Create a survey selection list" %}</h2>
+                <div class="tw:ms-10">
+                    <a class="tw:inline-block tw:px-5 tw:py-3 tw:mt-4 tw:font-medium tw:text-white tw:bg-blue-500 tw:rounded-lg tw:sm:m-0"
+                       href="{% url 'djf_surveys:admin_create_survey_selection' %}">
                         {% include "djf_surveys/buttons/add_button.html" %}
                     </a>
-</div>
-</div>
-</section>
-
+                </div>
+            </div>
+        </section>
         {% include 'djf_surveys/components/search_form.html' %}
         {% if object_list %}
             <div class="tw:grid tw:sm:grid-cols-2 tw:md:grid-cols-2 tw:lg:grid-cols-2 tw:xl:grid-cols-2 tw:gap-4">
@@ -25,20 +21,15 @@
                     {% include 'djf_surveys/components/card_list_survey_selection_list.html' %}
                 {% endfor %}
             </div>
-<div class="tw:py-10">
-                {% include 'djf_surveys/components/pagination.html' %}
-            </div>
+            <div class="tw:py-10">{% include 'djf_surveys/components/pagination.html' %}</div>
         {% else %}
             {% include 'djf_surveys/components/empty_state.html' with type="Survey Selection" reason=reason %}
         {% endif %}
     </div>
-
     {% include 'djf_surveys/components/modal_delete.html' %}
-
 {% endblock %}
-
 {% block extra_js %}
-    <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script>
     {% include 'djf_surveys/components/modal_delete_js.html' %}
     {% include 'djf_surveys/components/share_link_button_js.html' %}
 {% endblock %}

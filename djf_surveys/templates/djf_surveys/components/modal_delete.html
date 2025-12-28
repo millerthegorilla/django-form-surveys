@@ -1,37 +1,37 @@
 {% load i18n %}
-
 <!--Modal title-->
-<dialog class="modal" id="modalDelete">
+<dialog class="modal tw:mx-auto tw:mt-12" id="modalDelete">
   <!--Modal title-->
   <div class="modal-box tw:relative tw:p-4">
-    <h5 class="tw:text-xl tw:text-blue-600 tw:font-medium tw:leading-normal tw:dark:text-blue-600">
-      {% trans "Add Question" %}
-    </h5>
-    <!--Close button-->
+    <span class="tw:p-1 tw:flex tw:flex-row tw:justify-between">
+      <h5 class="tw:text-xl tw:text-blue-600 tw:font-medium tw:leading-normal tw:dark:text-blue-600">
+        {% trans "Add Question" %}
+      </h5>
+      <!--Close button-->
+      <!--Modal body-->
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+    </span>
     <!--Modal body-->
-    <form method="dialog">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-    </form>
-<!--Modal body-->
-<div class="tw:relative tw:flex-auto tw:p-4" data-te-modal-body-ref="">
-<p>{% blocktrans with html='<span class="tw:font-medium" id="object_name"></span>' %}Are you sure to delete {{ html }}?{% endblocktrans %}</p>
-</div>
-<!--Modal footer-->
-<div class="tw:flex tw:shrink-0 tw:flex-wrap tw:items-center tw:justify-end tw:rounded-b-md tw:border-t-2 tw:border-neutral-100 border-opacity-100 tw:p-4 dark:border-opacity-50">
-</div>
-<div class="modal-action">
-<form method="dialog">
-  <button class="btn tw:inline-block tw:px-6 tw:py-2.5 tw:bg-red-400 tw:text-white tw:font-medium tw:text-xs tw:leading-tight tw:uppercase tw:rounded tw:shadow-md tw:hover:bg-red-700 tw:hover:shadow-lg tw:focus:outline-none tw:focus:ring-0 tw:transition tw:duration-150 tw:ease-in-out">
-    {% trans "Close" %}
-  </button>
-  <a class="tw:inline-block tw:px-6 tw:py-2.5 tw:bg-blue-500 tw:text-white tw:font-medium tw:text-xs tw:leading-tight tw:uppercase tw:rounded tw:shadow-md tw:hover:bg-blue-700 tw:focus:bg-blue-700 tw:focus:shadow-lg tw:focus:outline-none tw:focus:ring-0 tw:active:bg-blue-800 tw:transition tw:duration-150 tw:ease-in-out tw:ml-1" data-te-ripple-color="light" data-te-ripple-init="" id="confirmDeleteButton">
-            {% trans "Yes" %}
-          </a>
-</form>
-</div>
-</div>
-<form class="modal-backdrop"method="dialog">
-      <button>close</button>
-    </form>
+    <div class="tw:relative tw:flex-auto tw:p-4" data-te-modal-body-ref="">
+      <p>
+        {% blocktrans with html='<span class="tw:font-medium" id="object_name"></span>' %}Are you sure to delete {{ html }}?{% endblocktrans %}
+      </p>
+    </div>
+    <!--Modal footer-->
+    <div class="tw:flex tw:shrink-0 tw:flex-wrap tw:items-center tw:justify-end tw:rounded-b-md tw:border-t-2 tw:border-neutral-100 border-opacity-100 tw:p-4 dark:border-opacity-50">
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn tw:inline-block tw:px-6 tw:py-2.5 tw:bg-red-400 tw:text-white tw:font-medium tw:text-xs tw:leading-tight tw:uppercase tw:rounded tw:shadow-md tw:hover:bg-red-700 tw:hover:shadow-lg tw:focus:outline-none tw:focus:ring-0 tw:transition tw:duration-150 tw:ease-in-out">
+          {% trans "Close" %}
+        </button>
+        <a class="tw:inline-block tw:px-6 tw:py-2.5 tw:bg-blue-500 tw:text-white tw:font-medium tw:text-xs tw:leading-tight tw:uppercase tw:rounded tw:shadow-md tw:hover:bg-blue-700 tw:focus:bg-blue-700 tw:focus:shadow-lg tw:focus:outline-none tw:focus:ring-0 tw:active:bg-blue-800 tw:transition tw:duration-150 tw:ease-in-out tw:ml-1"
+           data-te-ripple-color="light"
+           data-te-ripple-init=""
+           id="confirmDeleteButton">{% trans "Yes" %}</a>
+      </form>
+    </div>
+  </div>
 </dialog>
-

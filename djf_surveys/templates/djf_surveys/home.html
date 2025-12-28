@@ -1,49 +1,39 @@
 {% extends get_master_template %}
 {% load static %}
-
 {% block extra_css %}
-    <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet"/>
+    <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
 {% endblock %}
-
 {% block content %}
     <div class="tw:container tw:px-5 tw:py-5">
         {% include 'djf_surveys/components/section_welcome.html' %}
-
         {% include 'djf_surveys/components/search_form.html' %}
         <div>
-        {% if surveys %}
-            <div class="tw:grid tw:sm:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-2 tw:xl:grid-cols-2 tw:gap-4">
-                {% for survey in surveys %}
-                    {% include 'djf_surveys/components/card_list_survey.html' %}
-                {% endfor %}
-            </div>
-<div class="tw:py-10">
-                {% include 'djf_surveys/components/pagination.html' %}
-            </div>
-        {% else %}
-            {% include 'djf_surveys/components/empty_state.html' with type="Survey" reason=reason %}
-        {% endif %}
+            {% if surveys %}
+                <div class="tw:grid tw:sm:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-2 tw:xl:grid-cols-2 tw:gap-4">
+                    {% for survey in surveys %}
+                        {% include 'djf_surveys/components/card_list_survey.html' %}
+                    {% endfor %}
+                </div>
+                <div class="tw:py-10">{% include 'djf_surveys/components/pagination.html' %}</div>
+            {% else %}
+                {% include 'djf_surveys/components/empty_state.html' with type="Survey" reason=reason %}
+            {% endif %}
         </div>
-<div>
-        {% if survey_selections %}
-            <div class="tw:grid tw:sm:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-2 tw:xl:grid-cols-2 tw:gap-4">
-                {% for survey_selection in survey_selections %}
-                    {% include 'djf_surveys/components/card_list_survey_selection_list.html' %}
-                {% endfor %}
-            </div>
-<div class="tw:py-10">
-                {% include 'djf_surveys/components/pagination.html' %}
-            </div>
-        {% else %}
-            {% include 'djf_surveys/components/empty_state.html' with type="Survey Selection" reason=reason %}
-        {% endif %}
+        <div>
+            {% if survey_selections %}
+                <div class="tw:grid tw:sm:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-2 tw:xl:grid-cols-2 tw:gap-4">
+                    {% for survey_selection in survey_selections %}
+                        {% include 'djf_surveys/components/card_list_survey_selection_list.html' %}
+                    {% endfor %}
+                </div>
+                <div class="tw:py-10">{% include 'djf_surveys/components/pagination.html' %}</div>
+            {% else %}
+                {% include 'djf_surveys/components/empty_state.html' with type="Survey Selection" reason=reason %}
+            {% endif %}
         </div>
-</div>
-
+    </div>
     {% include 'djf_surveys/components/modal_delete.html' %}
-
 {% endblock %}
-
 {% block extra_js %}
     <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script>
     {% include 'djf_surveys/components/modal_delete_js.html' %}
