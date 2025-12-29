@@ -287,6 +287,10 @@ class SurveySelection(BaseModel):
                                         help_text=_("If True, the " \
                                         "survey selection will be " \
                                         "listed on the index page."))
+    show_fullscreen = models.BooleanField(_("Show fullscreen"), default=False,
+                                        help_text=_("Can be checked in " \
+                                        "app template for removal of " \
+                                        "header/navbar etc."))
     class Meta:
         constraints = [
             models.CheckConstraint(condition=models.Q(name__length__gt=0), name="non_empty_name_survey_selection")

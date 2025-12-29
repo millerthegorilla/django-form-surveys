@@ -196,7 +196,8 @@ class SurveySelectionListForm(forms.ModelForm):
                   'surveys',
                   'can_anonymous_user',
                   'success_page_content',
-                  'show_on_index']
+                  'show_on_index',
+                  'show_fullscreen']
         widgets = {
             'description': TinyMCE(mce_attrs=SURVEY_TINYMCE_DEFAULT_CONFIG),
             'success_page_content': TinyMCE(mce_attrs=SURVEY_TINYMCE_DEFAULT_CONFIG)
