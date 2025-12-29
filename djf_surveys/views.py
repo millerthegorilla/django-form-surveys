@@ -390,6 +390,7 @@ class SurveySelectionDetailView(ContextTitleMixin, DetailView):
         context = super().get_context_data(**kwargs)
         slug = self.kwargs['slug']
         context['survey_selection'] = get_object_or_404(SurveySelection, slug=slug)
+        context['show_fullscreen'] = context['survey_selection'].show_fullscreen
         return context
     
 
