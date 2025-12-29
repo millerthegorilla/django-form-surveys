@@ -133,7 +133,7 @@ class SurveyForm(forms.ModelForm):
             'duplicate_entry', 'cancel_button','cycle_survey', 
             'survey_selection', 'private_response', 
             'can_anonymous_user', 'gdpr_compliant', 'show_on_index',
-            'notification_to', 'success_page_content'
+            'show_fullscreen', 'notification_to', 'success_page_content'
         ]
         widgets = {
             'description': TinyMCE(mce_attrs=SURVEY_TINYMCE_DEFAULT_CONFIG),

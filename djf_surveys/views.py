@@ -217,6 +217,8 @@ class RespondSurveyFormView(ContextTitleMixin, SurveyFormView):
         else:
             context["link_back_on_cancel"] = reverse_lazy(
                 "djf_surveys:index")
+        if survey.show_fullscreen == True:
+            context["show_fullscreen"] = True
         return context
 
 @method_decorator(login_required, name='dispatch')

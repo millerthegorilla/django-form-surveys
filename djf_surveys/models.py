@@ -108,6 +108,10 @@ class Survey(BaseModel):
                                         help_text=_("If True, the " \
                                         "survey will be listed on " \
                                         "the index page."))   
+    show_fullscreen = models.BooleanField(_("Show fullscreen"), default=False,
+                                        help_text=_("Can be checked in " \
+                                        "app template for removal of " \
+                                        "header/navbar etc."))   
     class Meta:
         verbose_name = _("survey")
         verbose_name_plural = _("surveys")
