@@ -1,7 +1,6 @@
 from django.template import Library
 from djf_surveys.utils import create_star as utils_create_star
 register = Library()
-import logging
 
 @register.filter(name='addclass')
 def addclass(field, class_attr):

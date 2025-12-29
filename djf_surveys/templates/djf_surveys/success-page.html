@@ -1,12 +1,10 @@
 {% extends get_master_template %}
 {% load static i18n %}
 {% block extra_css %}
-    <link href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css"
-          rel="stylesheet" />
 {% endblock %}
 {% block content %}
     <div class="tw:container tw:px-5 tw:lg:py-32 tw:sm:py-16">
-        <div class="tw:relative tw:p-8 tw:text-center tw:border tw:border-gray-200 tw:rounded-lg">
+        <div id="timerbox" class="tw:relative tw:p-8 tw:text-center tw:border tw:border-gray-200 tw:rounded-lg">
             <div class="tw:flex tw:justify-center">
                 <svg height="100"
                      viewbox="0 0 48 48"
@@ -35,7 +33,6 @@
     </div>
 {% endblock %}
 {% block extra_js %}
-    <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script>
     <script>
         (function() {
             const TIMEOUT_SECONDS = 15; // 15 seconds
@@ -47,7 +44,7 @@
             const countdownElement = document.createElement('p');
             countdownElement.id = 'countdown';
             countdownElement.className = 'mt-4 text-sm text-gray-600 font-semibold';
-            document.querySelector('.relative').appendChild(countdownElement);
+            document.querySelector('#timerbox').appendChild(countdownElement);
             
             function updateCountdown() {
                 const mins = Math.floor(timeRemaining / 60);

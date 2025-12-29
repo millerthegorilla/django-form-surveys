@@ -4,10 +4,8 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 from djf_surveys import models
-import logging
 
 def create_star(active_star: int, num_stars: int = 5, id_element: str = '') -> str:
-    logging.warning(str(active_star) + " " + str(num_stars) + " " + id_element)
     inactive_star = num_stars - active_star
     elements = [f'<div class="tw:flex tw:content-center" id="parent_start_{id_element}">']
     for _ in range(int(active_star)):
