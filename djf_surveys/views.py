@@ -217,8 +217,8 @@ class RespondSurveyFormView(ContextTitleMixin, SurveyFormView):
         else:
             context["link_back_on_cancel"] = reverse_lazy(
                 "djf_surveys:index")
-        if survey.show_fullscreen == True:
-            context["show_fullscreen"] = True
+        if survey.fullscreen == True:
+            context["fullscreen"] = True
         return context
 
 @method_decorator(login_required, name='dispatch')
@@ -390,7 +390,7 @@ class SurveySelectionDetailView(ContextTitleMixin, DetailView):
         context = super().get_context_data(**kwargs)
         slug = self.kwargs['slug']
         context['survey_selection'] = get_object_or_404(SurveySelection, slug=slug)
-        context['show_fullscreen'] = context['survey_selection'].show_fullscreen
+        context['fullscreen'] = context['survey_selection'].fullscreen
         return context
     
 

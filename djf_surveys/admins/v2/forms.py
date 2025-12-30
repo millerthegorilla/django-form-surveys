@@ -131,9 +131,10 @@ class SurveyForm(forms.ModelForm):
         fields = [
             'name', 'slug', 'description', 'editable', 'deletable',
             'duplicate_entry', 'cancel_button','cycle_survey', 
-            'survey_selection', 'private_response', 
+            'survey_selection', 'private_response', 'private',
             'can_anonymous_user', 'gdpr_compliant', 'show_on_index',
-            'show_fullscreen', 'notification_to', 'success_page_content'
+            'bookmark', 'fullscreen', 'notification_to', 
+            'success_page_content'
         ]
         widgets = {
             'description': TinyMCE(mce_attrs=SURVEY_TINYMCE_DEFAULT_CONFIG),
@@ -197,7 +198,9 @@ class SurveySelectionListForm(forms.ModelForm):
                   'can_anonymous_user',
                   'success_page_content',
                   'show_on_index',
-                  'show_fullscreen']
+                  'fullscreen',
+                  'private',
+                  'bookmark',]
         widgets = {
             'description': TinyMCE(mce_attrs=SURVEY_TINYMCE_DEFAULT_CONFIG),
             'success_page_content': TinyMCE(mce_attrs=SURVEY_TINYMCE_DEFAULT_CONFIG)

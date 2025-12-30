@@ -1,0 +1,12 @@
+{% extends get_master_template %}
+{% load static tailwind_tags %}
+{% block extra_css %}
+  {% tailwind_css %}
+{% endblock extra_css %}
+
+{% block content %}
+<form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button class="tw:rounded-full tw:bg-blue-800 tw:hover:bg-red-800 tw:p-5 tw:my-10" type="submit"><span class="tw:text-white">Logout</span></button>
+</form>
+{% endblock content %}

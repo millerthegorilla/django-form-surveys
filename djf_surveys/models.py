@@ -9,6 +9,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import reverse
 from django.db.models.functions import Length
+from django.conf import settings
 
 from djf_surveys import app_settings
 from djf_surveys.utils import create_star
@@ -40,6 +41,9 @@ def generate_unique_slug(klass, field, id, identifier='slug'):
         numb += 1
         obj = klass.objects.filter(**mapping).first()
     return unique_slug
+
+def get_default_owner():
+    return get_user_model().objects.get_or_create(first_name='Default', last_name="Owner", username="DefaultOwner")[0].id
 
 
 class BaseModel(models.Model):
@@ -108,10 +112,19 @@ class Survey(BaseModel):
                                         help_text=_("If True, the " \
                                         "survey will be listed on " \
                                         "the index page."))   
-    show_fullscreen = models.BooleanField(_("Show fullscreen"), default=False,
-                                        help_text=_("Can be checked in " \
-                                        "app template for removal of " \
-                                        "header/navbar etc."))   
+    fullscreen = models.BooleanField(_("Show fullscreen"), default=False,
+                                        help_text=_("If True then header/navbar " \
+                                        "etc. is removed."))   
+    private = models.BooleanField(_("Private Survey"), default=False,
+                                        help_text=_("If True the survey will be " \
+                                        "listed only on home page for user when " \
+                                        "logged in."))
+    bookmark = models.BooleanField(_("Bookmark Survey"), default=False,
+                                        help_text=_("If True a link to the survey will be " \
+                                        "listed in the user profile bookmark " \
+                                        "list."))
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=get_default_owner)
+
     class Meta:
         verbose_name = _("survey")
         verbose_name_plural = _("surveys")
@@ -287,10 +300,20 @@ class SurveySelection(BaseModel):
                                         help_text=_("If True, the " \
                                         "survey selection will be " \
                                         "listed on the index page."))
-    show_fullscreen = models.BooleanField(_("Show fullscreen"), default=False,
+    fullscreen = models.BooleanField(_("Show fullscreen"), default=False,
                                         help_text=_("Can be checked in " \
                                         "app template for removal of " \
                                         "header/navbar etc."))
+    private = models.BooleanField(_("Private Survey Selection"), default=False,
+                                        help_text=_("If True the survey will be " \
+                                        "listed only on home page for user when " \
+                                        "logged in.")) 
+    bookmark = models.BooleanField(_("Bookmark Survey Selection"), default=False,
+                                        help_text=_("If True a link to the survey selection will be " \
+                                        "listed in the user profile bookmark " \
+                                        "list."))
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=get_default_owner)
+
     class Meta:
         constraints = [
             models.CheckConstraint(condition=models.Q(name__length__gt=0), name="non_empty_name_survey_selection")
@@ -298,6 +321,7 @@ class SurveySelection(BaseModel):
         verbose_name = _("survey selection")
         ordering = ['-created_at']
         #verbose_name_plural = _("survey selections")
+
 
     def __str__(self):
         return f"{self.name}"

@@ -13,5 +13,6 @@ def surveys_context(request):
         'SURVEY_FORM_TIMEOUT': app_settings.SURVEY_FORM_TIMEOUT,
         'SURVEY_FORM_TIMEOUT_DIALOG': app_settings.SURVEY_FORM_TIMEOUT_DIALOG,
         'SURVEY_INCLUDE_NAVBAR': app_settings.SURVEY_INCLUDE_NAVBAR,
+        'SURVEY_ANONYMOUS_VIEW_LIST': app_settings.SURVEY_ANONYMOUS_VIEW_LIST,
     }
     return context

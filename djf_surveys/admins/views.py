@@ -29,6 +29,18 @@ class AdminCreateSurveyView(ContextTitleMixin, CreateView):
     template_name = 'djf_surveys/admins/form.html'
     form_class = SurveyForm
     title_page = _("Add New Survey")
+    
+    # def post(self, request, *args, **kwargs):
+    #     breakpoint()
+    #     form = self.get_form_class()(request.POST)
+    #     if form.is_valid():
+    #         survey = form.save(commit=False)
+    #         form.save_m2m()
+    #         survey.save()
+
+
+        # return super().post(request, args, kwargs)
+
 
     def get_success_url(self):
         survey = self.object
@@ -341,17 +353,19 @@ class AdminCreateSurveySelectionView(ContextTitleMixin, View):
     def get_form(self, form_class=None):
         if form_class is None:
             form_class = self.form_class
-        initial_data = {}
-        for survey in Survey.objects.all():
-            initial_data["survey_slug"] = survey.slug
-            initial_data["survey_name"] = survey.name
-        return form_class(initial=initial_data)
+        # initial_data = {}
+        # initial_data["owner"] = self.request.user
+        # for survey in Survey.objects.all():
+        #     initial_data["survey_slug"] = survey.slug
+        #     initial_data["survey_name"] = survey.name
+        return form_class()
     
     def post(self, request, *args, **kwargs):
-        pobject = request.POST.copy()
-        form = self.form_class(data=pobject)
+        form = self.form_class(request.POST)
         if form.is_valid():
             survey_selection = form.save()
+            survey_selection.owner = request.user
+            survey_selection.save(update_fields=['owner'])
             if 'surveys' in request.POST  and request.POST['surveys']:
                 for survey in Survey.objects.filter(pk__in=form.cleaned_data['surveys']):
                     survey_selection.surveys.add(survey)

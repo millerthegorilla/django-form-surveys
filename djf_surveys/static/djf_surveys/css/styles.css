@@ -13,6 +13,7 @@
     --tw-color-red-500: oklch(63.7% 0.237 25.331);
     --tw-color-red-600: oklch(57.7% 0.245 27.325);
     --tw-color-red-700: oklch(50.5% 0.213 27.518);
+    --tw-color-red-800: oklch(44.4% 0.177 26.899);
     --tw-color-amber-50: oklch(98.7% 0.022 95.277);
     --tw-color-amber-100: oklch(96.2% 0.059 95.617);
     --tw-color-amber-600: oklch(66.6% 0.179 58.318);
@@ -328,6 +329,9 @@
   .tw\:mx-auto {
     margin-inline: auto;
   }
+  .tw\:my-10 {
+    margin-block: calc(var(--tw-spacing) * 10);
+  }
   .tw\:ms-10 {
     margin-inline-start: calc(var(--tw-spacing) * 10);
   }
@@ -627,6 +631,9 @@
   .tw\:bg-blue-700 {
     background-color: var(--tw-color-blue-700);
   }
+  .tw\:bg-blue-800 {
+    background-color: var(--tw-color-blue-800);
+  }
   .tw\:bg-gray-100 {
     background-color: var(--tw-color-gray-100);
   }
@@ -703,6 +710,9 @@
   }
   .tw\:p-4 {
     padding: calc(var(--tw-spacing) * 4);
+  }
+  .tw\:p-5 {
+    padding: calc(var(--tw-spacing) * 5);
   }
   .tw\:p-6 {
     padding: calc(var(--tw-spacing) * 6);
@@ -1016,6 +1026,13 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--tw-color-red-700);
+      }
+    }
+  }
+  .tw\:hover\:bg-red-800 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--tw-color-red-800);
       }
     }
   }

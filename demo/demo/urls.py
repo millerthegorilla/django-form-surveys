@@ -16,10 +16,13 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('djf_surveys.urls')),
+    path('logout/', TemplateView.as_view(template_name="registration/logout.html"), name="logout"),
     path('accounts/', include('django.contrib.auth.urls')),
     path('tinymce/', include('tinymce.urls')),
 ]
