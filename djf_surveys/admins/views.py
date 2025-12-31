@@ -30,16 +30,15 @@ class AdminCreateSurveyView(ContextTitleMixin, CreateView):
     form_class = SurveyForm
     title_page = _("Add New Survey")
     
-    # def post(self, request, *args, **kwargs):
-    #     breakpoint()
-    #     form = self.get_form_class()(request.POST)
-    #     if form.is_valid():
-    #         survey = form.save(commit=False)
-    #         form.save_m2m()
-    #         survey.save()
-
-
-        # return super().post(request, args, kwargs)
+    def post(self, request, *args, **kwargs):
+        form = self.get_form_class()(request.POST)
+        if form.is_valid():
+            survey = form.save(commit=False)
+            survey.owner = request.user
+            survey.save()
+            self.object = survey
+            return redirect(self.get_success_url())
+        return render(request, self.template_name, {"form":form})
 
 
     def get_success_url(self):
@@ -48,6 +47,51 @@ class AdminCreateSurveyView(ContextTitleMixin, CreateView):
             page_action_name=capfirst(self.title_page.lower())))
         return reverse("djf_surveys:admin_forms_survey", args=[survey.slug])
 
+
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class AdminCreateSurveySelectionView(ContextTitleMixin, View):
+    template_name = 'djf_surveys/admins/form.html'
+    form_class = SurveySelectionListForm
+    model = SurveySelection
+    title_page = _("Create Survey Selection List")
+
+    def get(self, request, *args, **kwargs):
+        form = self.get_form()
+        return render(request,
+                      self.template_name,
+                      {'form': form, 
+                        'title_page': self.title_page})
+
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.form_class
+        # initial_data = {}
+        # initial_data["owner"] = self.request.user
+        # for survey in Survey.objects.all():
+        #     initial_data["survey_slug"] = survey.slug
+        #     initial_data["survey_name"] = survey.name
+        return form_class()
+    
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            survey_selection = form.save(commit=False)
+            survey_selection.owner = request.user
+            survey_selection.save()
+            if 'surveys' in request.POST  and request.POST['surveys']:
+                for survey in Survey.objects.filter(pk__in=form.cleaned_data['surveys']):
+                    survey_selection.surveys.add(survey)
+                survey_selection.set_survey_order(form.cleaned_data['surveys'])
+                survey_selection.save()
+
+            messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
+                page_action_name=capfirst(self.title_page.lower())))
+            return redirect(survey_selection.get_absolute_url())
+        else:
+            return render(request, self.template_name, {'form': form})
+        
 
 @method_decorator(staff_member_required, name='dispatch')
 class AdminEditSurveyView(ContextTitleMixin, UpdateView):
@@ -334,46 +378,3 @@ class SummaryResponseSurveySelectionView(ContextTitleMixin, DetailView):
         context['summaries'] = [SummaryResponse(survey) \
                      for survey in self.object.surveys.all()]
         return context
-
-
-@method_decorator(staff_member_required, name='dispatch')
-class AdminCreateSurveySelectionView(ContextTitleMixin, View):
-    template_name = 'djf_surveys/admins/form.html'
-    form_class = SurveySelectionListForm
-    model = SurveySelection
-    title_page = _("Create Survey Selection List")
-
-    def get(self, request, *args, **kwargs):
-        form = self.get_form()
-        return render(request,
-                      self.template_name,
-                      {'form': form, 
-                        'title_page': self.title_page})
-
-    def get_form(self, form_class=None):
-        if form_class is None:
-            form_class = self.form_class
-        # initial_data = {}
-        # initial_data["owner"] = self.request.user
-        # for survey in Survey.objects.all():
-        #     initial_data["survey_slug"] = survey.slug
-        #     initial_data["survey_name"] = survey.name
-        return form_class()
-    
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            survey_selection = form.save()
-            survey_selection.owner = request.user
-            survey_selection.save(update_fields=['owner'])
-            if 'surveys' in request.POST  and request.POST['surveys']:
-                for survey in Survey.objects.filter(pk__in=form.cleaned_data['surveys']):
-                    survey_selection.surveys.add(survey)
-                survey_selection.set_survey_order(form.cleaned_data['surveys'])
-                survey_selection.save()
-
-            messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
-                page_action_name=capfirst(self.title_page.lower())))
-            return redirect(survey_selection.get_absolute_url())
-        else:
-            return render(request, self.template_name, {'form': form})

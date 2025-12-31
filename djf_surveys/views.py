@@ -146,6 +146,7 @@ class SurveyFormView(FormMixin, DetailView):
     def post(self, request, *args, **kwargs):
         form = self.get_form()
         self.object = self.get_object()
+        breakpoint()
         if form.is_valid():
             form.save()
             messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
