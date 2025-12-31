@@ -120,7 +120,7 @@ class Survey(BaseModel):
                                         help_text=_("If True a link to the survey will be " \
                                         "listed in the user profile bookmark " \
                                         "list."))
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False)
 
     class Meta:
         verbose_name = _("survey")
