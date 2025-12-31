@@ -10,7 +10,7 @@
                 <h2 class="tw:max-w-xl tw:text-2xl tw:font-bold tw:sm:text-3xl">{% trans "Result" %} - {{ object.name }}</h2>
                 <div class="btn-group">
                     <div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:float-right">
-                        {% if user.is_staff %}
+                        {% if user.is_superuser %}
                             <a class="tw:z-20 tw:block tw:p-4 tw:text-purple-700 tw:transition-all tw:bg-purple-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-purple-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring"
                                href="{% url 'djf_surveys:admin_download_survey' survey.slug %}"
                                type="button">

@@ -112,13 +112,13 @@ class QuestionTextAreaForm(forms.ModelForm):
 
 
 class SurveyForm(forms.ModelForm):  
-    survey_selection = forms.ModelChoiceField(
-        label=_("Survey Selection to Return to..."),
-        empty_label=_("No Survey Selection"),
-        queryset=SurveySelection.objects.all(),
-        required=False,
-        help_text=_("Select Survey Selection associated with this survey"),
-    )
+    # survey_selection = forms.ModelChoiceField(
+    #     label=_("Survey Selection to Return to..."),
+    #     empty_label=_("No Survey Selection"),
+    #     queryset=SurveySelection.objects.all(),
+    #     required=False,
+    #     help_text=_("Select Survey Selection associated with this survey"),
+    # )
 
     class Media:
         js = ('djf_surveys/js/admin_survey_form.js',)
@@ -131,11 +131,12 @@ class SurveyForm(forms.ModelForm):
         fields = [
             'name', 'slug', 'description', 'editable', 'deletable',
             'duplicate_entry', 'cancel_button','cycle_survey', 
-            'survey_selection', 'private_response', 'private',
+            'private_response', 'private',
             'can_anonymous_user', 'gdpr_compliant', 'show_on_index',
             'bookmark', 'fullscreen', 'notification_to', 
             'success_page_content'
         ]
+        exclude = ['survey_selection',]
         widgets = {
             'description': TinyMCE(mce_attrs=SURVEY_TINYMCE_DEFAULT_CONFIG),
             'success_page_content': TinyMCE(mce_attrs=SURVEY_TINYMCE_DEFAULT_CONFIG)
@@ -189,7 +190,7 @@ class SurveySelectionListForm(forms.ModelForm):
                 [(s.id, s.name) for s in SurveySelection.objects.get(id=kwargs['instance'].id).surveys.all()]
         else: # Creating new SurveySelection
             self.fields['surveys'].initial = None
-
+            
     class Meta:
         model = SurveySelection
         fields = ['name', 

@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models import Count
 from djf_surveys.models import Survey, SurveySelection
 
 
@@ -46,7 +47,9 @@ class InlineChoiceSelectField(forms.HiddenInput):
 
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
-        context['widget']['all_surveys'] = Survey.objects.all()
+        surveys_with_selection = Survey.objects.annotate(surveyselection_count=Count('survey_selection'))
+        surveys_filtered = surveys_with_selection.filter(surveyselection_count__lt=1)
+        context['widget']['all_surveys'] = surveys_filtered
         survey_count = Survey.objects.count()
         context['widget']['surveys'] = (SurveySelection.objects.get(id=self.attrs['instance']).surveys.all() 
                                             if self.attrs.get('instance', None) else None)
