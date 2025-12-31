@@ -116,7 +116,6 @@ class SurveyListView(SurveyList):
 
 class SurveyFormView(FormMixin, DetailView):
     template_name = 'djf_surveys/form.html'
-    success_url = reverse_lazy("djf_surveys:index")
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -140,13 +139,11 @@ class SurveyFormView(FormMixin, DetailView):
                             else:
                                 context["form"][field_key].field.initial = request.GET[param]
                         break
-
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
         self.object = self.get_object()
-        breakpoint()
         if form.is_valid():
             form.save()
             messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
@@ -254,7 +251,13 @@ class EditSurveyFormView(ContextTitleMixin, SurveyFormView):
         return self.get_object().survey.description
 
     def get_success_url(self):
-        return reverse("djf_surveys:success", kwargs={"slug": self.get_object().survey.slug})
+        survey = self.get_object().survey
+        survey_slug = survey.slug
+        selection_slug = survey.survey_selection.slug if survey.survey_selection else "main"
+        messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
+                page_action_name=capfirst(self.title_page.lower())))
+        return reverse("djf_surveys:detail", kwargs={"slug": survey_slug,
+                                                      "selection_slug": selection_slug})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -271,9 +274,11 @@ class DeleteSurveyAnswerView(DetailView):
 
     def get(self, request, *args, **kwargs):
         user_answer = self.get_object()
+        survey = user_answer.survey
+        surveyselection = survey.survey_selection or "main"
         user_answer.delete()
         messages.success(self.request, gettext("Answer succesfully deleted."))
-        return redirect("djf_surveys:detail", slug=user_answer.survey.slug)
+        return redirect("djf_surveys:detail", slug=user_answer.survey.slug, selection_slug=surveyselection)
 
 
 class DetailSurveyView(ContextTitleMixin, DetailView):

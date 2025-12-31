@@ -58,7 +58,7 @@
             </div>
             <div class="tw:py-10">{% include 'djf_surveys/components/pagination.html' %}</div>
         {% else %}
-            {% include 'djf_surveys/components/empty_state.html' %}
+            {% include 'djf_surveys/components/empty_state.html' with type="Question" %}
         {% endif %}
     </div>
     {% include 'djf_surveys/components/modal_delete.html' %}
