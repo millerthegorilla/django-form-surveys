@@ -42,9 +42,6 @@ def generate_unique_slug(klass, field, id, identifier='slug'):
         obj = klass.objects.filter(**mapping).first()
     return unique_slug
 
-def get_default_owner():
-    return get_user_model().objects.get_or_create(first_name='Default', last_name="Owner", username="DefaultOwner")[0].id
-
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -123,7 +120,7 @@ class Survey(BaseModel):
                                         help_text=_("If True a link to the survey will be " \
                                         "listed in the user profile bookmark " \
                                         "list."))
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=get_default_owner)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("survey")
@@ -312,7 +309,7 @@ class SurveySelection(BaseModel):
                                         help_text=_("If True a link to the survey selection will be " \
                                         "listed in the user profile bookmark " \
                                         "list."))
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=get_default_owner)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
         constraints = [
