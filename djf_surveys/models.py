@@ -42,7 +42,6 @@ def generate_unique_slug(klass, field, id, identifier='slug'):
         obj = klass.objects.filter(**mapping).first()
     return unique_slug
 
-
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -120,7 +119,7 @@ class Survey(BaseModel):
                                         help_text=_("If True a link to the survey will be " \
                                         "listed in the user profile bookmark " \
                                         "list."))
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("survey")
@@ -135,7 +134,6 @@ class Survey(BaseModel):
             self.slug = generate_unique_slug(Survey, 
                                              self.name, 
                                              self.id)
-        breakpoint()
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -202,7 +200,7 @@ class Question(BaseModel):
         ordering = ["ordering"]
 
     def __str__(self):
-        return f"{self.label}-survey-{self.survey.id}"
+        return f"{self.label}-survey" #-{self.survey.id}"
 
     def save(self, *args, **kwargs):
         if self.key:
