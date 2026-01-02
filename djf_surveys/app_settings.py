@@ -120,3 +120,7 @@ SURVEY_FORM_TIMEOUT = settings.SURVEY_FORM_TIMEOUT \
 # number of seconds to show timeout dialog
 SURVEY_FORM_TIMEOUT_DIALOG = settings.SURVEY_FORM_TIMEOUT_DIALOG \
     if hasattr(settings, 'SURVEY_FORM_TIMEOUT_DIALOG') else 10
+
+# whether to use tailwind or the styles.css
+SURVEY_DEBUG = settings.SURVEY_DEBUG \
+    if hasattr(settings, 'SURVEY_DEBUG') else settings.DEBUG

@@ -1,7 +1,6 @@
 from djf_surveys import app_settings
 from djf_surveys.utils import get_type_field
 
-
 def surveys_context(request):
     context = {
         'get_master_template': app_settings.SURVEY_MASTER_TEMPLATE,
@@ -14,5 +13,6 @@ def surveys_context(request):
         'SURVEY_FORM_TIMEOUT_DIALOG': app_settings.SURVEY_FORM_TIMEOUT_DIALOG,
         'SURVEY_INCLUDE_NAVBAR': app_settings.SURVEY_INCLUDE_NAVBAR,
         'SURVEY_ANONYMOUS_VIEW_LIST': app_settings.SURVEY_ANONYMOUS_VIEW_LIST,
+        'SURVEY_DEBUG': app_settings.SURVEY_DEBUG,
     }
     return context

@@ -127,7 +127,7 @@ class Survey(BaseModel):
 
     class Meta:
         verbose_name = _("survey")
-        verbose_name_plural = _("surveys")
+        verbose_name_plural = _("surveys") 
         order_with_respect_to = 'survey_selection'
         
     def __str__(self):

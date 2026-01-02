@@ -1,8 +1,16 @@
 {% extends get_admin_master_template %}
 {% load djf_survey_tags static i18n %}
+{% if DEBUG %}
+ {% load tailwind_tags %}
+{% endif %}
 {% block extra_css %}
-    <link href="{% static 'djf_surveys/css/daisyui_modal.css' %}"
-          rel="stylesheet" />
+<link href="{% static 'djf_surveys/css/daisyui_modal.css' %}"
+      rel="stylesheet" />
+{% if DEBUG %}
+  {% tailwind_css %}
+  {% else %}
+  <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
+{% endif %}
     <link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet" />
     <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
 {% endblock %}
