@@ -1,11 +1,11 @@
 {% extends get_master_template %}
-{% if DEBUG %}
+{% if SURVEY_DEBUG %}
  {% load tailwind_tags %}
 {% else %}
  {% load static %}
 {% endif %}
 {% block extra_css %}
-{% if DEBUG %}
+{% if SURVEY_DEBUG %}
   {% tailwind_css %}
 {% else %}
   <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />

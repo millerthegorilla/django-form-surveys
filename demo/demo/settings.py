@@ -177,3 +177,5 @@ TAILWIND_STANDALONE_BUILD_COMMAND_ARGS = (
 )
 
 TAILWIND_CSS_PATH = "djf_surveys/css/styles.css"
+
+SURVEY_DEBUG = False

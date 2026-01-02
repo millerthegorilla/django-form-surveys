@@ -1,10 +1,10 @@
 {% extends get_admin_master_template %}
 {% load i18n %}
-{% if DEBUG %}
+{% if SURVEY_DEBUG %}
  {% load static tailwind_tags %}
 {% endif %}
 {% block extra_css %}
-{% if DEBUG %}
+{% if SURVEY_DEBUG %}
   {% tailwind_css %}
 {% else %}
   <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
