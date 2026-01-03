@@ -1,17 +1,10 @@
 {% extends get_admin_master_template %}
 {% load static i18n %}
-{% if SURVEY_DEBUG %}
- {% load tailwind_tags %}
-{% endif %}
 {% block extra_css %}
-{% if SURVEY_DEBUG %}
-  {% tailwind_css %}
-{% else %}
-  <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
-{% endif %}
+    <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
     {{ chart_js_src|safe }}
     <link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet" />
-{% endblock %}
+{% endblock extra_css %}
 {% block content %}
     <div class="tw:container tw:px-5 tw:py-5">
         {% for summary in summaries %}

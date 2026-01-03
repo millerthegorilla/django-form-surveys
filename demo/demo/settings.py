@@ -156,8 +156,6 @@ SURVEY_WELCOME_MESSAGE_TAGLINE = 'Surveys for Mind Jersey'
 #         "license_key": "gpl",
 #     }
 
-TAILWIND_APP_NAME = "djf_surveys"
-
 if DEBUG:
     # Add django_browser_reload only in DEBUG mode
     INSTALLED_APPS += ["django_browser_reload"]
@@ -167,15 +165,3 @@ if DEBUG:
     MIDDLEWARE += [
         "django_browser_reload.middleware.BrowserReloadMiddleware",
     ]
-
-TAILWIND_STANDALONE_START_COMMAND_ARGS = (
-    "-i ../djf_surveys/static_src/src/styles.css -o ../djf_surveys/static/djf_surveys/css/styles.css --watch"
-)
-
-TAILWIND_STANDALONE_BUILD_COMMAND_ARGS = (
-    "-i ../djf_surveys/static_src/src/styles.css -o ../djf_surveys/static/djf_surveys/css/styles.css"
-)
-
-TAILWIND_CSS_PATH = "djf_surveys/css/styles.css"
-
-SURVEY_DEBUG = False

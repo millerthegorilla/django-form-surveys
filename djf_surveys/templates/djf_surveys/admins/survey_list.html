@@ -1,14 +1,7 @@
 {% extends get_admin_master_template %}
-{% load i18n %}
-{% if SURVEY_DEBUG %}
- {% load static tailwind_tags %}
-{% endif %}
+{% load i18n static %}
 {% block extra_css %}
-{% if SURVEY_DEBUG %}
-  {% tailwind_css %}
-{% else %}
-  <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
-{% endif %}
+    <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
 {% endblock extra_css %}
 {% block content %}
     <div class="tw:container tw:px-5 tw:py-5">

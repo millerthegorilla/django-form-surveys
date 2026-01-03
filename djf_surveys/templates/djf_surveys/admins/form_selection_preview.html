@@ -1,17 +1,10 @@
 {% extends get_admin_master_template %}
 {% load djf_survey_tags static i18n %}
-{% if SURVEY_DEBUG %}
- {% load tailwind_tags %}
-{% endif %}
 {% block extra_css %}
-    {% if SURVEY_DEBUG %}
-        {% tailwind_css %}
-    {% else %}
-        <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
-    {% endif %}
+    <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
     <link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet" />
     <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
-{% endblock %}
+{% endblock extra_css %}
 {% block content %}
     <div class="tw:max-w-(--breakpoint-xl) tw:px-4 tw:py-16 tw:mx-auto tw:sm:px-6 tw:lg:px-8">
         <div class="tw:max-w-lg tw:mx-auto">

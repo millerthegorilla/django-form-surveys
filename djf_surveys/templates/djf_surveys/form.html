@@ -1,17 +1,10 @@
 {% extends get_master_template %}
 {% load djf_survey_tags i18n static %}
-{% if SURVEY_DEBUG %}
- {% load tailwind_tags %}
-{% endif %}
 {% block extra_css %}
-{% if SURVEY_DEBUG %}
-  {% tailwind_css %}
-{% else %}
-  <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
-{% endif %}
+    <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
     <link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet" />
     <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
-{% endblock %}
+{% endblock extra_css %}
 {% block content %}
     <div class="survey-background">
         {% if object.cancel_button %}
