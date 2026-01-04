@@ -120,3 +120,7 @@ SURVEY_FORM_TIMEOUT = settings.SURVEY_FORM_TIMEOUT \
 # number of seconds to show timeout dialog
 SURVEY_FORM_TIMEOUT_DIALOG = settings.SURVEY_FORM_TIMEOUT_DIALOG \
     if hasattr(settings, 'SURVEY_FORM_TIMEOUT_DIALOG') else 10
+
+# login url
+SURVEY_LOGIN_URL = settings.SURVEY_LOGIN_URL \
+    if hasattr(settings, 'SURVEY_LOGIN_URL') else 'login'
