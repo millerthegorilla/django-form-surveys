@@ -6,6 +6,7 @@ from django.views import View
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormMixin
 from django.views.generic.detail import DetailView
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.utils.decorators import method_decorator
@@ -164,15 +165,16 @@ class RespondSurveyFormView(ContextTitleMixin, SurveyFormView):
         # handle if survey can_anonymous_user
         if not request.user.is_authenticated and not survey.can_anonymous_user:
             messages.warning(request, gettext("Sorry, you must be logged in to fill out the survey."))
-            return redirect("djf_surveys:index")
+            return redirect("djf_surveys:index")         
 
         # handle if user has already responded to survey and duplicate_entry is False
         if request.user.is_authenticated and not survey.duplicate_entry and \
                 UserAnswer.objects.filter(survey=survey, user=request.user).exists():
             messages.warning(request, gettext("You have already completed this survey."))
             return redirect("djf_surveys:index")
+        
         return super().dispatch(request, *args, **kwargs)
-
+    
     def get_form(self, form_class=None):
         if form_class is None:
             form_class = self.get_form_class()
@@ -363,8 +365,8 @@ class SuccessPageSurveyView(ContextTitleMixin, DetailView):
 
     def get(self, request, *args, **kwargs):
         survey = get_object_or_404(Survey, slug=self.kwargs['slug'])
-        # messages.success(request, gettext("Thank you for completing the survey '%(survey_name)s'.") % dict(
-        #     survey_name=survey.name))
+        if self.kwargs['temp_login'] == "True":
+            logout(request)
         return super().get(request, *args, **kwargs)
     
     def get_context_data(self, **kwargs) -> dict[str, any]:

@@ -17,12 +17,14 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
-from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('djf_surveys.urls')),
     path('logout/', TemplateView.as_view(template_name="registration/logout.html"), name="logout"),
+    path('login/', auth_views.LoginView.as_view(template_name="registration/login.html"), name="login"),
+    path('login/<str:slug>/', auth_views.LoginView.as_view(template_name="registration/login.html"), name="login"),
     path('accounts/', include('django.contrib.auth.urls')),
     path('tinymce/', include('tinymce.urls')),
 ]

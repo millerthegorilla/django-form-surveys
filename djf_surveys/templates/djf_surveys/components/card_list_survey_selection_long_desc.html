@@ -21,16 +21,17 @@
                     </path>
                 </svg>
             </a>
-            <button onclick="modalDelete.showModal()" class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50"
+            <button onclick="modalDelete.showModal()"
+                    class="button-delete tw:z-30 tw:block tw:p-4 tw:text-red-700 tw:transition-all tw:bg-red-100 tw:border-2 tw:border-white tw:rounded-full tw:hover:scale-110 tw:focus:outline-none tw:focus:ring tw:active:bg-red-50"
                     data-mdb-object_delete_url="{% url 'djf_surveys:admin_delete_survey' survey.slug %}"
                     data-mdb-object_name="{{ survey.name }}"
                     data-te-target="#modalDelete"
                     data-te-toggle="modal">{% include "djf_surveys/buttons/delete_button.html" %}</button>
-                    {% include "djf_surveys/components/modal_delete.html" %}
+            {% include "djf_surveys/components/modal_delete.html" %}
         {% endif %}
     </div>
     <a class="tw:relative tw:block tw:p-8 tw:overflow-hidden tw:border tw:border-gray-100 tw:rounded-lg tw:bg-white"
-       href="{% if user.is_staff %}{% url 'djf_surveys:detail' survey.slug request.resolver_match.kwargs.slug %}{% else %}{% url 'djf_surveys:respond' survey.slug request.resolver_match.kwargs.slug %}{% endif %}">
+       href="{% if user.is_staff %}{% url 'djf_surveys:detail' survey.slug request.resolver_match.kwargs.slug %}{% elif not survey.can_anonymous_user %}{% url 'login' 'temp_login' %}?next={% url 'djf_surveys:respond' survey.slug request.resolver_match.kwargs.slug True %}{% else %}{% url 'djf_surveys:respond' survey.slug request.resolver_match.kwargs.slug %}{% endif %}">
         <span class="tw:absolute tw:inset-x-0 tw:bottom-0 tw:h-2 tw:bg-linear-to-r tw:from-green-300 tw:via-blue-500 tw:to-purple-600"></span>
         <div class="tw:justify-between tw:sm:flex">
             <div>
@@ -41,7 +42,7 @@
     </a>
 </div>
 {% block extra_js %}
-  {% if user.is_superuser %}
-    {% include "djf_surveys/components/modal_delete_js.html" %}
-  {% endif %}
+    {% if user.is_superuser %}
+        {% include "djf_surveys/components/modal_delete_js.html" %}
+    {% endif %}
 {% endblock extra_js %}

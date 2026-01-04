@@ -8,7 +8,7 @@
     <div class="tw:container tw:px-5 tw:py-5">
         {% include 'djf_surveys/components/section_welcome.html' %}
         {% include 'djf_surveys/components/search_form.html' %}
-        {% if object_list %}
+        {% if page_obj %}
             <div class="tw:grid tw:sm:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-2 tw:xl:grid-cols-2 tw:gap-4">
                 {% for survey in page_obj %}
                     {% include 'djf_surveys/components/card_list_survey.html' %}
