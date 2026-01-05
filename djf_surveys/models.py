@@ -42,9 +42,6 @@ def generate_unique_slug(klass, field, id, identifier='slug'):
         obj = klass.objects.filter(**mapping).first()
     return unique_slug
 
-def get_default_owner():
-    return get_user_model().objects.get_or_create(first_name='Default', last_name="Owner", username="DefaultOwner")[0].id
-
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
