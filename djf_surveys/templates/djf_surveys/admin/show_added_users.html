@@ -1,4 +1,15 @@
 {% extends "admin/base_site.html" %}
+{% load i18n %}
+{% load admin_urls %}
+{% block nav-breadcrumbs %}
+    <nav aria-label="{% translate 'Breadcrumbs' %}">
+    {% block breadcrumbs %}
+        <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+        </div>
+    {% endblock breadcrumbs %}
+    </nav>
+{% endblock nav-breadcrumbs %}
 {% block content %}
 <div id="container">
 <table id="container">
