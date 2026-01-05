@@ -9,21 +9,23 @@
         <h1 class="tw:text-4xl tw:text-center tw:pt-4 tw:mb-4">
             <b>{{ object.name }}</b>
         </h1>
-        <span class="tw:text-2xl">
+        <span class="tw:text-2xl tw:p-4">
             <p class="tw:text-center tw:mb-4">{{ object.description|safe }}</p>
         </span>
     </div>
-    <div class="tw:container tw:px-5 tw:py-5">
-        <h2 class="tw:text-2xl tw:text-center tw:mb-4">{% trans "Please select a survey:" %}</h2>
-        {% for survey in object.surveys.all %}
-            {% include 'djf_surveys/components/card_list_survey_selection_long_desc.html' %}
-            {% if not forloop.last %}
-                <br />
-                <h1 class="tw:text-2xl tw:text-center tw:mb-4">OR</h1>
-                <br />
-                <br />
-            {% endif %}
-        {% endfor %}
+    <div class="flex">
+        <div class="tw:container tw:px-5 tw:py-5">
+            <h2 class="tw:text-2xl tw:text-center tw:mb-4">{% trans "Please select a survey:" %}</h2>
+            {% for survey in object.surveys.all %}
+                {% include 'djf_surveys/components/card_list_survey_selection_long_desc.html' %}
+                {% if not forloop.last %}
+                    <br />
+                    <h1 class="tw:text-2xl tw:text-center tw:mb-4">OR</h1>
+                    <br />
+                    <br />
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
     {% include 'djf_surveys/components/modal_delete.html' %}
 {% endblock %}

@@ -326,6 +326,9 @@
   .tw\:m-2 {
     margin: calc(var(--tw-spacing) * 2);
   }
+  .tw\:m-4 {
+    margin: calc(var(--tw-spacing) * 4);
+  }
   .tw\:mx-auto {
     margin-inline: auto;
   }
