@@ -49,7 +49,7 @@ class UserAdmin(AuthUserAdmin):
     
     # def get_changeform_initial_data(self, request):
     #     return {'dave':'dave'}
-    
+
     def user_printview(self, request, queryset):
         return redirect("admin:show_added_users", str(list(queryset.values_list('id', flat=True))))
 

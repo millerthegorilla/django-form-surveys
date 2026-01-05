@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.utils.translation import gettext as _
+from django.urls import reverse_lazy
 
 # replace master template
 SURVEY_MASTER_TEMPLATE = settings.SURVEY_MASTER_TEMPLATE \
@@ -124,3 +125,16 @@ SURVEY_FORM_TIMEOUT_DIALOG = settings.SURVEY_FORM_TIMEOUT_DIALOG \
 # login url
 SURVEY_LOGIN_URL = settings.SURVEY_LOGIN_URL \
     if hasattr(settings, 'SURVEY_LOGIN_URL') else 'login'
+
+# gdpr message displayed below reference. reverse of djf_surveys:withdraw_response can be passed in
+# in the form.
+SURVEY_GDPR_REFERENCE_MESSAGE = settings.SURVEY_GDPR_REFERENCE_MESSAGE \
+    if hasattr(settings, 'SURVEY_GDPR_REFERENCE_MESSAGE') else "This is a unique reference \
+                        for your survey response. \
+                        Should you feel the need to \
+                        withdraw your response in the \
+                        future please note this number \
+                        and enter it into the \
+                        <a href='{}' \
+                        class='tw:font-medium tw:text-fg-brand tw:text-blue-600 tw:hover:underline'> \
+                        withdraw response page.</a>"

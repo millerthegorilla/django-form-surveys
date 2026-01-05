@@ -14,7 +14,7 @@ from djf_surveys.validators import (
     RatingValidator, SurveyEmailValidator, TermsEmailValidator, TermsTextValidator, TermsTextAreaValidator,
     TermsNumberValidator
 )
-
+from djf_surveys.app_settings import SURVEY_GDPR_REFERENCE_MESSAGE
 
 def make_choices(question: Question) -> List[Tuple[str, str]]:
     choices = []
@@ -155,15 +155,7 @@ class RespondToSurveyForm(BaseSurveyForm):
         super().__init__(*args, **kwargs)
         link = reverse('djf_surveys:withdraw_response')
         self.fields['gdpr_reference'].help_text= \
-            mark_safe(_("This is a unique reference \
-                        for your survey response. \
-                        Should you feel the need to \
-                        withdraw your response in the \
-                        future please note this number \
-                        and enter it into the \
-                        <a href='{}' \
-                        class='tw:font-medium tw:text-fg-brand tw:text-blue-600 tw:hover:underline'> \
-                        withdraw response page.</a>").format(link))
+            mark_safe(_(SURVEY_GDPR_REFERENCE_MESSAGE).format(link))
 
     @transaction.atomic
     def save(self):
