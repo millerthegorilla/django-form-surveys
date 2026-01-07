@@ -2,6 +2,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth import get_user_model
+from django.contrib.admin.exceptions import NotRegistered
 from django.db.utils import IntegrityError
 from django.db.models import Case, When
 from django.urls import include, path
@@ -50,6 +51,10 @@ class UserAdmin(AuthUserAdmin):
     # def get_changeform_initial_data(self, request):
     #     return {'dave':'dave'}
 
+    def __init__(self, model, admin_site):
+        breakpoint()
+        pass
+
     def user_printview(self, request, queryset):
         return redirect("admin:show_added_users", str(list(queryset.values_list('id', flat=True))))
 
@@ -86,7 +91,10 @@ class AddedUser(ListView):
         queryset = User.objects.filter(pk__in=pk_list).order_by(preserved)
         return queryset
 
-admin.site.unregister(User)
+try:
+    admin.site.unregister(User)
+except NotRegistered:
+    pass
 admin.site.register(User, UserAdmin)
 
 admin.site.register(Survey, AdminSurvey)
