@@ -93,9 +93,9 @@ class AddedUser(ListView):
 
 try:
     admin.site.unregister(User)
+    admin.site.register(User, UserAdmin)
 except NotRegistered:
     pass
-admin.site.register(User, UserAdmin)
 
 admin.site.register(Survey, AdminSurvey)
 admin.site.register(Question, AdminQuestion)
