@@ -12,5 +12,5 @@
    {
        multiplierH = screen.height / currentHeight;
    }
-   content.style.zoom = multiplierH - 0.1
+   content.style.zoom = multiplierH;
 })();
