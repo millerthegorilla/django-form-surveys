@@ -5,7 +5,7 @@
     <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
 {% endblock extra_css %}
 {% block content %}
-    <div class="tw:container tw:px-5 tw:py-5">
+    <div id="survey-content" class="tw:container tw:px-5 tw:py-5">
         {% include 'djf_surveys/components/section_welcome.html' %}
         {% include 'djf_surveys/components/search_form.html' %}
         <div>
@@ -37,8 +37,5 @@
             {% endif %}
         </div>
     </div>
-    {% include 'djf_surveys/components/modal_delete.html' %}
 {% endblock %}
-{% block extra_js %}
-    {% include 'djf_surveys/components/modal_delete_js.html' %}
-{% endblock %}
+

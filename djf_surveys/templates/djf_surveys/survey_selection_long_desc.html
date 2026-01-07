@@ -4,7 +4,9 @@
     <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
     <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
 {% endblock extra_css %}
+
 {% block content %}
+<div id="survey-content" class="tw:m-4">
     <div class="tw:w-4/5 tw:mx-auto">
         <h1 class="tw:text-4xl tw:text-center tw:pt-4 tw:mb-4">
             <b>{{ object.name }}</b>
@@ -13,7 +15,7 @@
             <p class="tw:text-center tw:mb-4">{{ object.description|safe }}</p>
         </span>
     </div>
-    <div class="flex">
+    <div class="">
         <div class="tw:container tw:px-5 tw:py-5">
             <h2 class="tw:text-2xl tw:text-center tw:mb-4">{% trans "Please select a survey:" %}</h2>
             {% for survey in object.surveys.all %}
@@ -27,8 +29,16 @@
             {% endfor %}
         </div>
     </div>
+</div>
+{% if user.is_staff %}
     {% include 'djf_surveys/components/modal_delete.html' %}
+{% endif %}
 {% endblock %}
 {% block extra_js %}
-    {% include 'djf_surveys/components/modal_delete_js.html' %}
+    {% if object.fullscreen == True %}
+        <script src='{% static "djf_surveys/js/survey_selection_fullscreen.js" %}' type="text/javascript"></script>
+    {% endif %}
+    {% if user.is_staff %}
+        {% include "djf_surveys/components/modal_delete_js.html" %}
+    {% endif %}
 {% endblock %}
