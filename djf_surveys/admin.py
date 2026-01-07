@@ -51,9 +51,9 @@ class UserAdmin(AuthUserAdmin):
     # def get_changeform_initial_data(self, request):
     #     return {'dave':'dave'}
 
-    def __init__(self, model, admin_site):
-        breakpoint()
-        pass
+    # def __init__(self, model, admin_site):
+    #     breakpoint()
+    #     pass
 
     def user_printview(self, request, queryset):
         return redirect("admin:show_added_users", str(list(queryset.values_list('id', flat=True))))
