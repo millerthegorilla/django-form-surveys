@@ -79,16 +79,10 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script>
  $(function () {
-            //$("#addQuestion").hide();
-            //$("#addQuestionButton").click(function () {
-            //$("#addQuestion").toggle('pulsate', 500);
-            //console.log("clicked");
-            //});
             $("#sortable").sortable({
                 opacity: 0.7,
                 update: function (event, ui) {
                     const order = $(this).sortable('toArray');
-                    console.log(order);
                     $.ajax({
                         url: "{% url 'djf_surveys:admin_change_order_question' %}",
                         type: 'POST',
@@ -98,7 +92,6 @@
                         },
                         dataType: 'json',
                         success: function (data) {
-                            console.log(data.message);
                         },
                         error: function (data) {
                             alert("{% trans 'An error occured!' %}");

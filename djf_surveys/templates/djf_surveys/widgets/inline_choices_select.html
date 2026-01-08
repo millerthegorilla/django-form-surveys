@@ -121,7 +121,6 @@
     function removeField(removeFieldButtons) {
         removeFieldButtons.map((removeBtn) => {
             removeBtn.onclick = () => {
-                console.log("superWrapper.children.length", superWrapper.children.length);
                 if (superWrapper.children.length > 2) {
                     removeBtn.parentElement.parentElement.parentElement.remove();
                     wrapper = [...document.getElementsByClassName("djf-wrapper-choice-field")];

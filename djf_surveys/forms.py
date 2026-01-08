@@ -156,6 +156,7 @@ class RespondToSurveyForm(BaseSurveyForm):
         link = reverse('djf_surveys:withdraw_response')
         self.fields['gdpr_reference'].help_text= \
             mark_safe(_(SURVEY_GDPR_REFERENCE_MESSAGE).format(link))
+        self.has_multiselect = any(isinstance(field, forms.MultipleChoiceField) for field in self.fields.values())
 
     @transaction.atomic
     def save(self):

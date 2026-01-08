@@ -120,7 +120,7 @@ class SurveyFormView(FormMixin, DetailView):
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        context = self.get_context_data(object=self.object)
+        context = self.get_context_data()
 
         # use url/get parameters as initial parameters
         if 'create' in request.path:

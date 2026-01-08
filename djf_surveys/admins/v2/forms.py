@@ -23,7 +23,7 @@ class QuestionWithChoicesForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['choices'].widget = InlineChoiceField()
-        self.fields['choices'].help_text = _("Click Button Add to adding choice")
+        self.fields['choices'].help_text = _("Click button Add to add choice")
 
 
 class QuestionFormRatings(forms.ModelForm):

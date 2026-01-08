@@ -83,7 +83,6 @@
         let widgetValue = values.filter(function (el) {
             return el != "";
         });
-        console.log(widgetValue);
         document.getElementById("id_" + widgetName).value = widgetValue.toString();
     }
 
@@ -92,7 +91,6 @@
         removeFieldButtons.map((removeBtn) => {
             removeBtn.onclick = () => {
                 if (djfFieldChoice.length > 2) {
-                    console.log(removeBtn.parentElement.parentElement);
                     removeBtn.parentElement.parentElement.remove();
 
                     // update element count

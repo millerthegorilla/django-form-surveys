@@ -69,7 +69,6 @@
                 opacity: 0.7,
                 update: function (event, ui) {
                     const order = $(this).sortable('toArray');
-                    console.log(order);
                     $.ajax({
                         url: "{% url 'djf_surveys:admin_change_order_survey' %}",
                         type: 'POST',
@@ -80,7 +79,6 @@
                         },
                         dataType: 'json',
                         success: function (data) {
-                            console.log(data.message);
                         },
                         error: function (data) {
                             alert("{% trans 'An error occured!' %}");

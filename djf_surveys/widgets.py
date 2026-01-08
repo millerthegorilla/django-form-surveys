@@ -4,8 +4,12 @@ from djf_surveys.models import Survey, SurveySelection
 
 
 class CheckboxSelectMultipleSurvey(forms.CheckboxSelectMultiple):
-    option_template_name = 'djf_surveys/widgets/checkbox_option.html'
+    option_template_name = 'djf_surveys/widgets/multiselect.html'
 
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        return context
+    
 
 class RadioSelectSurvey(forms.RadioSelect):
     option_template_name = 'djf_surveys/widgets/radio_option.html'
