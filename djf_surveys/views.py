@@ -410,7 +410,7 @@ def share_link(request, slug):
                 "djf_surveys:admin_summary_survey", kwargs={"slug": survey.slug}
             )
         )
-    return redirect(reverse_lazy("djf_surveys:respond", kwargs={"slug": survey.slug}))
+    return redirect(reverse_lazy("djf_surveys:respond", kwargs={"slug": survey.slug, "selection_slug":"main"}))
 
 
 def selection_share_link(request, slug):
