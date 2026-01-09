@@ -110,7 +110,7 @@ class BaseSurveyForm(forms.Form):
                 self.fields[field_name] = forms.CharField(
                     label=question.label, widget=RatingSurvey,
                     validators=[MaxLengthValidator(len(str(int(question.choices)))),
-                                RatingValidator(int(question.choices))]
+                                RatingValidator(int(question.choices), required=question.required)]
                 )
                 self.fields[field_name].widget.num_ratings = int(question.choices)
             else:
@@ -148,7 +148,7 @@ class BaseSurveyForm(forms.Form):
 
 
 class RespondToSurveyForm(BaseSurveyForm):
-    gdpr_reference = forms.CharField(label=_('GDPR Reference'), 
+    gdpr_reference = forms.CharField(label=_('GDPR Reference'),
                                      widget=forms.TextInput(attrs={'readonly':'readonly'}))
 
     def __init__(self, *args, **kwargs):
@@ -162,8 +162,8 @@ class RespondToSurveyForm(BaseSurveyForm):
     def save(self):
         cleaned_data = super().clean()
         user_answer = UserAnswer.objects.create(
-            survey=self.survey, 
-            user=self.user, 
+            survey=self.survey,
+            user=self.user,
             gdpr_reference=cleaned_data['gdpr_reference']
         )
         for question in self.questions:

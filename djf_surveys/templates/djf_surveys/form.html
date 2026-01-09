@@ -4,8 +4,12 @@
     <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
     <link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet" />
     <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
+    {% if form.has_multiselect %}
+        <link href="{% static 'djf_surveys/css/multiselect.css' %}" rel="stylesheet" />
+    {% endif %}
 {% endblock extra_css %}
 {% block content %}
+    <div id="link_back_on_cancel" data-link="{{ link_back_on_cancel }}" data-timeout="10" data-dialog-timeout="{{ SURVEY_FORM_TIMEOUT_DIALOG }}" hidden></div>
     <div class="survey-background">
         {% if object.cancel_button %}
             <div class="tw:flex tw:py-1 tw:fixed tw:bottom-10 tw:right-10">
@@ -48,7 +52,7 @@
         <div id="idle-popup">
             <h2>Are you still there?</h2>
             <p>
-                You will be redirected in <span id="countdown">120</span> seconds.
+                You will be redirected in <span id="countdown"></span> seconds.
             </p>
             <button id="stay-btn">I'm still here</button>
         </div>
@@ -58,62 +62,5 @@
     {% if form.has_multiselect %}
         <script src="{% static 'djf_surveys/js/multiselect.js' %}" type="text/javascript"></script>
     {% endif %}
-    <script>
-      // many thanks to https://forum.squarespace.com/topic/319936-inactive-idle-user-site-redirect-to-homepage/#elComment_795026
-      function initialise_timeout() {
-        const idleDurationSecs = {{ SURVEY_FORM_TIMEOUT }}; // Use this line to change the total time a user has until redirected
-        const countdownDurationSecs = {{ SURVEY_FORM_TIMEOUT_DIALOG }};  // Use this line to how many seconds should remain for your pop-up to come up 
-        const redirectUrl = "{{ link_back_on_cancel }}";  // ADD URL TO WHICH YOU WANT TO REDIRECT USERS
-        let idleTimeout;
-        let countdownTimeout;
-        let countdownInterval;
-
-        const popup = document.getElementById('idle-popup');
-        const countdownElement = document.getElementById('countdown');
-        const stayButton = document.getElementById('stay-btn');
-
-        const resetIdleTimeout = function() {
-            if (idleTimeout) clearTimeout(idleTimeout);
-            if (countdownTimeout) clearTimeout(countdownTimeout);
-            if (countdownInterval) clearInterval(countdownInterval);
-            popup.style.display = 'none';
-            
-            idleTimeout = setTimeout(showPopup, idleDurationSecs * 1000);
-        };
-
-        const showPopup = function() {
-            popup.style.display = 'block';
-            let remainingSeconds = countdownDurationSecs;
-            
-            const updateCountdown = function() {
-                countdownElement.textContent = remainingSeconds;
-                if (remainingSeconds <= 0) {
-                    clearInterval(countdownInterval);
-                    location.href = redirectUrl;
-                }
-                remainingSeconds--;
-            };
-
-            updateCountdown();
-            countdownInterval = setInterval(updateCountdown, 1000);
-        };
-
-        stayButton.addEventListener('click', resetIdleTimeout);
-
-        // Init on page load
-        resetIdleTimeout();
-
-        // Reset the idle timeout on any of the events listed below
-        ['click', 'touchstart', 'mousemove', 'scroll'].forEach(evt => 
-            document.addEventListener(evt, resetIdleTimeout, false)
-        );
-      }
-      (function() {
-            const popup = document.getElementById('idle-popup');
-            popup.style.display = 'none';
-            ['click', 'touchstart', 'mousemove', 'scroll'].forEach(evt => 
-            document.addEventListener(evt, initialise_timeout, false)
-        );
-    })();
-    </script>
+    <script src="{% static 'djf_surveys/js/idle_timeout.js' %}" type="text/javascript"></script>
 {% endblock %}

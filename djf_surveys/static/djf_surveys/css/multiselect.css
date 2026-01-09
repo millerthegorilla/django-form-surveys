@@ -1,0 +1,43 @@
+#popup-wrapper {
+    position: relative;
+}
+
+.error-popup {
+  position: absolute;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+.error-popup {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  z-index: 1;
+  padding: 1vh;
+}
+
+/* Toggle this class - hide and show the popup */
+.show-popup {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s !important;
+  animation: fadeIn 1s !important;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}

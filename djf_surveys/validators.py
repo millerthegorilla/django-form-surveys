@@ -67,8 +67,9 @@ class TermsNumberValidator(TermsTextValidator):
 
 
 class RatingValidator(object):
-    def __init__(self, max):
+    def __init__(self, max, required=False):
         self.max = max
+        self.required = required
 
     def __call__(self, value):
         try:
@@ -83,9 +84,9 @@ class RatingValidator(object):
                 _('Value cannot be greater than maximum allowed number of ratings.')
             )
 
-        if rating < 1:
+        if self.required and rating < 1:
             raise ValidationError(
-                _('Value cannot be less than 1.')
+                _('Please add a rating.')
             )
 
 class SurveyEmailValidator:
