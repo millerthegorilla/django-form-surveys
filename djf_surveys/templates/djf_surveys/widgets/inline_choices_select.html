@@ -1,9 +1,6 @@
 {% load i18n %}
 <!-- hidden field -->
-<input type="{{ widget.type }}"
-       name="{{ widget.name }}"
-       {% if widget.value != None %}value="{{ widget.value }}"{% endif %}
-       {% include "django/forms/widgets/attrs.html" %}>
+<input type="{{ widget.type }}" name="{{ widget.name }}" {% if widget.value != None %}value="{{ widget.value }}"{% endif %} {% include "django/forms/widgets/attrs.html" %}>
 <!-- loop field value -->
 <div id="super-wrapper">
     {% for survey in widget.surveys %}
@@ -78,19 +75,19 @@
     const djfBtnAddField = document.getElementById("djf-btn-add-field");
     const widgetName = "{{ widget.name }}";
     let hiddenField = document.getElementsByName("{{ widget.name }}")[0];
-    
+
     window.onload = function() {
        updateValues();
        updateWidgetValue();
     };
-    
+
     function updateValues() {
         let locals = [];
         for (e of wrapper) {
             const value = e.children[0].children[0].value;
             locals.push(value);
         }
-        hiddenField.value = locals;    
+        hiddenField.value = locals;
     };
 
     function updateWidgetValue() {
@@ -98,7 +95,7 @@
         for (e of wrapper) {
             const value = e.children[0].children[0].value;
             localvalues.push(value);
-        }      
+        }
         let widgetValue = localvalues.filter(function (el) {
             return el != "";
         });

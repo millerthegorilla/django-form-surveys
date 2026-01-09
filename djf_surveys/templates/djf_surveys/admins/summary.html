@@ -1,37 +1,37 @@
 {% extends get_admin_master_template %}
 {% load static i18n %}
 {% block extra_css %}
-    <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
-    {{ chart_js_src|safe }}
-    <link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet" />
+  <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
+  {{ chart_js_src|safe }}
+  <link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet" />
 {% endblock extra_css %}
 {% block content %}
-    <div class="tw:container tw:px-5 tw:py-5">
-        <section>
-            <div class="tw:py-6 tw:lg:items-end tw:justify-between tw:flex">
-                <h2 class="tw:max-w-xl tw:text-2xl tw:font-bold tw:sm:text-3xl">{% trans "Summary" %} - {{ object.name }}</h2>
-                <div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:float-right">
-                    <a class="tw:z-20 tw:block tw:p-4 tw:text-green-700 tw:transition-all tw:bg-green-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-green-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring"
-                       href="{% url 'djf_surveys:detail' object.slug 'main' %}"
-                       type="button">
-                        <svg class="tw:h-4 tw:w-4"
-                             fill="none"
-                             stroke="currentColor"
-                             stroke-width="2"
-                             viewbox="0 0 24 24"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round">
-                            </path>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </section>
-        <div class="tw:grid tw:sm:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-2 tw:xl:grid-cols-3 tw:gap-4">
-            {{ summary.generate|safe }}
+  <div class="tw:container tw:px-5 tw:py-5">
+    <section>
+      <div class="tw:py-6 tw:lg:items-end tw:justify-between tw:flex">
+        <h2 class="tw:max-w-xl tw:text-2xl tw:font-bold tw:sm:text-3xl">{% trans "Summary" %} - {{ object.name }}</h2>
+        <div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:float-right">
+          <a class="tw:z-20 tw:block tw:p-4 tw:text-green-700 tw:transition-all tw:bg-green-100 tw:border-2 tw:border-white tw:rounded-full tw:active:bg-green-50 tw:hover:scale-110 tw:focus:outline-none tw:focus:ring"
+             href="{% url 'djf_surveys:detail' object.slug 'main' %}"
+             type="button">
+            <svg class="tw:h-4 tw:w-4"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 viewbox="0 0 24 24"
+                 xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round">
+              </path>
+            </svg>
+          </a>
         </div>
+      </div>
+    </section>
+    <div class="tw:grid tw:sm:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-2 tw:xl:grid-cols-3 tw:gap-4">
+      {{ summary.generate|safe }}
     </div>
-{% endblock %}
+  </div>
+{% endblock content %}
 {% block extra_js %}
-{% endblock %}
+{% endblock extra_js %}

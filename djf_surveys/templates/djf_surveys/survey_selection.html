@@ -1,26 +1,19 @@
-{% extends get_master_template %}
-{% load i18n static %}
-{% block extra_css %}
-    <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
-    <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
-{% endblock extra_css %}
-{% block content %}
-    <div class="tw:w-3/5 tw:mx-auto">
-        <h1 class="tw:text-center tw:pt-4 tw:mb-4">
-            <b>{{ object.name }}</b>
-        </h1>
-        <p class="tw:text-center tw:mb-4">{{ object.description|safe }}</p>
-    </div>
-    <h2 class="tw:text-center tw:mb-4">{% trans "Please select a survey:" %}</h2>
-    {% for survey in object.surveys.all %}
-        {% include 'djf_surveys/components/card_list_survey_selection.html' %}
-        {% if not forloop.last %}
-            <br />
-            <h1 class="tw:text-center tw:mb-4">OR</h1>
-            <br />
-            <br />
-        {% endif %}
-    {% endfor %}
-{% endblock %}
-{% block extra_js %}
-{% endblock %}
+{% extends get_master_template %} {% load i18n static %} {% block extra_css %}
+<link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
+<link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
+{% endblock extra_css %} {% block content %}
+<div class="tw:w-3/5 tw:mx-auto">
+  <h1 class="tw:text-center tw:pt-4 tw:mb-4">
+    <b>{{ object.name }}</b>
+  </h1>
+  <p class="tw:text-center tw:mb-4">{{ object.description|safe }}</p>
+</div>
+<h2 class="tw:text-center tw:mb-4">{% trans "Please select a survey:" %}</h2>
+{% for survey in object.surveys.all %} {% include
+'djf_surveys/components/card_list_survey_selection.html' %} {% if not
+forloop.last %}
+<br />
+<h1 class="tw:text-center tw:mb-4">OR</h1>
+<br />
+<br />
+{% endif %} {% endfor %} {% endblock %} {% block extra_js %} {% endblock %}

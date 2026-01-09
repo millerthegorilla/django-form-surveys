@@ -1,12 +1,13 @@
-{% extends get_master_template %}
-{% load static %}
-{% block extra_css %}
-  <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
-{% endblock extra_css %}
-
-{% block content %}
+{% extends get_master_template %} {% load static %} {% block extra_css %}
+<link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
+{% endblock extra_css %} {% block content %}
 <form action="{% url 'logout' %}" method="post">
-    {% csrf_token %}
-    <button class="tw:rounded-full tw:bg-blue-800 tw:hover:bg-red-800 tw:p-5 tw:my-10" type="submit"><span class="tw:text-white">Logout</span></button>
+  {% csrf_token %}
+  <button
+    class="tw:rounded-full tw:bg-blue-800 tw:hover:bg-red-800 tw:p-5 tw:my-10"
+    type="submit"
+  >
+    <span class="tw:text-white">Logout</span>
+  </button>
 </form>
 {% endblock content %}

@@ -1,0 +1,8 @@
+# pyproject.toml
+target-version = "py313"
+
+[tool.black]
+target-version = ["py313"]
+
+[tool.isort]
+profile = "black"

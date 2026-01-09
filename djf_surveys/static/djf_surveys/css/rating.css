@@ -1,19 +1,19 @@
 .rating__star {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .rating_active {
-    width: 50px;
-    height: 50px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-image: url("../images/star-fill.png");
+  width: 50px;
+  height: 50px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("../images/star-fill.png");
 }
 
 .rating_inactive {
-    width: 50px;
-    height: 50px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-image: url("../images/star-border.png");
+  width: 50px;
+  height: 50px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("../images/star-border.png");
 }

@@ -13,20 +13,33 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path, include
-from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
+from django.urls import include, path
+from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('djf_surveys.urls')),
-    path('logout/', TemplateView.as_view(template_name="registration/logout.html"), name="logout"),
-    path('login/', auth_views.LoginView.as_view(template_name="registration/login.html"), name="login"),
-    path('login/<str:slug>/', auth_views.LoginView.as_view(template_name="registration/login.html"), name="login"),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('tinymce/', include('tinymce.urls')),
+    path("admin/", admin.site.urls),
+    path("", include("djf_surveys.urls")),
+    path(
+        "logout/",
+        TemplateView.as_view(template_name="registration/logout.html"),
+        name="logout",
+    ),
+    path(
+        "login/",
+        auth_views.LoginView.as_view(template_name="registration/login.html"),
+        name="login",
+    ),
+    path(
+        "login/<str:slug>/",
+        auth_views.LoginView.as_view(template_name="registration/login.html"),
+        name="login",
+    ),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("tinymce/", include("tinymce.urls")),
 ]
 
 if settings.DEBUG:

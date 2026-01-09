@@ -1,65 +1,48 @@
-{% extends get_master_template %}
-{% load i18n static %}
-{% block extra_css %}
-  <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
-{% endblock extra_css %}
-{% block content %}
-    <div class="tw:container tw:px-5 tw:lg:py-32 tw:sm:py-16">
-        <div id="timerbox" class="tw:relative tw:p-8 tw:text-center tw:border tw:border-gray-200 tw:rounded-lg">
-            <div class="tw:flex tw:justify-center">
-                <svg height="100"
-                     viewbox="0 0 48 48"
-                     width="100"
-                     x="0px"
-                     xmlns="http://www.w3.org/2000/svg"
-                     y="0px">
-                    <path d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z" fill="#4caf50"></path>
-                    <path d="M34.602,14.602L21,28.199l-5.602-5.598l-2.797,2.797L21,33.801l16.398-16.402L34.602,14.602z" fill="#ccff90">
-                    </path>
-                </svg>
-            </div>
-            <h1 class="tw:text-3xl tw:pb-6 tw:font-medium">{% trans 'Thank you for completing this survey' %}</h1>
-            <p class="tw:mt-4 tw:text-sm tw:text-gray-500">
-                {% if object.success_page_content %}
-                    {{ object.success_page_content|safe }}
-                {% else %}
-                    {% trans DEFAULT_THANK_YOU_MESSAGE %}
-                {% endif %}
-            </p>
-            <div class="tw:flex tw:justify-center tw:py-6">
-                <a class="tw:block tw:mt-5 tw:px-5 tw:py-3 tw:text-sm tw:font-medium tw:text-white tw:bg-blue-500 tw:rounded-lg"
-                   href="{{ link_back_on_success_page }}">{% trans "Back" %}</a>
-            </div>
-        </div>
+{% extends get_master_template %} {% load i18n static %} {% block extra_css %}
+<link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
+{% endblock extra_css %} {% block content %}
+<div class="tw:container tw:px-5 tw:lg:py-32 tw:sm:py-16">
+  <div
+    id="timerbox"
+    class="tw:relative tw:p-8 tw:text-center tw:border tw:border-gray-200 tw:rounded-lg"
+  >
+    <div class="tw:flex tw:justify-center">
+      <svg
+        height="100"
+        viewbox="0 0 48 48"
+        width="100"
+        x="0px"
+        xmlns="http://www.w3.org/2000/svg"
+        y="0px"
+      >
+        <path
+          d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"
+          fill="#4caf50"
+        ></path>
+        <path
+          d="M34.602,14.602L21,28.199l-5.602-5.598l-2.797,2.797L21,33.801l16.398-16.402L34.602,14.602z"
+          fill="#ccff90"
+        ></path>
+      </svg>
     </div>
-{% endblock %}
+    <h1 class="tw:text-3xl tw:pb-6 tw:font-medium">
+      {% trans 'Thank you for completing this survey' %}
+    </h1>
+    <p class="tw:mt-4 tw:text-sm tw:text-gray-500">
+      {% if object.success_page_content %} {{ object.success_page_content|safe
+      }} {% else %} {% trans DEFAULT_THANK_YOU_MESSAGE %} {% endif %}
+    </p>
+    <div class="tw:flex tw:justify-center tw:py-6">
+      <a
+        class="tw:block tw:mt-5 tw:px-5 tw:py-3 tw:text-sm tw:font-medium tw:text-white tw:bg-blue-500 tw:rounded-lg"
+        href="{{ link_back_on_success_page }}"
+        >{% trans "Back" %}</a
+      >
+    </div>
+  </div>
+</div>
+<div id="link_back_on_success_page" data-link="{{ link_back_on_success_page }}" data-msg="{% trans 'Redirecting in:' %}" hidden></div>
+{% endblock content %} 
 {% block extra_js %}
-    <script>
-        (function() {
-            const TIMEOUT_SECONDS = 15; // 15 seconds
-            const REDIRECT_URL = "{{ link_back_on_success_page }}";
-            
-            let timeRemaining = TIMEOUT_SECONDS;
-            
-            // Show countdown
-            const countdownElement = document.createElement('p');
-            countdownElement.id = 'countdown';
-            countdownElement.className = 'mt-4 text-sm text-gray-600 font-semibold';
-            document.querySelector('#timerbox').appendChild(countdownElement);
-            
-            function updateCountdown() {
-                const mins = Math.floor(timeRemaining / 60);
-                const secs = timeRemaining % 60;
-                countdownElement.textContent = `{% trans "Redirecting in:" %} ${mins}:${secs.toString().padStart(2, '0')}`;
-                
-                timeRemaining--;
-                if (timeRemaining < 0) {
-                    window.location.href = REDIRECT_URL;
-                }
-            }
-            
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
-        })();
-    </script>
-{% endblock %}
+<script src="{% static 'djf_surveys/js/success_timeout.js' %}" type="text/javascript"></script>
+{% endblock extra_js%}

@@ -6,8 +6,8 @@ To edit SVG files as text in VS Code:
 
     Choose "Configure default editor for 'svg'"
 
-    or 
-    
+    or
+
     Choose "Configure default editor for '*.svg'"
 
     Pick "Text editor"

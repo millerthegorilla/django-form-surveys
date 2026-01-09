@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+
 from djf_surveys.app_settings import field_validators
 
 
@@ -22,8 +23,8 @@ class TermsEmailValidator(object):
 
 
 class TermsTextValidator:
-    max_length = field_validators['max_length']['text']
-    min_length = field_validators['min_length']['text']
+    max_length = field_validators["max_length"]["text"]
+    min_length = field_validators["min_length"]["text"]
 
     def __init__(self, max_length: int = 0, min_length: int = 0):
         if max_length:
@@ -42,8 +43,8 @@ class TermsTextValidator:
 
 
 class TermsTextAreaValidator(TermsTextValidator):
-    max_length = field_validators['max_length']['text_area']
-    min_length = field_validators['min_length']['text_area']
+    max_length = field_validators["max_length"]["text_area"]
+    min_length = field_validators["min_length"]["text_area"]
 
 
 class TermsNumberValidator(TermsTextValidator):
@@ -75,35 +76,43 @@ class RatingValidator(object):
         try:
             rating = int(value)
         except (TypeError, ValueError):
-            raise ValidationError(
-                _('%ss is not a number.' % value)
-            )
+            raise ValidationError(_("%ss is not a number." % value))
 
         if rating > self.max:
             raise ValidationError(
-                _('Value cannot be greater than maximum allowed number of ratings.')
+                _("Value cannot be greater than maximum allowed number of ratings.")
             )
 
         if self.required and rating < 1:
-            raise ValidationError(
-                _('Please add a rating.')
-            )
+            raise ValidationError(_("Please add a rating."))
+
 
 class SurveyEmailValidator:
-
     def __init__(self, terms: TermsEmailValidator):
         self.terms = terms
 
     def __call__(self, value):
         try:
-            domain = value.split('@')[1]
+            domain = value.split("@")[1]
         except IndexError:
-            raise ValidationError(_('Invalid email'))
+            raise ValidationError(_("Invalid email"))
 
         if self.terms.type_filter and self.terms.email_domain:
-            if self.terms.type_filter == 'whitelist' and domain not in self.terms.email_domain:
+            if (
+                self.terms.type_filter == "whitelist"
+                and domain not in self.terms.email_domain
+            ):
                 raise ValidationError(
-                    _(f'Your email is not allowed. Allowed email domains are {self.terms.email_domain}'))
-            elif self.terms.type_filter == 'blacklist' and domain in self.terms.email_domain:
+                    _(
+                        f"Your email is not allowed. Allowed email domains are {self.terms.email_domain}"
+                    )
+                )
+            elif (
+                self.terms.type_filter == "blacklist"
+                and domain in self.terms.email_domain
+            ):
                 raise ValidationError(
-                    _(f'Your email is not allowed. Email domains that are not allowed are {self.terms.email_domain}'))
+                    _(
+                        f"Your email is not allowed. Email domains that are not allowed are {self.terms.email_domain}"
+                    )
+                )

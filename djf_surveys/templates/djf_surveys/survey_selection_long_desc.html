@@ -1,44 +1,43 @@
 {% extends get_master_template %}
 {% load i18n static %}
 {% block extra_css %}
-    <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
-    <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
+  <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
+  <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
 {% endblock extra_css %}
-
 {% block content %}
-<div id="survey-content" class="tw:m-4">
+  <div id="survey-content" class="tw:m-4">
     <div class="tw:w-4/5 tw:mx-auto">
-        <h1 class="tw:text-4xl tw:font-bold tw:text-center tw:text-blue-500 tw:sm:text-3xl">
-            <b>{{ object.name }}</b>
-        </h1>
-        <span class="tw:text-2xl tw:p-4">
-            <p class="tw:text-center tw:mb-4">{{ object.description|safe }}</p>
-        </span>
+      <h1 class="tw:text-4xl tw:font-bold tw:text-center tw:text-blue-500 tw:sm:text-3xl">
+        <b>{{ object.name }}</b>
+      </h1>
+      <span class="tw:text-2xl tw:p-4">
+        <p class="tw:text-center tw:mb-4">{{ object.description|safe }}</p>
+      </span>
     </div>
     <div class="">
-        <div class="tw:container tw:px-5 tw:py-5">
-            <h2 class="tw:text-2xl tw:text-center tw:mb-4">{% trans "Please select a survey:" %}</h2>
-            {% for survey in object.surveys.all %}
-                {% include 'djf_surveys/components/card_list_survey_selection_long_desc.html' %}
-                {% if not forloop.last %}
-                    <br />
-                    <h1 class="tw:text-2xl tw:text-center tw:mb-4">OR</h1>
-                    <br />
-                    <br />
-                {% endif %}
-            {% endfor %}
-        </div>
+      <div class="tw:container tw:px-5 tw:py-5">
+        <h2 class="tw:text-2xl tw:text-center tw:mb-4">{% trans "Please select a survey:" %}</h2>
+        {% for survey in object.surveys.all %}
+          {% include 'djf_surveys/components/card_list_survey_selection_long_desc.html' %}
+          {% if not forloop.last %}
+            <br />
+            <h1 class="tw:text-2xl tw:text-center tw:mb-4">OR</h1>
+            <br />
+            <br />
+          {% endif %}
+        {% endfor %}
+      </div>
     </div>
-</div>
-{% if user.is_staff %}
+  </div>
+  {% if user.is_staff %}
     {% include 'djf_surveys/components/modal_delete.html' %}
-{% endif %}
-{% endblock %}
+  {% endif %}
+{% endblock content %}
 {% block extra_js %}
-    {% if object.fullscreen == True %}
-        <script src='{% static "djf_surveys/js/survey_selection_fullscreen.js" %}' type="text/javascript"></script>
-    {% endif %}
-    {% if user.is_staff %}
-        {% include "djf_surveys/components/modal_delete_js.html" %}
-    {% endif %}
-{% endblock %}
+  {% if object.fullscreen == True %}
+    <script src='{% static "djf_surveys/js/survey_selection_fullscreen.js" %}' type="text/javascript"></script>
+  {% endif %}
+  {% if user.is_staff %}
+    <script src="{% static 'djf_surveys/js/modal_delete.js' %}" type="text/javascript"></script>
+  {% endif %}
+{% endblock extra_js %}

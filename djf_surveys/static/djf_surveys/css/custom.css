@@ -3,62 +3,62 @@
 .no-tailwindcss-base h2,
 .no-tailwindcss-base h3,
 .no-tailwindcss-base h4 {
-    font-size: revert;
-    font-weight: revert;
+  font-size: revert;
+  font-weight: revert;
 }
 
 .no-tailwindcss-base ul,
 .no-tailwindcss-base ol {
-    list-style: revert;
-    margin: revert;
-    padding: revert;
+  list-style: revert;
+  margin: revert;
+  padding: revert;
 }
 
 .no-tailwindcss-base li {
-    margin: revert;
-    padding: revert;
+  margin: revert;
+  padding: revert;
 }
 
 /* idle popup for form.html */
 #idle-popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #f8f9fa;
-    border: 2px solid #007bff;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f8f9fa;
+  border: 2px solid #007bff;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
 #idle-popup h2 {
-    color: #343a40;
-    margin-bottom: 15px;
+  color: #343a40;
+  margin-bottom: 15px;
 }
 
 #countdown {
-    font-size: 24px;
-    font-weight: bold;
-    color: #dc3545;
+  font-size: 24px;
+  font-weight: bold;
+  color: #dc3545;
 }
 
 #stay-btn {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 #stay-btn:hover {
-    background-color: #218838;
+  background-color: #218838;
 }
 
 /* .survey-background {

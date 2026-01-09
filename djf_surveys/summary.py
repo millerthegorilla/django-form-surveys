@@ -3,15 +3,46 @@ import random
 from django.utils.translation import gettext
 
 from djf_surveys import models
-from djf_surveys.models import TYPE_FIELD, Survey, Question, Answer
+from djf_surveys.models import TYPE_FIELD, Answer, Question, Survey
 from djf_surveys.utils import create_star
 
 COLORS = [
-    '#64748b', '#a1a1aa', '#374151', '#78716c', '#d6d3d1', '#fca5a5', '#ef4444', '#7f1d1d',
-    '#fb923c', '#c2410c', '#fcd34d', '#b45309', '#fde047', '#bef264', '#ca8a04', '#65a30d',
-    '#86efac', '#15803d', '#059669', '#a7f3d0', '#14b8a6', '#06b6d4', '#155e75', '#0ea5e9',
-    '#075985', '#3b82f6', '#1e3a8a', '#818cf8', '#a78bfa', '#a855f7', '#6b21a8', '#c026d3',
-    '#db2777', '#fda4af', '#e11d48', '#9f1239'
+    "#64748b",
+    "#a1a1aa",
+    "#374151",
+    "#78716c",
+    "#d6d3d1",
+    "#fca5a5",
+    "#ef4444",
+    "#7f1d1d",
+    "#fb923c",
+    "#c2410c",
+    "#fcd34d",
+    "#b45309",
+    "#fde047",
+    "#bef264",
+    "#ca8a04",
+    "#65a30d",
+    "#86efac",
+    "#15803d",
+    "#059669",
+    "#a7f3d0",
+    "#14b8a6",
+    "#06b6d4",
+    "#155e75",
+    "#0ea5e9",
+    "#075985",
+    "#3b82f6",
+    "#1e3a8a",
+    "#818cf8",
+    "#a78bfa",
+    "#a855f7",
+    "#6b21a8",
+    "#c026d3",
+    "#db2777",
+    "#fda4af",
+    "#e11d48",
+    "#9f1239",
 ]
 
 
@@ -19,6 +50,7 @@ class ChartJS:
     """
     this class to generate chart https://www.chartjs.org
     """
+
     chart_id = ""
     chart_name = ""
     element_html = ""
@@ -69,7 +101,7 @@ class ChartJS:
 
 
 class ChartPie(ChartJS):
-    """ this class to generate pie chart"""
+    """this class to generate pie chart"""
 
     def _config(self):
         script = """
@@ -109,7 +141,7 @@ const data%s = {
 
 
 class ChartBar(ChartJS):
-    """ this class to generate bar chart"""
+    """this class to generate bar chart"""
 
     def _config(self):
         script = """
@@ -174,17 +206,18 @@ class ChartBarRating(ChartBar):
 
 
 class SummaryResponse:
-
     def __init__(self, survey: Survey):
         self.survey = survey
 
     def _process_radio_type(self, question: Question) -> str:
-        pie_chart = ChartPie(chart_id=f"chartpie_{question.id}", chart_name=question.label)
+        pie_chart = ChartPie(
+            chart_id=f"chartpie_{question.id}", chart_name=question.label
+        )
         labels = question.choices.split(",")
 
         data = []
         for label in labels:
-            clean_label = label.strip().replace(' ', '_').lower()
+            clean_label = label.strip().replace(" ", "_").lower()
             count = Answer.objects.filter(question=question, value=clean_label).count()
             data.append(count)
 
@@ -196,7 +229,9 @@ class SummaryResponse:
         if not question.choices:  # use 5 as default for backward compatibility
             question.choices = 5
 
-        bar_chart = ChartBarRating(chart_id=f"chartbar_{question.id}", chart_name=question.label)
+        bar_chart = ChartBarRating(
+            chart_id=f"chartbar_{question.id}", chart_name=question.label
+        )
         bar_chart.num_stars = int(question.choices)
         labels = [str(item + 1) for item in range(int(question.choices))]
 
@@ -205,7 +240,9 @@ class SummaryResponse:
             count = Answer.objects.filter(question=question, value=label).count()
             data.append(count)
 
-        values_rating = Answer.objects.filter(question=question).values_list('value', flat=True)
+        values_rating = Answer.objects.filter(question=question).values_list(
+            "value", flat=True
+        )
         values_convert = [int(v) for v in values_rating]
         try:
             rating_avg = round(sum(values_convert) / len(values_convert), 1)
@@ -218,7 +255,9 @@ class SummaryResponse:
         return bar_chart.render()
 
     def _process_multiselect_type(self, question: Question) -> str:
-        bar_chart = ChartBar(chart_id=f"barchart_{question.id}", chart_name=question.label)
+        bar_chart = ChartBar(
+            chart_id=f"barchart_{question.id}", chart_name=question.label
+        )
         labels = question.choices.split(",")
 
         str_value = []
@@ -229,7 +268,7 @@ class SummaryResponse:
 
         data = []
         for label in labels:
-            clean_label = label.strip().replace(' ', '_').lower()
+            clean_label = label.strip().replace(" ", "_").lower()
             data.append(data_value.count(clean_label))
 
         bar_chart.labels = labels
@@ -239,22 +278,35 @@ class SummaryResponse:
     def generate(self):
         html_str = []
         for question in self.survey.questions.all():
-            if question.type_field == TYPE_FIELD.radio or question.type_field == TYPE_FIELD.select:
+            if (
+                question.type_field == TYPE_FIELD.radio
+                or question.type_field == TYPE_FIELD.select
+            ):
                 html_str.append(self._process_radio_type(question))
             elif question.type_field == TYPE_FIELD.multi_select:
                 html_str.append(self._process_multiselect_type(question))
             elif question.type_field == TYPE_FIELD.rating:
                 html_str.append(self._process_rating_type(question))
         if not html_str:
-            input_types = ', '.join(str(x[1]) for x in models.Question.TYPE_FIELD if
-                                    x[0] in (
-                                    models.TYPE_FIELD.radio, models.TYPE_FIELD.select, models.TYPE_FIELD.multi_select,
-                                    models.TYPE_FIELD.rating))
+            input_types = ", ".join(
+                str(x[1])
+                for x in models.Question.TYPE_FIELD
+                if x[0]
+                in (
+                    models.TYPE_FIELD.radio,
+                    models.TYPE_FIELD.select,
+                    models.TYPE_FIELD.multi_select,
+                    models.TYPE_FIELD.rating,
+                )
+            )
             return """
 <div class="bg-yellow-100 space-y-1 py-5 rounded-md border border-yellow-200 text-center shadow-xs mb-2">
     <h1 class="text-2xl font-semibold">{}</h1>
     <h5 class="mb-0 mt-1 text-sm p-2">{}</h5>
 </div>
-""".format(gettext("No summary"), gettext("Summary is available only for input type: %ss") % input_types)
+""".format(
+                gettext("No summary"),
+                gettext("Summary is available only for input type: %ss") % input_types,
+            )
 
         return " ".join(html_str)

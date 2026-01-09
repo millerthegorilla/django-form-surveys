@@ -1,35 +1,34 @@
 import csv
 from io import StringIO
 
-from django.utils.text import capfirst
-from django.utils.translation import gettext, gettext_lazy as _
-from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import FormMixin
-from django.utils.decorators import method_decorator
-from django.contrib.admin.views.decorators import staff_member_required
-from django.urls import reverse, reverse_lazy
-from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import View
-from django.http import JsonResponse, HttpResponse
 from django.contrib import messages
-from django.conf import settings as conf
+from django.contrib.admin.views.decorators import staff_member_required
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse, reverse_lazy
+from django.utils.decorators import method_decorator
+from django.utils.text import capfirst
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
+from django.views.generic import View
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, FormMixin, UpdateView
 
-from djf_surveys.app_settings import SURVEYS_ADMIN_BASE_PATH
-from djf_surveys.models import Survey, Question, UserAnswer, SurveySelection
-from djf_surveys.mixin import ContextTitleMixin
-from djf_surveys.views import SurveyListView, SurveySelectionListView
-from djf_surveys.forms import BaseSurveyForm
-from djf_surveys.summary import SummaryResponse
 from djf_surveys.admins.v2.forms import SurveyForm, SurveySelectionListForm
+from djf_surveys.app_settings import SURVEYS_ADMIN_BASE_PATH
+from djf_surveys.forms import BaseSurveyForm
+from djf_surveys.mixin import ContextTitleMixin
+from djf_surveys.models import Question, Survey, SurveySelection, UserAnswer
+from djf_surveys.summary import SummaryResponse
+from djf_surveys.views import SurveyListView, SurveySelectionListView
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class AdminCreateSurveyView(ContextTitleMixin, CreateView):
-    template_name = 'djf_surveys/admins/form.html'
+    template_name = "djf_surveys/admins/form.html"
     form_class = SurveyForm
     title_page = _("Add New Survey")
-    
+
     def post(self, request, *args, **kwargs):
         form = self.get_form_class()(request.POST)
         if form.is_valid():
@@ -38,31 +37,30 @@ class AdminCreateSurveyView(ContextTitleMixin, CreateView):
             survey.save()
             self.object = survey
             return redirect(self.get_success_url())
-        return render(request, self.template_name, {"form":form})
-
+        return render(request, self.template_name, {"form": form})
 
     def get_success_url(self):
         survey = self.object
-        messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
-            page_action_name=capfirst(self.title_page.lower())))
+        messages.success(
+            self.request,
+            gettext("%(page_action_name)s succeeded.")
+            % dict(page_action_name=capfirst(self.title_page.lower())),
+        )
         return reverse("djf_surveys:admin_forms_survey", args=[survey.slug])
 
 
-
-
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class AdminCreateSurveySelectionView(ContextTitleMixin, View):
-    template_name = 'djf_surveys/admins/form.html'
+    template_name = "djf_surveys/admins/form.html"
     form_class = SurveySelectionListForm
     model = SurveySelection
     title_page = _("Create Survey Selection List")
 
     def get(self, request, *args, **kwargs):
         form = self.get_form()
-        return render(request,
-                      self.template_name,
-                      {'form': form, 
-                        'title_page': self.title_page})
+        return render(
+            request, self.template_name, {"form": form, "title_page": self.title_page}
+        )
 
     def get_form(self, form_class=None):
         if form_class is None:
@@ -73,106 +71,125 @@ class AdminCreateSurveySelectionView(ContextTitleMixin, View):
         #     initial_data["survey_slug"] = survey.slug
         #     initial_data["survey_name"] = survey.name
         return form_class()
-    
+
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
             survey_selection = form.save(commit=False)
             survey_selection.owner = request.user
             survey_selection.save()
-            if 'surveys' in request.POST  and request.POST['surveys']:
-                for survey in Survey.objects.filter(pk__in=form.cleaned_data['surveys']):
+            if "surveys" in request.POST and request.POST["surveys"]:
+                for survey in Survey.objects.filter(
+                    pk__in=form.cleaned_data["surveys"]
+                ):
                     survey_selection.surveys.add(survey)
-                survey_selection.set_survey_order(form.cleaned_data['surveys'])
+                survey_selection.set_survey_order(form.cleaned_data["surveys"])
                 survey_selection.save()
 
-            messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
-                page_action_name=capfirst(self.title_page.lower())))
+            messages.success(
+                self.request,
+                gettext("%(page_action_name)s succeeded.")
+                % dict(page_action_name=capfirst(self.title_page.lower())),
+            )
             return redirect(survey_selection.get_absolute_url())
         else:
-            return render(request, self.template_name, {'form': form})
-        
+            return render(request, self.template_name, {"form": form})
 
-@method_decorator(staff_member_required, name='dispatch')
+
+@method_decorator(staff_member_required, name="dispatch")
 class AdminEditSurveyView(ContextTitleMixin, UpdateView):
     model = Survey
     form_class = SurveyForm
-    template_name = 'djf_surveys/admins/form.html'
+    template_name = "djf_surveys/admins/form.html"
     title_page = _("Edit Survey")
-        
+
     def get_success_url(self):
         survey = self.object
-        messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
-                        page_action_name=capfirst(self.title_page.lower())))
+        messages.success(
+            self.request,
+            gettext("%(page_action_name)s succeeded.")
+            % dict(page_action_name=capfirst(self.title_page.lower())),
+        )
         return reverse("djf_surveys:admin_forms_survey", args=[survey.slug])
-    
+
     def get_form(self):
         form = super().get_form(self.form_class)
         if form.instance.survey_selection:
-            form.initial['survey_selection'] = form.instance.survey_selection
+            form.initial["survey_selection"] = form.instance.survey_selection
         return form
-    
+
     def get_object(self, queryset=None):
-        return get_object_or_404(Survey, slug=self.kwargs['slug'])
+        return get_object_or_404(Survey, slug=self.kwargs["slug"])
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class AdminEditSurveySelectionView(ContextTitleMixin, UpdateView):
     model = SurveySelection
     form_class = SurveySelectionListForm
-    template_name = 'djf_surveys/admins/form.html'
+    template_name = "djf_surveys/admins/form.html"
     title_page = _("Edit Survey Selection")
-        
+
     def get_success_url(self):
         surveyselection = self.object
-        messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
-                        page_action_name=capfirst(self.title_page.lower())))
+        messages.success(
+            self.request,
+            gettext("%(page_action_name)s succeeded.")
+            % dict(page_action_name=capfirst(self.title_page.lower())),
+        )
         return reverse("djf_surveys:admin_forms_survey", args=[surveyselection.slug])
-    
+
     def get_form(self):
         form = super().get_form(self.form_class)
         return form
-    
+
     def get_object(self, queryset=None):
-        return get_object_or_404(SurveySelection, slug=self.kwargs['slug'])
-    
+        return get_object_or_404(SurveySelection, slug=self.kwargs["slug"])
+
     def post(self, request, *args, **kwargs):
         pobject = request.POST.copy()
         form = self.form_class(data=pobject, instance=self.get_object())
         if form.is_valid():
             survey_selection = form.save()
-            if 'surveys' in request.POST  and request.POST['surveys']:
+            if "surveys" in request.POST and request.POST["surveys"]:
                 survey_selection.surveys.clear()
-                for survey in Survey.objects.filter(pk__in=form.cleaned_data['surveys']):
+                for survey in Survey.objects.filter(
+                    pk__in=form.cleaned_data["surveys"]
+                ):
                     survey_selection.surveys.add(survey)
-                survey_selection.set_survey_order(form.cleaned_data['surveys'])
+                survey_selection.set_survey_order(form.cleaned_data["surveys"])
                 survey_selection.save()
-                messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(
-                page_action_name=capfirst(self.title_page.lower())))
+                messages.success(
+                    self.request,
+                    gettext("%(page_action_name)s succeeded.")
+                    % dict(page_action_name=capfirst(self.title_page.lower())),
+                )
             return redirect(survey_selection.get_absolute_url())
         else:
-            return render(request, self.template_name, {'form': form})
+            return render(request, self.template_name, {"form": form})
 
-@method_decorator(staff_member_required, name='dispatch')
+
+@method_decorator(staff_member_required, name="dispatch")
 class AdminSurveyListView(SurveyListView):
-    template_name = 'djf_surveys/admins/survey_list.html'
+    template_name = "djf_surveys/admins/survey_list.html"
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class AdminSurveySelectionListView(SurveySelectionListView):
-    template_name = 'djf_surveys/admins/survey_selection_list.html'
+    template_name = "djf_surveys/admins/survey_selection_list.html"
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class AdminSurveyFormView(ContextTitleMixin, FormMixin, DetailView):
     model = Survey
-    template_name = 'djf_surveys/admins/form_preview.html'
+    template_name = "djf_surveys/admins/form_preview.html"
     form_class = BaseSurveyForm
 
     def get_form(self, form_class=None):
         if form_class is None:
             form_class = self.get_form_class()
-        return form_class(survey=self.object, user=self.request.user, **self.get_form_kwargs())
+        return form_class(
+            survey=self.object, user=self.request.user, **self.get_form_kwargs()
+        )
 
     def get_title_page(self):
         return self.object.name
@@ -181,10 +198,10 @@ class AdminSurveyFormView(ContextTitleMixin, FormMixin, DetailView):
         return self.object.description
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class AdminSurveySelectionFormView(ContextTitleMixin, FormMixin, DetailView):
     model = SurveySelection
-    template_name = 'djf_surveys/admins/form_selection_preview.html'
+    template_name = "djf_surveys/admins/form_selection_preview.html"
     form_class = SurveySelectionListForm
 
     def get_form(self, form_class=None):
@@ -199,42 +216,49 @@ class AdminSurveySelectionFormView(ContextTitleMixin, FormMixin, DetailView):
         return self.object.description
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class AdminDeleteSurveyView(DetailView):
     model = Survey
 
     def get(self, request, *args, **kwargs):
         survey = self.get_object()
         survey.delete()
-        messages.success(request, gettext("Survey %ss succesfully deleted.") % survey.name)
+        messages.success(
+            request, gettext("Survey %ss succesfully deleted.") % survey.name
+        )
         return redirect("djf_surveys:admin_survey_list")
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class AdminDeleteSurveySelectionView(DetailView):
     model = SurveySelection
 
     def get(self, request, *args, **kwargs):
         survey_selection = self.get_object()
         survey_selection.delete()
-        messages.success(request, gettext("Survey Selection %ss succesfully deleted.") % survey_selection.name)
+        messages.success(
+            request,
+            gettext("Survey Selection %ss succesfully deleted.")
+            % survey_selection.name,
+        )
         return redirect("djf_surveys:admin_survey_selection_list")
-    
 
-@method_decorator(staff_member_required, name='dispatch')
+
+@method_decorator(staff_member_required, name="dispatch")
 class AdminCreateQuestionView(ContextTitleMixin, CreateView):
     """
     Note: This class already has version 2
     """
+
     model = Question
-    template_name = 'djf_surveys/admins/question_form.html'
+    template_name = "djf_surveys/admins/question_form.html"
     success_url = reverse_lazy("djf_surveys:")
-    fields = ['label', 'key', 'type_field', 'choices', 'help_text', 'required']
+    fields = ["label", "key", "type_field", "choices", "help_text", "required"]
     title_page = _("Add Question")
     survey = None
 
     def dispatch(self, request, *args, **kwargs):
-        self.survey = get_object_or_404(Survey, id=kwargs['pk'])
+        self.survey = get_object_or_404(Survey, id=kwargs["pk"])
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -243,7 +267,11 @@ class AdminCreateQuestionView(ContextTitleMixin, CreateView):
             question = form.save(commit=False)
             question.survey = self.survey
             question.save()
-            messages.success(self.request, gettext("%(page_action_name)s succeeded.") % dict(page_action_name=capfirst(self.title_page.lower())))
+            messages.success(
+                self.request,
+                gettext("%(page_action_name)s succeeded.")
+                % dict(page_action_name=capfirst(self.title_page.lower())),
+            )
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
@@ -252,15 +280,16 @@ class AdminCreateQuestionView(ContextTitleMixin, CreateView):
         return reverse("djf_surveys:admin_forms_survey", args=[self.survey.slug])
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class AdminUpdateQuestionView(ContextTitleMixin, UpdateView):
     """
     Note: This class already has version 2
     """
+
     model = Question
-    template_name = 'djf_surveys/admins/question_form.html'
+    template_name = "djf_surveys/admins/question_form.html"
     success_url = SURVEYS_ADMIN_BASE_PATH
-    fields = ['label', 'key', 'type_field', 'choices', 'help_text', 'required']
+    fields = ["label", "key", "type_field", "choices", "help_text", "required"]
     title_page = _("Add Question")
     survey = None
 
@@ -273,7 +302,7 @@ class AdminUpdateQuestionView(ContextTitleMixin, UpdateView):
         return reverse("djf_surveys:admin_forms_survey", args=[self.survey.slug])
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class AdminDeleteQuestionView(DetailView):
     model = Question
     survey = None
@@ -286,41 +315,38 @@ class AdminDeleteQuestionView(DetailView):
     def get(self, request, *args, **kwargs):
         question = self.get_object()
         question.delete()
-        messages.success(request, gettext("Question %ss succesfully deleted.") % question.label)
+        messages.success(
+            request, gettext("Question %ss succesfully deleted.") % question.label
+        )
         return redirect("djf_surveys:admin_forms_survey", slug=self.survey.slug)
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class AdminChangeOrderQuestionView(View):
     def post(self, request, *args, **kwargs):
-        ordering = request.POST['order_question'].split(",")
+        ordering = request.POST["order_question"].split(",")
         for index, question_id in enumerate(ordering):
             if question_id:
                 question = Question.objects.get(id=question_id)
                 question.ordering = index
                 question.save()
 
-        data = {
-            'message': gettext("Update ordering of questions succeeded.")
-        }
+        data = {"message": gettext("Update ordering of questions succeeded.")}
         return JsonResponse(data, status=200)
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class AdminChangeOrderSurveyView(View):
     def post(self, request, *args, **kwargs):
         SurveySelection.objects.get(
-            slug=request.POST['survey_selection_slug']
-            ).set_survey_order(
-                [x for x in request.POST['order_survey'].split(',') if x])
+            slug=request.POST["survey_selection_slug"]
+        ).set_survey_order([x for x in request.POST["order_survey"].split(",") if x])
 
-        data = {
-            'message': gettext("Update ordering of surveys succeeded.")
-        }
+        data = {"message": gettext("Update ordering of surveys succeeded.")}
         return JsonResponse(data, status=200)
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class DownloadResponseSurveyView(DetailView):
     model = Survey
 
@@ -334,10 +360,10 @@ class DownloadResponseSurveyView(DetailView):
         header = []
         for index, user_answer in enumerate(user_answers):
             if index == 0:
-                header.append('user')
-                header.append('update_at')
+                header.append("user")
+                header.append("update_at")
 
-            rows.append(user_answer.user.username if user_answer.user else 'no auth')
+            rows.append(user_answer.user.username if user_answer.user else "no auth")
             rows.append(user_answer.updated_at.strftime("%Y-%m-%d %H:%M:%S"))
             for answer in user_answer.answer_set.all():
                 if index == 0:
@@ -350,11 +376,11 @@ class DownloadResponseSurveyView(DetailView):
             rows = []
 
         response = HttpResponse(csv_buffer.getvalue(), content_type="text/csv")
-        response['Content-Disposition'] = f'attachment; filename={survey.slug}.csv'
+        response["Content-Disposition"] = f"attachment; filename={survey.slug}.csv"
         return response
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class SummaryResponseSurveyView(ContextTitleMixin, DetailView):
     model = Survey
     template_name = "djf_surveys/admins/summary.html"
@@ -363,11 +389,11 @@ class SummaryResponseSurveyView(ContextTitleMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         summary = SummaryResponse(survey=self.get_object())
-        context['summary'] = summary
+        context["summary"] = summary
         return context
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class SummaryResponseSurveySelectionView(ContextTitleMixin, DetailView):
     model = SurveySelection
     template_name = "djf_surveys/admins/selection_summary.html"
@@ -375,6 +401,7 @@ class SummaryResponseSurveySelectionView(ContextTitleMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['summaries'] = [SummaryResponse(survey) \
-                     for survey in self.object.surveys.all()]
+        context["summaries"] = [
+            SummaryResponse(survey) for survey in self.object.surveys.all()
+        ]
         return context

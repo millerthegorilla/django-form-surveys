@@ -1,15 +1,16 @@
 {% extends get_master_template %}
 {% load djf_survey_tags i18n static %}
 {% block extra_css %}
-    <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
-    <link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet" />
-    <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
-    {% if form.has_multiselect %}
-        <link href="{% static 'djf_surveys/css/multiselect.css' %}" rel="stylesheet" />
-    {% endif %}
+<link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
+<link href="{% static 'djf_surveys/css/rating.css' %}" rel="stylesheet" />
+<link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
+{% if form.has_multiselect %}
+    <link href="{% static 'djf_surveys/css/multiselect.css' %}"
+          rel="stylesheet" />
+{% endif %}
 {% endblock extra_css %}
 {% block content %}
-    <div id="link_back_on_cancel" data-link="{{ link_back_on_cancel }}" data-timeout="10" data-dialog-timeout="{{ SURVEY_FORM_TIMEOUT_DIALOG }}" hidden></div>
+    <div id="link_back_on_cancel" data-link="{{ link_back_on_cancel }}" data-timeout="{{ SURVEY_FORM_TIMEOUT }}" data-dialog-timeout="{{ SURVEY_FORM_TIMEOUT_DIALOG }}" hidden></div>
     <div class="survey-background">
         {% if object.cancel_button %}
             <div class="tw:flex tw:py-1 tw:fixed tw:bottom-10 tw:right-10">
@@ -34,8 +35,9 @@
                             <div class="tw:mt-1">
                                 {% if field.field.widget.input_type == 'radio' or field.field.widget.input_type == 'checkbox' %}
                                     {{ field }}
-                                {% elif field.field.widget.input_type == 'select' %}
-                                    {{ field }}
+                                {% comment %} {% elif
+                                    field.field.widget.input_type == 'select' %}
+                                    {{ field }} {% endcomment %}
                                 {% else %}
                                     {{ field|addclass:'tw:w-full tw:p-4 tw:pr-12 tw:text-sm tw:border tw:border-gray-500 tw:rounded-lg tw:shadow-sm' }}
                                 {% endif %}
@@ -61,6 +63,9 @@
 {% block extra_js %}
     {% if form.has_multiselect %}
         <script src="{% static 'djf_surveys/js/multiselect.js' %}" type="text/javascript"></script>
+    {% endif %}
+    {% if form.has_rating %}
+        <script src="{% static 'djf_surveys/js/rating_star.js' %}" type="text/javascript"></script>
     {% endif %}
     <script src="{% static 'djf_surveys/js/idle_timeout.js' %}" type="text/javascript"></script>
 {% endblock %}
