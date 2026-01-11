@@ -450,8 +450,6 @@ class SuccessPageSurveyView(ContextTitleMixin, DetailView):
         survey = get_object_or_404(Survey, slug=self.kwargs["slug"])
         if self.kwargs["temp_login"] == "True":
             logout(request)
-        if SURVEY_SINGLE_USE_PASSWORDS:
-            User.objects.filter(username=request.user.username).first().active = False
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs) -> dict[str, any]:
