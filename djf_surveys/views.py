@@ -14,6 +14,7 @@ from django.views import View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormMixin
 from django.views.generic.list import ListView
+from django.contrib.auth import get_user_model
 
 from djf_surveys import app_settings
 from djf_surveys.forms import EditSurveyForm, RespondToSurveyForm, WithdrawResponseForm
@@ -27,7 +28,9 @@ from djf_surveys.models import (
     UserAnswer,
 )
 from djf_surveys.utils import NewPaginator
+from djf_surveys.app_settings import SURVEY_SINGLE_USE_PASSWORDS
 
+User = get_user_model()
 
 class IndexView(ContextTitleMixin, View):
     template_name = "djf_surveys/home.html"
@@ -447,6 +450,8 @@ class SuccessPageSurveyView(ContextTitleMixin, DetailView):
         survey = get_object_or_404(Survey, slug=self.kwargs["slug"])
         if self.kwargs["temp_login"] == "True":
             logout(request)
+        if SURVEY_SINGLE_USE_PASSWORDS:
+            User.objects.filter(username=request.user.username).first().active = False
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs) -> dict[str, any]:

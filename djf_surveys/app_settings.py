@@ -170,3 +170,9 @@ SURVEY_GDPR_REFERENCE_MESSAGE = (
                         class='tw:font-medium tw:text-fg-brand tw:text-blue-600 tw:hover:underline'> \
                         withdraw response page.</a>"
 )
+
+SURVEY_SINGLE_USE_PASSWORDS = (
+    settings.SURVEY_SINGLE_USE_PASSWORDS
+    if hasattr(settings, "SURVEY_SINGLE_USE_PASSWORDS")
+    else False
+)
