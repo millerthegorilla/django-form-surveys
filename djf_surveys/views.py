@@ -28,7 +28,6 @@ from djf_surveys.models import (
     UserAnswer,
 )
 from djf_surveys.utils import NewPaginator
-from djf_surveys.app_settings import SURVEY_SINGLE_USE_PASSWORDS
 
 User = get_user_model()
 
@@ -261,6 +260,27 @@ class RespondSurveyFormView(ContextTitleMixin, SurveyFormView):
         if survey.fullscreen == True:
             context["fullscreen"] = True
         return context
+    
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        self.object = self.get_object()
+        if form.is_valid():
+            form.save()
+            messages.success(
+                self.request,
+                gettext("%(page_action_name)s succeeded.")
+                % dict(page_action_name=capfirst(self.title_page.lower())),
+            )
+            if self.object.temp_user:
+                if app_settings.SURVEY_REMOVE_TEMP_USER:
+                        user = request.user
+                        user.is_active = False
+                        user.save()
+                logout(request)
+            return self.form_valid(form)
+        else:
+            messages.error(self.request, gettext("Something went wrong."))
+            return self.form_invalid(form)
 
 
 @method_decorator(login_required, name="dispatch")
@@ -446,15 +466,9 @@ class SuccessPageSurveyView(ContextTitleMixin, DetailView):
                 SurveySelection, slug=self.kwargs["selection_slug"]
             )
 
-    def get(self, request, *args, **kwargs):
-        survey = get_object_or_404(Survey, slug=self.kwargs["slug"])
-        if survey.temp_user:
-            logout(request)
-            if app_settings.SURVEY_REMOVE_TEMP_USER:
-                    user = request.user
-                    user.is_active = False
-                    user.save()
-        return super().get(request, *args, **kwargs)
+    # def get(self, request, *args, **kwargs):
+    #     survey = get_object_or_404(Survey, slug=self.kwargs["slug"])
+    #     return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs) -> dict[str, any]:
         context = super().get_context_data(**kwargs)

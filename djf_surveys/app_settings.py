@@ -171,12 +171,6 @@ SURVEY_GDPR_REFERENCE_MESSAGE = (
                         withdraw response page.</a>"
 )
 
-SURVEY_SINGLE_USE_PASSWORDS = (
-    settings.SURVEY_SINGLE_USE_PASSWORDS
-    if hasattr(settings, "SURVEY_SINGLE_USE_PASSWORDS")
-    else False
-)
-
 SURVEY_REMOVE_TEMP_USER = (
     settings.SURVEY_REMOVE_TEMP_USER
     if hasattr(settings, "SURVEY_REMOVE_TEMP_USER")

@@ -35,9 +35,6 @@
                             <div class="tw:mt-1">
                                 {% if field.field.widget.input_type == 'radio' or field.field.widget.input_type == 'checkbox' %}
                                     {{ field }}
-                                {% comment %} {% elif
-                                    field.field.widget.input_type == 'select' %}
-                                    {{ field }} {% endcomment %}
                                 {% else %}
                                     {{ field|addclass:'tw:w-full tw:p-4 tw:pr-12 tw:text-sm tw:border tw:border-gray-500 tw:rounded-lg tw:shadow-sm' }}
                                 {% endif %}
