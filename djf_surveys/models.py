@@ -138,6 +138,16 @@ class Survey(BaseModel):
             "list."
         ),
     )
+    temp_user = models.BooleanField(
+        _("Temp User Survey"),
+        default=False,
+        help_text=_(
+            "If True users will be asked to login with a " 
+            "temporary user account. A link to the survey will be "
+            "listed in the user profile bookmark "
+            "list."
+        ),
+    )
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:

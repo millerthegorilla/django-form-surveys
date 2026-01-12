@@ -154,6 +154,7 @@ class SurveyForm(forms.ModelForm):
             "cycle_survey",
             "private_response",
             "private",
+            "temp_user",
             "can_anonymous_user",
             "gdpr_compliant",
             "show_on_index",
