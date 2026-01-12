@@ -448,7 +448,7 @@ class SuccessPageSurveyView(ContextTitleMixin, DetailView):
 
     def get(self, request, *args, **kwargs):
         survey = get_object_or_404(Survey, slug=self.kwargs["slug"])
-        if survey.temp_user == "True":
+        if survey.temp_user:
             logout(request)
             if app_settings.SURVEY_REMOVE_TEMP_USER:
                     user = request.user
