@@ -25,12 +25,6 @@ urlpatterns = [
     path(
         "respond/<str:slug>/<str:selection_slug>/",
         views.RespondSurveyFormView.as_view(),
-        kwargs={"temp_login": "False"},
-        name="respond",
-    ),
-    path(
-        "respond/<str:slug>/<str:selection_slug>/<str:temp_login>/",
-        views.RespondSurveyFormView.as_view(),
         name="respond",
     ),
     path("delete/<int:pk>/", views.DeleteSurveyAnswerView.as_view(), name="delete"),
@@ -42,12 +36,6 @@ urlpatterns = [
     ),
     path(
         "success/<str:slug>/<str:selection_slug>/",
-        views.SuccessPageSurveyView.as_view(),
-        kwargs={"temp_login": "False"},
-        name="success",
-    ),
-    path(
-        "success/<str:slug>/<str:selection_slug>/<str:temp_login>/",
         views.SuccessPageSurveyView.as_view(),
         name="success",
     ),

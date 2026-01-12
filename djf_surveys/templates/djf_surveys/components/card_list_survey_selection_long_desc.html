@@ -32,7 +32,7 @@
     {% endif %}
   </div>
   <a class="tw:relative tw:block tw:p-8 tw:overflow-hidden tw:border tw:border-gray-100 tw:rounded-lg tw:bg-white"
-     href="{% if user.is_staff %}{% url 'djf_surveys:detail' survey.slug request.resolver_match.kwargs.slug %}{% elif survey.temp_user %}{% url SURVEY_LOGIN_URL 'temp_login' %}?next={% url 'djf_surveys:respond' survey.slug request.resolver_match.kwargs.slug True %}{% else %}{% url 'djf_surveys:respond' survey.slug request.resolver_match.kwargs.slug %}{% endif %}">
+     href="{% if user.is_staff %}{% url 'djf_surveys:detail' survey.slug request.resolver_match.kwargs.slug %}{% elif survey.temp_user %}{% url SURVEY_LOGIN_URL %}?next={% url 'djf_surveys:respond' survey.slug request.resolver_match.kwargs.slug %}{% else %}{% url 'djf_surveys:respond' survey.slug request.resolver_match.kwargs.slug %}{% endif %}">
     <span class="tw:absolute tw:inset-x-0 tw:bottom-0 tw:h-2 tw:bg-linear-to-r tw:from-green-300 tw:via-blue-500 tw:to-purple-600"></span>
     <div class="tw:justify-between tw:sm:flex">
       <div>

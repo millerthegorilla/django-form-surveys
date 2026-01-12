@@ -172,6 +172,15 @@ class BaseSurveyForm(forms.Form):
             self.fields[field_name].required = question.required
             self.fields[field_name].help_text = question.help_text
             self.field_names.append(field_name)
+        
+        self.has_multiselect = any(
+            isinstance(field, forms.MultipleChoiceField)
+            for field in self.fields.values()
+        )
+        self.has_rating = any(
+            isinstance(field, forms.CharField) and isinstance(field.widget, RatingSurvey)
+            for field in self.fields.values()
+        )
 
     def clean(self):
         cleaned_data = super().clean()
@@ -199,14 +208,6 @@ class RespondToSurveyForm(BaseSurveyForm):
         link = reverse("djf_surveys:withdraw_response")
         self.fields["gdpr_reference"].help_text = mark_safe(
             _(SURVEY_GDPR_REFERENCE_MESSAGE).format(link)
-        )
-        self.has_multiselect = any(
-            isinstance(field, forms.MultipleChoiceField)
-            for field in self.fields.values()
-        )
-        self.has_rating = any(
-            isinstance(field, forms.CharField) and isinstance(field.widget, RatingSurvey)
-            for field in self.fields.values()
         )
 
     @transaction.atomic

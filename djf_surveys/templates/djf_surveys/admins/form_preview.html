@@ -7,6 +7,7 @@
   <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
 {% endblock extra_css %}
 {% block content %}
+HEY {{ form.has_rating }}
   <div class="tw:max-w-screen-xl tw:px-4 tw:py-16 tw:mx-auto tw:sm:px-6 tw:lg:px-8">
     <div class="tw:max-w-lg tw:mx-auto">
       <div class="tw:flex tw:-space-x-4 tw:hover:space-x-1 tw:py-1 tw:float-right">
@@ -100,4 +101,7 @@
   </script>
   <script src="{% static 'djf_surveys/js/modal_delete.js' %}" type="text/javascript"></script>
   <script src="{% static 'djf_surveys/js/share_link_button.js' %}" type="text/javascript"></script>
+    {% if form.has_rating %}
+        <script src="{% static 'djf_surveys/js/rating_star.js' %}" type="text/javascript"></script>
+    {% endif %}
 {% endblock extra_js %}
