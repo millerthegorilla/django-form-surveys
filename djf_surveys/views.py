@@ -473,6 +473,8 @@ class SuccessPageSurveyView(ContextTitleMixin, DetailView):
     def get_context_data(self, **kwargs) -> dict[str, any]:
         context = super().get_context_data(**kwargs)
         survey = get_object_or_404(Survey, slug=self.kwargs["slug"])
+        if survey.fullscreen == True:
+            context["fullscreen"] = True
         if survey.cycle_survey == True:
             if self.kwargs["selection_slug"] == "main":
                 context["link_back_on_success_page"] = reverse_lazy(
