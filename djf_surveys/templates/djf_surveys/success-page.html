@@ -41,7 +41,7 @@
     </div>
   </div>
 </div>
-<div id="link_back_on_success_page" data-link="{{ link_back_on_success_page }}" data-msg="{% trans 'Redirecting in:' %}" hidden></div>
+<div id="link_back_on_success_page" data-link="{{ link_back_on_success_page }}" data-timeout="{{ SURVEY_FORM_SUCCESS_TIMEOUT }}" data-msg="{% trans 'Redirecting in:' %}" hidden></div>
 {% endblock content %} 
 {% block extra_js %}
 <script src="{% static 'djf_surveys/js/success_timeout.js' %}" type="text/javascript"></script>

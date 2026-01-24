@@ -3,6 +3,9 @@
 {% block extra_css %}
   <link href="{% static 'djf_surveys/css/styles.css' %}" rel="stylesheet" />
   <link href="{% static 'djf_surveys/css/custom.css' %}" rel="stylesheet" />
+  {% if object.screensaver == True %}
+   <link href="{% static 'djf_surveys/css/screensaver.css' %}" rel="stylesheet" />
+  {% endif %}
 {% endblock extra_css %}
 {% block content %}
   <div id="survey-content" class="tw:m-4">
@@ -32,8 +35,20 @@
   {% if user.is_staff %}
     {% include 'djf_surveys/components/modal_delete.html' %}
   {% endif %}
+  {% if object.screensaver == True %}
+    <div id="screensaver-data" data-timeout="{{ SURVEY_SCREENSAVER_TIMEOUT }}" hidden></div>
+    <div id="scsaver" class="scsaver">
+      <div id="scsaver-text" class="scsaver-inner">
+        <p>{{ SURVEY_SCREENSAVER_TEXT }}</p>
+      </div>
+    </div>
+  {% endif %}
 {% endblock content %}
 {% block extra_js %}
+  {% if object.screensaver == True %}
+    <script src="https://cdn.jsdelivr.net/npm/scsaver@latest/dist/scsaver.min.js" type="text/javascript"></script>
+    <script src='{% static "djf_surveys/js/screensaver.js" %}' type="text/javascript"></script>
+  {% endif %}
   {% if object.fullscreen == True %}
     <script src='{% static "djf_surveys/js/survey_selection_fullscreen.js" %}' type="text/javascript"></script>
   {% endif %}

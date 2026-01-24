@@ -1,5 +1,5 @@
 (function () {
-    const TIMEOUT_SECONDS = 15; // 15 seconds
+    const TIMEOUT_SECONDS = document.getElementById("link_back_on_success_page").dataset.timeout;
     const REDIRECT_URL = document.getElementById("link_back_on_success_page").dataset.link;
     const MESSAGE = document.getElementById("link_back_on_success_page").dataset.msg;
     let timeRemaining = TIMEOUT_SECONDS;

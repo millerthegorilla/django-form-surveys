@@ -148,6 +148,8 @@ SURVEY_GDPR_REFERENCE_MESSAGE = "This is a unique reference \
                         and enter it into the \
                         withdraw response page at the following link : https://surveybob.cons{}"
 SURVEY_REMOVE_TEMP_USER = True
+SURVEY_FORM_TIMEOUT = 15
+SURVEY_SCREENSAVER_TIMEOUT = 20
 # TINYMCE_DEFAULT_CONFIG: dict = {
 #         "theme": "silver",
 #         "height": 500,

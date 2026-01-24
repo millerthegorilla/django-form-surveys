@@ -160,6 +160,7 @@ class SurveyForm(forms.ModelForm):
             "show_on_index",
             "bookmark",
             "fullscreen",
+            "screensaver",
             "notification_to",
             "success_page_content",
         ]
@@ -240,6 +241,7 @@ class SurveySelectionListForm(forms.ModelForm):
             "success_page_content",
             "show_on_index",
             "fullscreen",
+            "screensaver",
             "private",
             "bookmark",
         ]

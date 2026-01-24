@@ -150,6 +150,13 @@ SURVEY_FORM_TIMEOUT_DIALOG = (
     else 10
 )
 
+# number of seconds to show timeout dialog
+SURVEY_FORM_SUCCESS_TIMEOUT = (
+    settings.SURVEY_FORM_SUCCESS_TIMEOUT
+    if hasattr(settings, "SURVEY_FORM_SUCCESS_TIMEOUT")
+    else 10
+)
+
 # login url
 SURVEY_LOGIN_URL = (
     settings.SURVEY_LOGIN_URL if hasattr(settings, "SURVEY_LOGIN_URL") else "login"
@@ -175,4 +182,16 @@ SURVEY_REMOVE_TEMP_USER = (
     settings.SURVEY_REMOVE_TEMP_USER
     if hasattr(settings, "SURVEY_REMOVE_TEMP_USER")
     else False
+)
+
+SURVEY_SCREENSAVER_TIMEOUT = (
+    settings.SURVEY_SCREENSAVER_TIMEOUT
+    if hasattr(settings, "SURVEY_SCREENSAVER_TIMEOUT")
+    else 300
+)
+
+SURVEY_SCREENSAVER_TEXT = (
+    settings.SURVEY_SCREENSAVER_TEXT
+    if hasattr(settings, "SURVEY_SCREENSAVER_TEXT")
+    else _("Touch the screen to take a survey")
 )

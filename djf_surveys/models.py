@@ -148,6 +148,13 @@ class Survey(BaseModel):
             "list."
         ),
     )
+    screensaver = models.BooleanField(
+        _("Show Screensaver"),
+        default=False,
+        help_text=_(
+            "If True a screensaver will be shown after time set in settings."
+        ),
+    )
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
@@ -386,6 +393,13 @@ class SurveySelection(BaseModel):
             "If True a link to the survey selection will be "
             "listed in the user profile bookmark "
             "list."
+        ),
+    )
+    screensaver = models.BooleanField(
+        _("Show Screensaver"),
+        default=False,
+        help_text=_(
+            "If True a screensaver will be shown after time set in settings."
         ),
     )
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
