@@ -327,6 +327,8 @@ class Answer(BaseModel):
             )
         elif self.question.type_field == TYPE_FIELD.url:
             return mark_safe(f'<a href="{self.value}" target="_blank">{self.value}</a>')
+        elif self.question.type_field == TYPE_FIELD.title:
+            return mark_safe(f"<h3>TITLE</h3>")
         elif (
             self.question.type_field == TYPE_FIELD.radio
             or self.question.type_field == TYPE_FIELD.select

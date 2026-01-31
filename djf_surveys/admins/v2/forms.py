@@ -150,9 +150,8 @@ class QuestionTitleForm(forms.ModelForm):
         help_text_size = self.cleaned_data.get("help_text_font_size", "small")
         help_text_weight = self.cleaned_data.get("help_text_font_weight", "normal")
         help_text_color = self.cleaned_data.get("help_text_font_color", "dark-gray")
-
         self.instance.help_text = f'<span class="{help_text_size} {help_text_weight} {help_text_color}">{help_text}</span>'
-
+        self.instance.required = False
         return super().save(commit=commit)
     
     def __init__(self, *args, **kwargs):

@@ -48,7 +48,7 @@ class TitleField(forms.Field):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
+
     def clean(self, value):
         return value
     
@@ -240,7 +240,10 @@ class RespondToSurveyForm(BaseSurveyForm):
                 value = ",".join(cleaned_data[field_name])
             else:
                 value = cleaned_data[field_name]
-
+            
+            if question.type_field == TYPE_FIELD.title:
+                value = "Title"
+                
             Answer.objects.create(
                 question=question, value=value, user_answer=user_answer
             )
