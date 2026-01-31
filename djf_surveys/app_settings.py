@@ -225,3 +225,20 @@ SURVEY_TEXT_WEIGHT_CSS_MAP = (
     "extrabold": "tw:font-extrabold",
     "black": "tw:font-black",
     })
+
+# how to translate text color options into css font-color values
+SURVEY_TEXT_COLOR_CSS_MAP = (
+    settings.SURVEY_TEXT_COLOR_CSS_MAP 
+    if hasattr(settings, "SURVEY_TEXT_COLOR_CSS_MAP")
+    else {
+    "light-gray": "tw:text-gray-500",
+    "dark-gray": "tw:text-gray-900",
+    "light-blue": "tw:text-blue-500",
+    "dark-blue": "tw:text-blue-900",
+    "light-red": "tw:text-red-500",
+    "dark-red": "tw:text-red-900",
+    "light-green": "tw:text-green-500",
+    "dark-green": "tw:text-green-900",
+    "light-yellow": "tw:text-yellow-500",
+    "dark-yellow": "tw:text-yellow-900",
+    })

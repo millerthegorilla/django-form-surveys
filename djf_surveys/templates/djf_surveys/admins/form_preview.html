@@ -62,7 +62,7 @@
                   {{ field|addclass:'w-full p-4 pr-12 text-sm border-gray-500 rounded-lg shadow-sm' }}
                 {% endif %}
               </div>
-              <p class="tw:text-xs tw:text-gray-400 tw:mt-2">{{ field.help_text }}</p>
+              <p class="tw:text-xs tw:text-gray-400 tw:mt-2">{{ field.help_text|safe }}</p>
             </div>
           </div>
         {% endfor %}

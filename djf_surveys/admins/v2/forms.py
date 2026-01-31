@@ -10,6 +10,7 @@ from djf_surveys.app_settings import (
     field_validators,
     SURVEY_TEXT_SIZE_CSS_MAP,
     SURVEY_TEXT_WEIGHT_CSS_MAP,
+    SURVEY_TEXT_COLOR_CSS_MAP,
 )
 
 from djf_surveys.models import Question, Survey, SurveySelection
@@ -103,32 +104,87 @@ class QuestionTitleForm(forms.ModelForm):
             choices.append((typeMap[key], key))
         return choices
 
-    font_size = forms.ChoiceField( 
-        label=_("Font Size"),
+    label_font_size = forms.ChoiceField( 
+        label=_("Label Font Size"),
         choices= make_choices(SURVEY_TEXT_SIZE_CSS_MAP),
         widget=forms.Select(attrs={"class": "tw:w-full tw:p-4 tw:pr-12 tw:text-sm tw:border tw:border-gray-500 tw:rounded-lg tw:shadow-sm"}),
     )
 
-    font_weight = forms.ChoiceField(
-        label=_("Font Weight"),
+    label_font_weight = forms.ChoiceField(
+        label=_("Label Font Weight"),
         choices= make_choices(SURVEY_TEXT_WEIGHT_CSS_MAP),
+        widget=forms.Select(attrs={"class": "tw:w-full tw:p-4 tw:pr-12 tw:text-sm tw:border tw:border-gray-500 tw:rounded-lg tw:shadow-sm tw:mb-4"}),
+    )
+
+    label_font_color = forms.ChoiceField(
+        label=_("Label Font Color"),
+        choices= make_choices(SURVEY_TEXT_COLOR_CSS_MAP),
+        widget=forms.Select(attrs={"class": "tw:w-full tw:p-4 tw:pr-12 tw:text-sm tw:border tw:border-gray-500 tw:rounded-lg tw:shadow-sm tw:mb-4"}),
+    )
+
+    help_text_font_size = forms.ChoiceField( 
+        label=_("Help Text Font Size"),
+        choices= make_choices(SURVEY_TEXT_SIZE_CSS_MAP),
+        widget=forms.Select(attrs={"class": "tw:w-full tw:p-4 tw:pr-12 tw:text-sm tw:border tw:border-gray-500 tw:rounded-lg tw:shadow-sm"}),
+    )
+
+    help_text_font_weight = forms.ChoiceField(
+        label=_("Help Text Font Weight"),
+        choices= make_choices(SURVEY_TEXT_WEIGHT_CSS_MAP),
+        widget=forms.Select(attrs={"class": "tw:w-full tw:p-4 tw:pr-12 tw:text-sm tw:border tw:border-gray-500 tw:rounded-lg tw:shadow-sm"}),
+    )
+    
+    help_text_font_color = forms.ChoiceField(
+        label=_("Help Text Font Color"),
+        choices= make_choices(SURVEY_TEXT_COLOR_CSS_MAP),
         widget=forms.Select(attrs={"class": "tw:w-full tw:p-4 tw:pr-12 tw:text-sm tw:border tw:border-gray-500 tw:rounded-lg tw:shadow-sm"}),
     )
 
     def save(self, commit=True):
         label = strip_tags(self.cleaned_data.get("label", ""))
-        size = self.cleaned_data.get("font_size", "small")
-        weight = self.cleaned_data.get("font_weight", "normal")
-        self.instance.label = f'<span class="{size} {weight}">{label}</span>'
+        label_size = self.cleaned_data.get("label_font_size", "small")
+        label_weight = self.cleaned_data.get("label_font_weight", "normal")
+        label_color = self.cleaned_data.get("label_font_color", "dark-gray")
+        self.instance.label = f'<span class="{label_size} {label_weight} {label_color}">{label}</span>'
+        help_text = strip_tags(self.cleaned_data.get("help_text", ""))
+        help_text_size = self.cleaned_data.get("help_text_font_size", "small")
+        help_text_weight = self.cleaned_data.get("help_text_font_weight", "normal")
+        help_text_color = self.cleaned_data.get("help_text_font_color", "dark-gray")
+
+        self.instance.help_text = f'<span class="{help_text_size} {help_text_weight} {help_text_color}">{help_text}</span>'
+
         return super().save(commit=commit)
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        label_tags = self.instance.label.split('"')[1].split(' ')
         self.initial['label'] = strip_tags(self.initial.get('label', ''))
+        self.fields['label_font_size'].initial = label_tags[0] if len(label_tags) > 0 else "small"
+        self.fields['label_font_size'].widget.attrs.update({'autocomplete': 'off'})
+        self.fields['label_font_weight'].initial = label_tags[1] if len(label_tags) > 1 else "normal"
+        self.fields['label_font_weight'].widget.attrs.update({'autocomplete': 'off'})
+        self.fields['label_font_color'].initial = label_tags[2] if len(label_tags) > 2 else "dark-gray"
+        self.fields['label_font_color'].widget.attrs.update({'autocomplete': 'off'})
+
+        help_text_tags = self.instance.help_text.split('"')[1].split(' ')
+        self.initial['help_text'] = strip_tags(self.initial.get('help_text', ''))
+        self.fields['help_text_font_size'].initial = help_text_tags[0] if len(help_text_tags) > 0 else "small"
+        self.fields['help_text_font_size'].widget.attrs.update({'autocomplete': 'off'})
+        self.fields['help_text_font_weight'].initial = help_text_tags[1] if len(help_text_tags) > 1 else "normal"
+        self.fields['help_text_font_weight'].widget.attrs.update({'autocomplete': 'off'})
+        self.fields['help_text_font_color'].initial = help_text_tags[2] if len(help_text_tags) > 2 else "dark-gray"
+        self.fields['help_text_font_color'].widget.attrs.update({'autocomplete': 'off'})
     
     class Meta:
         model = Question
-        fields = ["label"]
+        fields = ["label", 
+                  "label_font_size", 
+                  "label_font_weight", 
+                  "label_font_color",
+                  "help_text",
+                  "help_text_font_size", 
+                  "help_text_font_weight",
+                  "help_text_font_color"]
 
 
 class QuestionNumberForm(forms.ModelForm):

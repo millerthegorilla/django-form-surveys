@@ -8,11 +8,12 @@ from djf_surveys.models import Survey, SurveySelection
 
 class Title(forms.Widget):
     template_name = "djf_surveys/widgets/title.html"
-    
-    def __init__(self, attrs: dict[str, Any] | None = ...) -> None:
-        super().__init__(attrs)
 
-    def get_context(self, name, value, attrs):
+    def __init__(self, attrs: dict[str, Any] | None = ...) -> None:
+        self.attrs = {} if attrs is None else attrs.copy()
+        super().__init__()
+
+    def get_context(self, name="", value=None, attrs=None):
         context = super().get_context(name, value, attrs)
         return context
     
