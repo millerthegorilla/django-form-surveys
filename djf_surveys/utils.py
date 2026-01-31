@@ -85,4 +85,9 @@ def get_type_field():
             "icon": "bi bi-calendar-event",
         },
         {"id": models.TYPE_FIELD.rating, "label": _("Rating"), "icon": "bi bi-star"},
+        {
+            "id": models.TYPE_FIELD.title,
+            "label": _("Title"),
+            "icon": "bi bi-type",
+        },
     ]

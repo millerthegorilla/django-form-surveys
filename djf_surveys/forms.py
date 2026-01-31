@@ -29,12 +29,12 @@ from djf_surveys.validators import (
     TermsTextValidator,
 )
 from djf_surveys.widgets import (
+    Title,
     CheckboxSelectMultipleSurvey,
     DateSurvey,
     RadioSelectSurvey,
     RatingSurvey,
 )
-
 
 def make_choices(question: Question) -> List[Tuple[str, str]]:
     choices = []
@@ -43,6 +43,15 @@ def make_choices(question: Question) -> List[Tuple[str, str]]:
         choices.append((choice.replace(" ", "_").lower(), choice))
     return choices
 
+# required, label, initial, widget, help_text
+class TitleField(forms.Field):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+    def clean(self, value):
+        return value
+    
 
 class BaseSurveyForm(forms.Form):
     def __init__(self, survey, user, *args, **kwargs):
@@ -56,7 +65,13 @@ class BaseSurveyForm(forms.Form):
             # to generate field name
             field_name = f"field_survey_{question.id}"
 
-            if question.type_field == TYPE_FIELD.multi_select:
+            if question.type_field == TYPE_FIELD.title:
+                self.fields[field_name] = TitleField(
+                    required=False,
+                    label=question.label,
+                    widget=Title(attrs={"value": question.label}),
+                )
+            elif question.type_field == TYPE_FIELD.multi_select:
                 choices = make_choices(question)
                 self.fields[field_name] = forms.MultipleChoiceField(
                     choices=choices,
@@ -140,7 +155,7 @@ class BaseSurveyForm(forms.Form):
                 )
 
             elif question.type_field == TYPE_FIELD.rating:
-                if not question.choices:  # use 5 as default for backward compatibility
+                if not question.choices:  # use 5 as default for backward compatibility TODO
                     question.choices = 5
                 self.fields[field_name] = forms.CharField(
                     label=question.label,

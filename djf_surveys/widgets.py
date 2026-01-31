@@ -4,6 +4,17 @@ from django.db.models import Count
 from djf_surveys.models import Survey, SurveySelection
 
 
+class Title(forms.Widget):
+    template_name = "djf_surveys/widgets/title.html"
+    
+    def __init__(self, attrs: dict[str, Any] | None = ...) -> None:
+        super().__init__(attrs)
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        return context
+    
+
 class CheckboxSelectMultipleSurvey(forms.CheckboxSelectMultiple):
     option_template_name = "djf_surveys/widgets/multiselect.html"
 

@@ -16,6 +16,7 @@ from djf_surveys.admins.v2.forms import (
     QuestionNumberForm,
     QuestionTextAreaForm,
     QuestionTextForm,
+    QuestionTitleForm,
     QuestionWithChoicesForm,
 )
 from djf_surveys.app_settings import SURVEYS_ADMIN_BASE_PATH
@@ -48,6 +49,8 @@ class AdminCreateQuestionView(ContextTitleMixin, CreateView):
         choices = [TYPE_FIELD.multi_select, TYPE_FIELD.select, TYPE_FIELD.radio]
         if self.type_field_id in choices:
             return QuestionWithChoicesForm
+        elif self.type_field_id == TYPE_FIELD.title:
+            return QuestionTitleForm
         elif self.type_field_id == TYPE_FIELD.rating:
             return QuestionFormRatings
         elif self.type_field_id == TYPE_FIELD.email:
@@ -137,6 +140,8 @@ class AdminUpdateQuestionView(ContextTitleMixin, UpdateView):
             return QuestionEmailForm
         elif self.type_field_id == TYPE_FIELD.text:
             return QuestionTextForm
+        elif self.type_field_id == TYPE_FIELD.title:
+            return QuestionTitleForm
         elif self.type_field_id == TYPE_FIELD.text_area:
             return QuestionTextAreaForm
         elif self.type_field_id == TYPE_FIELD.number:

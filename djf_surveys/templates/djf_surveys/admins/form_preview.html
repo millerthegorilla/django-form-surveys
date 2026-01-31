@@ -54,7 +54,7 @@
               </svg>
             </a>
             <div class="tw:p-8 tw:mb-6 tw:rounded-lg tw:shadow-md tw:border tw:border-gray-200 tw:bg-white">
-              <label class="tw:text-base tw:font-medium" for="email">{{ field.label }}</label>
+              <label class="tw:text-base tw:font-medium" for="email">{{ field.label|safe }}</label>
               <div class="tw:mt-1">
                 {% if field.field.widget.input_type == 'radio' or field.field.widget.input_type == 'checkbox' %}
                   {{ field }}

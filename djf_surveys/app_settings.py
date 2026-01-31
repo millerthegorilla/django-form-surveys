@@ -198,3 +198,30 @@ SURVEY_SCREENSAVER_TEXT = (
     if hasattr(settings, "SURVEY_SCREENSAVER_TEXT")
     else _("Touch the screen to take a survey")
 )
+
+# how to translate text size options into css font-size values
+SURVEY_TEXT_SIZE_CSS_MAP = (
+    settings.SURVEY_TEXT_SIZE_CSS_MAP
+    if hasattr(settings, "SURVEY_TEXT_SIZE_CSS_MAP")
+    else {
+    "small": "tw:text-sm",
+    "medium": "tw:text-base",
+    "large": "tw:text-lg",
+    "xlarge": "tw:text-xl",
+    "xxlarge": "tw:text-2xl",
+    "xxxlarge": "tw:text-3xl",
+    })
+
+# how to translate text weight options into css font-weight values
+SURVEY_TEXT_WEIGHT_CSS_MAP = (
+    settings.SURVEY_TEXT_WEIGHT_CSS_MAP 
+    if hasattr(settings, "SURVEY_TEXT_WEIGHT_CSS_MAP")
+    else {
+    "light": "tw:font-light",
+    "normal": "tw:font-normal",
+    "medium": "tw:font-medium",
+    "semibold": "tw:font-semibold",
+    "bold": "tw:font-bold",
+    "extrabold": "tw:font-extrabold",
+    "black": "tw:font-black",
+    })

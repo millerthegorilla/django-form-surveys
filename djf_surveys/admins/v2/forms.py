@@ -1,11 +1,17 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
+from django.utils.html import strip_tags
 from tinymce.widgets import TinyMCE
 
-from djf_surveys.app_settings import SURVEY_TINYMCE_DEFAULT_CONFIG, field_validators
+from djf_surveys.app_settings import (
+    SURVEY_TINYMCE_DEFAULT_CONFIG,
+    field_validators,
+    SURVEY_TEXT_SIZE_CSS_MAP,
+    SURVEY_TEXT_WEIGHT_CSS_MAP,
+)
+
 from djf_surveys.models import Question, Survey, SurveySelection
 from djf_surveys.widgets import InlineChoiceField, InlineChoiceSelectField
-
 
 class QuestionForm(forms.ModelForm):
     class Meta:
@@ -82,10 +88,45 @@ class QuestionTextForm(forms.ModelForm):
         initial=field_validators["min_length"]["text"],
         help_text=_("Min. Length: Text input"),
     )
-
     class Meta:
         model = Question
         fields = ["label", "key", "help_text", "required", "max_length", "min_length"]
+
+
+class QuestionTitleForm(forms.ModelForm):
+
+    def make_choices(typeMap) -> List[Tuple[str, str]]:
+        choices = []
+        for key in typeMap:
+            choices.append((typeMap[key], key))
+        return choices
+
+    font_size = forms.ChoiceField( 
+        label=_("Font Size"),
+        choices= make_choices(SURVEY_TEXT_SIZE_CSS_MAP),
+        widget=forms.Select(attrs={"class": "tw:w-full tw:p-4 tw:pr-12 tw:text-sm tw:border tw:border-gray-500 tw:rounded-lg tw:shadow-sm"}),
+    )
+
+    font_weight = forms.ChoiceField(
+        label=_("Font Weight"),
+        choices= make_choices(SURVEY_TEXT_WEIGHT_CSS_MAP),
+        widget=forms.Select(attrs={"class": "tw:w-full tw:p-4 tw:pr-12 tw:text-sm tw:border tw:border-gray-500 tw:rounded-lg tw:shadow-sm"}),
+    )
+
+    def save(self, commit=True):
+        label = strip_tags(self.cleaned_data.get("label", ""))
+        size = self.cleaned_data.get("font_size", "small")
+        weight = self.cleaned_data.get("font_weight", "normal")
+        self.instance.label = f'<span class="{size} {weight}">{label}</span>'
+        return super().save(commit=commit)
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.initial['label'] = strip_tags(self.initial['label'])
+    
+    class Meta:
+        model = Question
+        fields = ["label"]
 
 
 class QuestionNumberForm(forms.ModelForm):
@@ -129,13 +170,6 @@ class QuestionTextAreaForm(forms.ModelForm):
 
 
 class SurveyForm(forms.ModelForm):
-    # survey_selection = forms.ModelChoiceField(
-    #     label=_("Survey Selection to Return to..."),
-    #     empty_label=_("No Survey Selection"),
-    #     queryset=SurveySelection.objects.all(),
-    #     required=False,
-    #     help_text=_("Select Survey Selection associated with this survey"),
-    # )
 
     class Media:
         js = ("djf_surveys/js/admin_survey_form.js",)

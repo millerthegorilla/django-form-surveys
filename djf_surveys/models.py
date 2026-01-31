@@ -19,8 +19,8 @@ models.CharField.register_lookup(Length)
 
 TYPE_FIELD = namedtuple(
     "TYPE_FIELD",
-    "text number radio select multi_select text_area url email date rating",
-)._make(range(10))
+    "text number radio select multi_select text_area url email date rating title",
+)._make(range(11))
 
 
 def generate_unique_slug(klass, field, id, identifier="slug"):
@@ -190,6 +190,7 @@ class Question(BaseModel):
         (TYPE_FIELD.email, _("Email")),
         (TYPE_FIELD.date, _("Date")),
         (TYPE_FIELD.rating, _("Rating")),
+        (TYPE_FIELD.title, _("Title")),
     ]
 
     key = models.CharField(
