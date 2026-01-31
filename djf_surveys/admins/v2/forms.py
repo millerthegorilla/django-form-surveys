@@ -124,7 +124,7 @@ class QuestionTitleForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.initial['label'] = strip_tags(self.initial['label'])
+        self.initial['label'] = strip_tags(self.initial.get('label', ''))
     
     class Meta:
         model = Question
