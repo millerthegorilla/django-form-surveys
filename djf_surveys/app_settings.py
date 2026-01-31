@@ -178,18 +178,21 @@ SURVEY_GDPR_REFERENCE_MESSAGE = (
                         withdraw response page.</a>"
 )
 
+# this removes the temporary user created for anonymous survey takers once they have completed the survey
 SURVEY_REMOVE_TEMP_USER = (
     settings.SURVEY_REMOVE_TEMP_USER
     if hasattr(settings, "SURVEY_REMOVE_TEMP_USER")
     else False
 )
 
+# screensaver timeout in seconds
 SURVEY_SCREENSAVER_TIMEOUT = (
     settings.SURVEY_SCREENSAVER_TIMEOUT
     if hasattr(settings, "SURVEY_SCREENSAVER_TIMEOUT")
     else 300
 )
 
+# screensaver text
 SURVEY_SCREENSAVER_TEXT = (
     settings.SURVEY_SCREENSAVER_TEXT
     if hasattr(settings, "SURVEY_SCREENSAVER_TEXT")

@@ -2,7 +2,6 @@
 
     const TIMEOUT_SECONDS = document.getElementById("screensaver-data").dataset.timeout;
     
-    console.log("Screensaver timeout seconds:", TIMEOUT_SECONDS);
     const scsaver = new Scsaver('#scsaver', defaults = {
         waitTime: TIMEOUT_SECONDS * 1000,
         events: ['keydown', 'mousemove', 'touchstart', 'touchmove', 'click', 'scroll'],
