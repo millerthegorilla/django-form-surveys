@@ -3,6 +3,8 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.html import strip_tags
 from tinymce.widgets import TinyMCE
 
+from typing import List, Tuple
+
 from djf_surveys.app_settings import (
     SURVEY_TINYMCE_DEFAULT_CONFIG,
     field_validators,
