@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
 from django.utils.html import strip_tags
 from tinymce.widgets import TinyMCE
@@ -156,23 +157,28 @@ class QuestionTitleForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        label_tags = self.instance.label.split('"')[1].split(' ')
-        self.initial['label'] = strip_tags(self.initial.get('label', ''))
-        self.fields['label_font_size'].initial = label_tags[0] if len(label_tags) > 0 else "small"
-        self.fields['label_font_size'].widget.attrs.update({'autocomplete': 'off'})
-        self.fields['label_font_weight'].initial = label_tags[1] if len(label_tags) > 1 else "normal"
-        self.fields['label_font_weight'].widget.attrs.update({'autocomplete': 'off'})
-        self.fields['label_font_color'].initial = label_tags[2] if len(label_tags) > 2 else "dark-gray"
-        self.fields['label_font_color'].widget.attrs.update({'autocomplete': 'off'})
-
-        help_text_tags = self.instance.help_text.split('"')[1].split(' ')
-        self.initial['help_text'] = strip_tags(self.initial.get('help_text', ''))
-        self.fields['help_text_font_size'].initial = help_text_tags[0] if len(help_text_tags) > 0 else "small"
-        self.fields['help_text_font_size'].widget.attrs.update({'autocomplete': 'off'})
-        self.fields['help_text_font_weight'].initial = help_text_tags[1] if len(help_text_tags) > 1 else "normal"
-        self.fields['help_text_font_weight'].widget.attrs.update({'autocomplete': 'off'})
-        self.fields['help_text_font_color'].initial = help_text_tags[2] if len(help_text_tags) > 2 else "dark-gray"
-        self.fields['help_text_font_color'].widget.attrs.update({'autocomplete': 'off'})
+        try:
+            if self.instance:  
+                if self.instance.label:
+                    label_tags = self.instance.label.split('"')[1].split(' ')
+                    self.initial['label'] = strip_tags(self.initial.get('label', ''))
+                    self.fields['label_font_size'].initial = label_tags[0] if len(label_tags) > 0 else "small"
+                    self.fields['label_font_size'].widget.attrs.update({'autocomplete': 'off'})
+                    self.fields['label_font_weight'].initial = label_tags[1] if len(label_tags) > 1 else "normal"
+                    self.fields['label_font_weight'].widget.attrs.update({'autocomplete': 'off'})
+                    self.fields['label_font_color'].initial = label_tags[2] if len(label_tags) > 2 else "dark-gray"
+                    self.fields['label_font_color'].widget.attrs.update({'autocomplete': 'off'})
+                if self.instance.help_text:
+                    help_text_tags = self.instance.help_text.split('"')[1].split(' ')
+                    self.initial['help_text'] = strip_tags(self.initial.get('help_text', ''))
+                    self.fields['help_text_font_size'].initial = help_text_tags[0] if len(help_text_tags) > 0 else "small"
+                    self.fields['help_text_font_size'].widget.attrs.update({'autocomplete': 'off'})
+                    self.fields['help_text_font_weight'].initial = help_text_tags[1] if len(help_text_tags) > 1 else "normal"
+                    self.fields['help_text_font_weight'].widget.attrs.update({'autocomplete': 'off'})
+                    self.fields['help_text_font_color'].initial = help_text_tags[2] if len(help_text_tags) > 2 else "dark-gray"
+                    self.fields['help_text_font_color'].widget.attrs.update({'autocomplete': 'off'})
+        except ObjectDoesNotExist as e:
+            pass
     
     class Meta:
         model = Question
