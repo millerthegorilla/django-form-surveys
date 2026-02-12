@@ -40,6 +40,7 @@ urlpatterns = [
     ),
     path("accounts/", include("django.contrib.auth.urls")),
     path("tinymce/", include("tinymce.urls")),
+    path("s/", include("shortener.urls")),
 ]
 
 if settings.DEBUG:

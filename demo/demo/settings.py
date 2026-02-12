@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "demo",
     "tinymce",
     "tailwind",
+    "shortener",
 ]
 
 MIDDLEWARE = [
@@ -146,7 +147,7 @@ SURVEY_GDPR_REFERENCE_MESSAGE = "This is a unique reference \
                         withdraw your response in the \
                         future please note this number \
                         and enter it into the \
-                        withdraw response page at the following link : https://surveybob.cons{}"
+                        withdraw response page at the following link : {}"
 SURVEY_REMOVE_TEMP_USER = True
 SURVEY_FORM_TIMEOUT = 45
 SURVEY_SCREENSAVER_TIMEOUT = 20

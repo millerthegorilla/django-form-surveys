@@ -1,5 +1,3 @@
-import uuid
-
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -225,7 +223,8 @@ class RespondSurveyFormView(ContextTitleMixin, SurveyFormView):
             {
                 "survey": self.get_object(),
                 "user": self.request.user,
-                "initial": {"gdpr_reference": str(uuid.uuid4())},
+                "host": self.request.get_host(),
+                "scheme": self.request.scheme,
             }
         )
         return kwargs
@@ -242,13 +241,12 @@ class RespondSurveyFormView(ContextTitleMixin, SurveyFormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         survey = self.get_object()
-        if survey.can_anonymous_user:
-            context["gdpr_reference"] = uuid.uuid4()
         if survey.cycle_survey == True:
             if self.kwargs["selection_slug"] == "main":
                 context["link_back_on_cancel"] = reverse_lazy(
                     "djf_surveys:respond",
-                    kwargs={"slug": survey.slug, "selection_slug": "main"},
+                    kwargs={"slug": survey.slug, 
+                            "selection_slug": "main"},
                 )
             else:
                 context["link_back_on_cancel"] = reverse_lazy(
@@ -516,6 +514,12 @@ class WithdrawResponseView(FormMixin, ContextTitleMixin, View):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        gdpr_reference = self.kwargs.get("gdpr_reference", "")
+        kwargs.update({"gdpr_reference": gdpr_reference})
+        return kwargs
 
     def get(self, request, *args, **kwargs):
         form = self.get_form()
@@ -529,6 +533,7 @@ class WithdrawResponseView(FormMixin, ContextTitleMixin, View):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
+        breakpoint()
         if form.is_valid():
             gdpr_reference = form.cleaned_data.get("gdpr_reference")
             user_response = get_object_or_404(UserAnswer, gdpr_reference=gdpr_reference)

@@ -49,5 +49,10 @@ urlpatterns = [
         views.WithdrawResponseView.as_view(),
         name="withdraw_response",
     ),
+    path(
+        "withdraw_response/<uuid:gdpr_reference>/",
+        views.WithdrawResponseView.as_view(),
+        name="withdraw_response",
+    ),
     path(SURVEYS_ADMIN_BASE_PATH, include("djf_surveys.admins.urls")),
 ]

@@ -1,4 +1,6 @@
 from typing import List, Tuple
+import uuid
+from shortener import shortener
 
 from django import forms
 from django.core.mail import BadHeaderError, send_mail
@@ -219,10 +221,14 @@ class RespondToSurveyForm(BaseSurveyForm):
     )
 
     def __init__(self, *args, **kwargs):
+        host = kwargs.pop("host", None)
+        scheme = kwargs.pop("scheme", "https")
         super().__init__(*args, **kwargs)
-        link = reverse("djf_surveys:withdraw_response")
+        self.fields['gdpr_reference'].initial = str(uuid.uuid4())
+        link = reverse("djf_surveys:withdraw_response", kwargs={"gdpr_reference": self.fields['gdpr_reference'].initial})
+        url_short = f"{scheme}://{host}/s/{shortener.get_or_create(None, link, refresh=True)}"
         self.fields["gdpr_reference"].help_text = mark_safe(
-            _(SURVEY_GDPR_REFERENCE_MESSAGE).format(link)
+            _(SURVEY_GDPR_REFERENCE_MESSAGE).format(url_short)
         )
 
     @transaction.atomic
@@ -317,6 +323,11 @@ class EditSurveyForm(BaseSurveyForm):
 
 class WithdrawResponseForm(forms.Form):
     gdpr_reference = forms.CharField(label=_("GDPR Reference"), max_length=100)
+
+    def __init__(self, *args, **kwargs):
+        gdpr_reference = kwargs.pop('gdpr_reference', "")
+        super().__init__(*args, **kwargs)
+        self.fields["gdpr_reference"].initial = gdpr_reference
 
     def clean_gdpr_reference(self):
         gdpr_reference = self.cleaned_data.get("gdpr_reference")
