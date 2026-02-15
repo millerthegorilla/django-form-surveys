@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
@@ -36,25 +37,34 @@ class IndexView(ContextTitleMixin, View):
     paginator_class = NewPaginator
 
     def get(self, request, *args, **kwargs):
-        filter = {}
+        survey_filter = {}
+        survey_selection_filter = {}
         if (
             app_settings.SURVEY_ANONYMOUS_VIEW_LIST
             and not self.request.user.is_authenticated
         ):
-            filter["can_anonymous_user"] = True
+            survey_filter = Q(can_anonymous_user=True) | Q(temp_user=True)
+            survey_selection_filter = {"can_anonymous_user": True}
+        
         query = self.request.GET.get("q")
 
-        if query:
-            surveys = Survey.objects.filter(name__icontains=query, **filter)
+        if isinstance(survey_filter, Q):
+            if query:
+                surveys = Survey.objects.filter(survey_filter, name__icontains=query)
+            else:
+                surveys = Survey.objects.filter(survey_filter)
         else:
-            surveys = Survey.objects.filter(**filter)
+            if query:
+                surveys = Survey.objects.filter(name__icontains=query, **survey_filter)
+            else:
+                surveys = Survey.objects.filter(**survey_filter)
 
         if query:
             survey_selections = SurveySelection.objects.filter(
-                name__icontains=query, **filter
+                name__icontains=query, **survey_selection_filter
             )
         else:
-            survey_selections = SurveySelection.objects.filter(**filter)
+            survey_selections = SurveySelection.objects.filter(**survey_selection_filter)
 
         # # Paginate surveys
         # survey_paginator = self.paginator_class(surveys, self.paginate_by)
@@ -193,7 +203,7 @@ class RespondSurveyFormView(ContextTitleMixin, SurveyFormView):
     def dispatch(self, request, *args, **kwargs):
         survey = self.get_object()
         # handle if survey can_anonymous_user
-        if not request.user.is_authenticated and not survey.can_anonymous_user:
+        if not request.user.is_authenticated and not (survey.can_anonymous_user or survey.temp_user):
             messages.warning(
                 request, gettext("Sorry, you must be logged in to fill out the survey.")
             )
