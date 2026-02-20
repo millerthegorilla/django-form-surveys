@@ -12,7 +12,7 @@
       {% if surveys %}
         <div class="tw:grid tw:sm:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-2 tw:xl:grid-cols-2 tw:gap-4">
           {% for survey in surveys %}
-            {% if user.is_staff or survey.temp_user or survey.anonymous_user and survey.show_on_index %}
+            {% if survey.show_on_index %}
               {% include 'djf_surveys/components/card_list_survey.html' %}
             {% endif %}
             {% endfor %}
@@ -26,7 +26,7 @@
         {% if survey_selections %}
           <div class="tw:grid tw:sm:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-2 tw:xl:grid-cols-2 tw:gap-4">
             {% for survey_selection in survey_selections %}
-              {% if user.is_staff or user.is_authenticated == False and survey_selection.can_anonymous_user and survey_selection.show_on_index %}
+              {% if survey_selection.show_on_index %}
                 {% include 'djf_surveys/components/card_list_survey_selection_list.html' %}
               {% endif %}
             {% endfor %}

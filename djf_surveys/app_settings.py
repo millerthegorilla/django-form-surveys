@@ -175,7 +175,10 @@ SURVEY_GDPR_REFERENCE_MESSAGE = (
                         and enter it into the \
                         <a href='{}' \
                         class='tw:font-medium tw:text-fg-brand tw:text-blue-600 tw:hover:underline'> \
-                        withdraw response page.</a>"
+                        withdraw response page.</a> \
+                        A short link will be shown on page you \
+                        see after the survey is completed, which\
+                        will autocomplete the GDPR reference number."
 )
 
 # this removes the temporary user created for anonymous survey takers once they have completed the survey

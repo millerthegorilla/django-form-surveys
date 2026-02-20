@@ -1,6 +1,8 @@
 {% load static djf_survey_tags %}
-<input type="{{ widget.type }}"
+<input id="{{ widget.attrs.id }}-parent"  
+       type="{{ widget.type }}"
        name="{{ widget.name }}"
+       class="rating-parent"
        {% if widget.value != None %} value="{{ widget.value }}" {% else %} value="0" {% endif %}
        {% include "django/forms/widgets/attrs.html" %}>
 {% if widget.value != None %}
@@ -8,4 +10,4 @@
 {% else %}
     {% create_star "0" widget.attrs.id widget.num_ratings %}
 {% endif %}
-<div class="widget-attrs-id" data-id="{{ widget.attrs.id }}" hidden></div>
+<div id="id-{{ widget.name }}-hidden" class="rating {{ widget.name }}" data-id="{{ widget.attrs.id }}" data-required="{{ widget.required }}" hidden></div>

@@ -40,6 +40,11 @@ urlpatterns = [
         name="success",
     ),
     path(
+        "success/<str:slug>/<str:selection_slug>/<str:short_link>/",
+        views.SuccessPageSurveyView.as_view(),
+        name="success",
+    ),
+    path(
         "selection/<str:slug>/",
         views.SurveySelectionDetailView.as_view(),
         name="survey_selection",

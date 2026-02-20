@@ -187,6 +187,7 @@ class BaseSurveyForm(forms.Form):
                 )
 
             self.fields[field_name].required = question.required
+            self.fields[field_name].widget.is_required = question.required
             self.fields[field_name].help_text = question.help_text
             self.field_names.append(field_name)
         
@@ -217,19 +218,22 @@ class BaseSurveyForm(forms.Form):
 class RespondToSurveyForm(BaseSurveyForm):
     gdpr_reference = forms.CharField(
         label=_("GDPR Reference"),
-        widget=forms.TextInput(attrs={"readonly": "readonly"}),
+        widget=forms.TextInput(attrs={"readonly": "readonly"})
     )
 
     def __init__(self, *args, **kwargs):
         host = kwargs.pop("host", None)
         scheme = kwargs.pop("scheme", "https")
         super().__init__(*args, **kwargs)
-        self.fields['gdpr_reference'].initial = str(uuid.uuid4())
-        link = reverse("djf_surveys:withdraw_response", kwargs={"gdpr_reference": self.fields['gdpr_reference'].initial})
-        url_short = f"{scheme}://{host}/s/{shortener.get_or_create(None, link, refresh=True)}"
+        #if UserAnswer.objects.filter(gdpr_reference=self.fields["gdpr_reference"].initial).exists():
+         #   self.fields["gdpr_reference"].initial = str(uuid.uuid4())
+        link = reverse("djf_surveys:withdraw_response", kwargs={"gdpr_reference": self.initial['gdpr_reference']})
+        short_link = shortener.get_or_create(None, link, refresh=True)
+        url_short = f"{scheme}://{host}/s/{short_link}"
         self.fields["gdpr_reference"].help_text = mark_safe(
             _(SURVEY_GDPR_REFERENCE_MESSAGE).format(url_short)
         )
+       # self.fields["gdpr_reference"].short_link = short_link
 
     @transaction.atomic
     def save(self):

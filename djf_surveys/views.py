@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -14,6 +16,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormMixin
 from django.views.generic.list import ListView
 from django.contrib.auth import get_user_model
+
+from shortener import shortener
 
 from djf_surveys import app_settings
 from djf_surveys.forms import EditSurveyForm, RespondToSurveyForm, WithdrawResponseForm
@@ -200,6 +204,9 @@ class RespondSurveyFormView(ContextTitleMixin, SurveyFormView):
     form_class = RespondToSurveyForm
     title_page = _("Respond To Survey")
 
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+    
     def dispatch(self, request, *args, **kwargs):
         survey = self.get_object()
         # handle if survey can_anonymous_user
@@ -225,16 +232,20 @@ class RespondSurveyFormView(ContextTitleMixin, SurveyFormView):
     def get_form(self, form_class=None):
         if form_class is None:
             form_class = self.get_form_class()
-        return form_class(**self.get_form_kwargs())
+        form = form_class(**self.get_form_kwargs())
+        return form
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
+        if self.request.POST and "gdpr_reference" in self.request.POST:
+            gdpr_reference = self.request.POST.get("gdpr_reference")
         kwargs.update(
             {
                 "survey": self.get_object(),
                 "user": self.request.user,
                 "host": self.request.get_host(),
                 "scheme": self.request.scheme,
+                "initial": {'gdpr_reference': gdpr_reference if "gdpr_reference" in self.request.POST else uuid.uuid4()}
             }
         )
         return kwargs
@@ -246,6 +257,8 @@ class RespondSurveyFormView(ContextTitleMixin, SurveyFormView):
         return self.get_object().description
 
     def get_success_url(self):
+        link = reverse("djf_surveys:withdraw_response", kwargs={"gdpr_reference": self.request.POST.get("gdpr_reference")})
+        self.kwargs["short_link"] = shortener.get_or_create(None, link)
         return reverse("djf_surveys:success", kwargs=self.kwargs)
 
     def get_context_data(self, **kwargs):
@@ -543,7 +556,6 @@ class WithdrawResponseView(FormMixin, ContextTitleMixin, View):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
-        breakpoint()
         if form.is_valid():
             gdpr_reference = form.cleaned_data.get("gdpr_reference")
             user_response = get_object_or_404(UserAnswer, gdpr_reference=gdpr_reference)

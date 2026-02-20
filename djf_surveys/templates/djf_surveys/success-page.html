@@ -29,8 +29,27 @@
       {% trans 'Thank you for completing this survey' %}
     </h1>
     <p class="tw:mt-4 tw:text-sm tw:text-gray-500">
-      {% if object.success_page_content %} {{ object.success_page_content|safe
-      }} {% else %} {% trans DEFAULT_THANK_YOU_MESSAGE %} {% endif %}
+      {% if object.success_page_content %} 
+      {{ object.success_page_content|safe }} 
+      {% else %} 
+      {% trans DEFAULT_THANK_YOU_MESSAGE %}
+      {% endif %}
+      {% if request.resolver_match.kwargs.short_link %}
+        <br />
+        <br />
+        <small class="tw:text-xs tw:text-gray-500">
+          {% trans "You can withdraw your results at any time by visiting the following link : " %}
+          <br />
+          <br />
+          {% if object.cycle_survey %}
+            {{ request.scheme }}://{{ request.get_host }}/s/{{ request.resolver_match.kwargs.short_link }}
+          {% else %}
+            <a href="{{ request.scheme }}://{{ request.get_host }}/s/{{ request.resolver_match.kwargs.short_link }}">
+              {{ object.cycle_survey }}
+              {{ request.scheme }}://{{ request.get_host }}/s/{{ request.resolver_match.kwargs.short_link }}</a>
+          {% endif %}
+        </small>
+      {% endif %}
     </p>
     <div class="tw:flex tw:justify-center tw:py-6">
       <a

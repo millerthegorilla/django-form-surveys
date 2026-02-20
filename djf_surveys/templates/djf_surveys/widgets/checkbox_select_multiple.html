@@ -1,0 +1,18 @@
+{% with id=widget.attrs.id %}
+    <div {% if id %}id="{{ id }}"{% endif %}
+         {% if widget.attrs.class %}class="{{ widget.attrs.class }}"{% endif %}>
+        <fieldset id="{{ id }}-parent" name="{{ widget.name }}" class="multiselect-parent">
+        {% for group, options, index in widget.optgroups %}
+            {% if group %}
+                <div>
+                    <label>{{ group }}</label>
+                {% endif %}
+                {% for option in options %}
+                    <div>{% include option.template_name with widget=option %}</div>
+                {% endfor %}
+                {% if group %}</div>{% endif %}
+                {% endfor %}
+        </fieldset>
+    </div>
+{% endwith %}
+<div id="id-{{ widget.name }}-hidden" class="{{ widget.name }}" data-id="{{ widget.attrs.id }}" data-required="{{ widget.required }}" hidden></div>

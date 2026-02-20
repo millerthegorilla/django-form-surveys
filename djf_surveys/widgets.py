@@ -19,6 +19,7 @@ class Title(forms.Widget):
     
 
 class CheckboxSelectMultipleSurvey(forms.CheckboxSelectMultiple):
+    template_name = "djf_surveys/widgets/checkbox_select_multiple.html"
     option_template_name = "djf_surveys/widgets/multiselect.html"
 
     def get_context(self, name, value, attrs):

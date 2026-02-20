@@ -1,4 +1,4 @@
-const widgets = document.getElementsByClassName("widget-attrs-id")
+const widgets = document.getElementsByClassName("rating")
 const variables = {};
 function initRatingStars(widgetAttrsId) {
     variables[`ratingStars_${ widgetAttrsId }`] = [...document.getElementById(`parent_start_${widgetAttrsId}`).getElementsByClassName("rating__star")];
@@ -18,7 +18,7 @@ function initRatingStars(widgetAttrsId) {
                     for (i; i < variables[`starsLength_${ widgetAttrsId }`]; ++i) stars[i].className = variables[`starClassUnactive_${ widgetAttrsId }`];
                 }
                 variables[`ratingStarsActive_${ widgetAttrsId }`] = [...document.getElementById(`parent_start_${ widgetAttrsId }`).getElementsByClassName("rating_active")];
-                variables[`hiddenInput_${ widgetAttrsId }`] = document.getElementById(`${ widgetAttrsId }`);
+                variables[`hiddenInput_${ widgetAttrsId }`] = document.getElementById(`${ widgetAttrsId }-parent`);
                 variables[`hiddenInput_${ widgetAttrsId }`].value = variables[`ratingStarsActive_${ widgetAttrsId }`].length;
             };
         });

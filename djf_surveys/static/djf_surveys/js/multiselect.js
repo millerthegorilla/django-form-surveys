@@ -1,11 +1,11 @@
 (function () {
-  controls = document.getElementsByClassName("multiselect");
+  controls = document.querySelectorAll(".multiselect-parent, .rating-parent");
   let names = [];
   Array.from(controls).forEach(function (element) {
     if (names.indexOf(element.name) == "-1") {
       names.push(element.name);
       let html_insert = `<div id="popup-wrapper"><div id="error-popup-${element.name}" class="error-popup"><span class="popuptext" id="popuptext">You need to select at least one option</span></div></div>`;
-      let select_form = document.getElementById("id_" + element.name);
+      let select_form = document.getElementById("id-" + element.name + '-hidden');
       select_form.insertAdjacentHTML("afterend", html_insert);
     }
   });
@@ -15,12 +15,27 @@
     let valid = false;
     for (let value of names) {
       valid = false;
-      //if a checkbox with this name is checked then valid = true and break
-      let checkboxes = document.getElementsByName(value);
-      for (const checkbox of checkboxes) {
-        if (checkbox.checked) {
+      let el = document.getElementById("id_" + value + '-parent');
+      if (document.getElementsByClassName(`${value}`)[0].dataset.required == "False") {
+        valid = true;
+        continue;
+      }
+      if (el.classList.contains("rating-parent")) 
+      {
+        let stars = document.getElementById(`parent_start_id_${value}`).querySelectorAll(".rating_active");
+        if (stars.length > 0) {
           valid = true;
-          break;
+          continue;
+        }
+      }
+      else if (el.classList.contains("multiselect-parent"))
+      {
+        let checkboxes = document.getElementsByName(value);
+        for (const checkbox of checkboxes) {
+          if (checkbox.checked) {
+            valid = true;
+            continue;
+          }
         }
       }
 
@@ -28,9 +43,8 @@
       if (!valid) {
         //show popup
         popup.classList.toggle("show-popup");
-        document
-          .getElementById("id_" + value)
-          .scrollIntoView({ behavior: "smooth" });
+        popup
+          .scrollIntoView({ behavior: "smooth", block: "center" });
         setTimeout(function () {
           popup.classList.toggle("show-popup");
         }, 3000);
