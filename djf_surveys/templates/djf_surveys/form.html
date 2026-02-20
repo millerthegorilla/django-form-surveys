@@ -72,8 +72,8 @@
       <script src="https://cdn.jsdelivr.net/npm/scsaver@latest/dist/scsaver.min.js" type="text/javascript"></script>
       <script src='{% static "djf_surveys/js/screensaver.js" %}' type="text/javascript"></script>
     {% endif %}
-    {% if form.has_multiselect %}
-        <script src="{% static 'djf_surveys/js/multiselect.js' %}" type="text/javascript"></script>
+    {% if form.has_multiselect or form.has_rating %}
+        <script src="{% static 'djf_surveys/js/error_validation.js' %}" type="text/javascript"></script>
     {% endif %}
     {% if form.has_rating %}
         <script src="{% static 'djf_surveys/js/rating_star.js' %}" type="text/javascript"></script>
