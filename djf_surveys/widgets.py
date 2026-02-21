@@ -32,7 +32,8 @@ class RadioSelectSurvey(forms.RadioSelect):
 
 
 class DateSurvey(forms.DateTimeInput):
-    template_name = "djf_surveys/widgets/datepicker.html"
+    input_type = "date"
+    #template_name = "djf_surveys/widgets/datepicker.html"
 
 
 class RatingSurvey(forms.HiddenInput):
