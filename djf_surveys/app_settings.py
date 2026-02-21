@@ -33,7 +33,7 @@ SURVEY_USER_PHOTO_PROFILE = (
 DATE_INPUT_FORMAT = (
     settings.DATE_INPUT_FORMAT
     if hasattr(settings, "DATE_INPUT_FORMAT")
-    else ["%Y-%m-%d", "%m/%d/%Y", "%m/%d/%y", "%d/%m/%y", "%d/%m/%Y"]
+    else ["%d/%m/%Y", "%d/%m/%y", "%Y-%m-%d", "%m/%d/%Y", "%m/%d/%y"]
 )
 
 # validators

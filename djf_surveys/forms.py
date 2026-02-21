@@ -134,9 +134,9 @@ class BaseSurveyForm(forms.Form):
 
             elif question.type_field == TYPE_FIELD.date:
                 self.fields[field_name] = forms.DateField(
+                    input_formats=DATE_INPUT_FORMAT,
                     label=question.label,
                     widget=DateSurvey(),
-                    input_formats=DATE_INPUT_FORMAT,
                 )
             elif question.type_field == TYPE_FIELD.text_area:
                 # add other terms validator

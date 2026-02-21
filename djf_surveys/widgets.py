@@ -33,6 +33,8 @@ class RadioSelectSurvey(forms.RadioSelect):
 
 class DateSurvey(forms.DateTimeInput):
     input_type = "date"
+    format='%d/%m/%Y'
+    attrs={'type': 'text', 'placeholder': 'dd/mm/yyyy'} # type='text' avoids browser default
     #template_name = "djf_surveys/widgets/datepicker.html"
 
 
