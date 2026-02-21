@@ -45,7 +45,7 @@
   </div>
   <a class="tw:relative tw:block tw:p-8 tw:overflow-hidden tw:border tw:border-gray-100 tw:rounded-lg tw:bg-white"
      href="{% if user.is_authenticated %}{% url 'djf_surveys:detail' survey.slug 'main' %}{% elif survey.temp_user %}
-     {% url SURVEY_LOGIN_URL %}?next={% url 'djf_surveys:respond' survey.slug 'main' %}{% else %}{% url 'djf_surveys:respond' survey.slug 'main' %}{% endif %}">
+     {% url SURVEY_LOGIN_URL kwargs={'temp_login': 'temp_login'} %}?next={% url 'djf_surveys:respond' survey.slug 'main' %}{% else %}{% url 'djf_surveys:respond' survey.slug 'main' %}{% endif %}">
     <span class="tw:absolute tw:inset-x-0 tw:bottom-0 tw:h-2 tw:bg-linear-to-r tw:from-green-300 tw:via-blue-500 tw:to-purple-600"></span>
     <div class="tw:justify-between tw:sm:flex">
       <div>
