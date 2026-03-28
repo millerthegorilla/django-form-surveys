@@ -79,8 +79,11 @@ class IndexView(ContextTitleMixin, View):
         # selection_paginator = self.paginator_class(survey_selections, self.paginate_by)
         # selection_page_number = request.GET.get('page', 1)
         # selection_page_obj = selection_paginator.get_page(selection_page_number)
+        
         context = self.get_context_data(
             surveys=surveys,
+            any_surveys_on_index=surveys.filter(show_on_index=True).exists(),
+            any_survey_selections=survey_selections.filter(show_on_index=True).exists(),
             survey_selections=survey_selections,
             reason="search" if query else "display",
             search_query=query if query else "",

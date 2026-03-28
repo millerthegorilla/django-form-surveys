@@ -57,6 +57,7 @@
       </p>
     </cite>
     <hr class="tw:mt-3 tw:mb-3" />
+    BOB
     {% for answer in object.answer_set.all %}
       <p class="tw:text-lg tw:text-neutral-900">{{ answer.question.label }}</p>
       <p class="tw:text-slate-400 tw:wrap-break-word">{{ answer.get_value }}</p>

@@ -7,7 +7,9 @@
 {% block content %}
   <div id="survey-content" class="tw:container tw:px-5 tw:py-5">
     {% include 'djf_surveys/components/section_welcome.html' %}
-    {% include 'djf_surveys/components/search_form.html' %}
+    {% if surveys and any_surveys_on_index or survey_selections and any_survey_selections_on_index %}
+      {% include 'djf_surveys/components/search_form.html' %}
+    {% endif %}
     <div>
       {% if surveys %}
         <div class="tw:grid tw:sm:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-2 tw:xl:grid-cols-2 tw:gap-4">
@@ -15,12 +17,15 @@
             {% if survey.show_on_index %}
               {% include 'djf_surveys/components/card_list_survey.html' %}
             {% endif %}
-            {% endfor %}
-          </div>
-          <div class="tw:py-10">{% include 'djf_surveys/components/pagination.html' %}</div>
-        {% else %}
+          {% endfor %}
+        </div>
+        <div class="tw:py-10">{% include 'djf_surveys/components/pagination.html' %}</div>
+        {% if not any_surveys_on_index %}
           {% include 'djf_surveys/components/empty_state.html' with type="Survey" reason=reason %}
         {% endif %}
+      {% else %}
+        {% include 'djf_surveys/components/empty_state.html' with type="Survey" reason=reason %}
+      {% endif %}
       </div>
       <div>
         {% if survey_selections %}
@@ -32,6 +37,9 @@
             {% endfor %}
           </div>
           <div class="tw:py-10">{% include 'djf_surveys/components/pagination.html' %}</div>
+          {% if not any_survey_selections_on_index %}
+            {% include 'djf_surveys/components/empty_state.html' with type="Survey Selection" reason=reason %}
+          {% endif %}
         {% else %}
           {% include 'djf_surveys/components/empty_state.html' with type="Survey Selection" reason=reason %}
         {% endif %}
